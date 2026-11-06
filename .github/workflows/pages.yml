@@ -1,0 +1,58 @@
+# Publishes the base to GitHub Pages on every push to main.
+# Repo Settings → Pages → Source must be set to "GitHub Actions".
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # "Run workflow" button in the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; a newer push doesn't cancel one that's already publishing
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check projects.js, folders and secrets
+        run: node .github/scripts/check.mjs
+
+      - name: Build the site folder
+        run: |
+          rsync -a ./ _site/ \
+            --exclude .git --exclude .github --exclude .claude \
+            --exclude README.md --exclude .gitignore
+          # Make browsers load the new styles and scripts after each deploy
+          v="${GITHUB_SHA::7}"
+          sed -i -E "s#(href|src)=\"((\.\./)?(assets/[^\"?]+\.(css|js)|projects\.js))\"#\1=\"\2?v=$v\"#g" \
+            _site/index.html _site/preview/index.html
+          grep -c "?v=$v" _site/index.html _site/preview/index.html
+          du -sh _site
+
+      - name: Check the built folder
+        run: node .github/scripts/check.mjs _site
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

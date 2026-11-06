@@ -37,7 +37,7 @@ It looks like nmstudio.info, but it's for the two of us. The pages tell Google n
    }
    ```
 
-3. Commit and push. GitHub Pages updates within a minute or two.
+3. Run `node .github/scripts/check.mjs`, then commit and push. The site updates within a minute or two.
 
 A site hosted somewhere else can go in without copying its files: put its full address in `path`
 (`path: 'https://newclient.bg/'`). It still shows in the frame, but the thumbnail doesn't scroll on
@@ -62,7 +62,24 @@ booking and admin pages need that demo mode.
 
 Repository: https://github.com/Izu83/nmstudio-devbase. Site: https://izu83.github.io/nmstudio-devbase/
 
-Pages is set to **Settings → Pages → Deploy from a branch**, branch `main`, folder `/ (root)`.
+The site is published by GitHub Actions ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
+For that, **Settings → Pages → Source** must be set to **GitHub Actions**. Every push to `main` then:
+
+1. checks `projects.js`: it runs, ids are unique, every project folder and page has its `index.html`,
+   and no project has its own `.git` folder;
+2. checks that nothing secret is in git (`sites/*/data/`, `*.db`, `admin-password.txt`, `.env`, keys);
+3. builds the site without `README.md` and `.github/`, and adds the commit to the style and script
+   addresses (`style.css?v=db2e870`), so browsers don't keep showing the old version;
+4. publishes it.
+
+If a check fails, nothing is published and the old version stays online. The Actions tab says what's
+wrong. To run the same check before pushing:
+
+```
+node .github/scripts/check.mjs
+```
+
+To publish again without a new commit: Actions → Deploy to GitHub Pages → Run workflow.
 
 ### Projects that have their own git repository
 
@@ -96,3 +113,5 @@ robocopy D:\Projects\Sites\NewClient sites\NewClient /E /XD .git data .claude no
 | `projects.js` | The projects and our notes on them |
 | `assets/` | Styles and scripts of the base |
 | `sites/` | The projects themselves |
+| `.github/workflows/pages.yml` | Checks, builds and publishes the site on every push |
+| `.github/scripts/check.mjs` | The check (`node .github/scripts/check.mjs`) |

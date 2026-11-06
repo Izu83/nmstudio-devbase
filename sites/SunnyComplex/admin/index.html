@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script src="../assets/serve.js" data-route="/admin/"></script>
+<script src="../assets/demo-api.js"></script>
+<meta name="robots" content="noindex, nofollow">
+<title>Админ – Sunny Complex</title>
+<meta name="theme-color" content="#0c0b0a">
+<link rel="icon" href="../assets/logo-sun.png">
+<link rel="stylesheet" href="../assets/floor.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0c0b0a;
+    --bg-2: #13110f;
+    --bg-3: #1a1714;
+    --gold: #f2b544;
+    --gold-hi: #ffdc93;
+    --text: #ecd8aa;
+    --text-dim: #b8a273;
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    --font-text: "Onest", system-ui, sans-serif;
+    --margin: clamp(14px, 2.4vw, 32px);
+    --radius: 22px;
+
+    --surface: linear-gradient(180deg, #221f1a, #171512);
+    --raised: inset 0 1px 0 rgba(255,228,170,.08), inset 0 -1px 0 rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.6), 0 16px 32px -16px rgba(0,0,0,.95);
+    --raised-hover: inset 0 1px 0 rgba(255,228,170,.12), inset 0 -1px 0 rgba(0,0,0,.5), 0 2px 4px rgba(0,0,0,.6), 0 26px 44px -18px rgba(0,0,0,1);
+    --pressed: inset 0 3px 8px rgba(0,0,0,.75), inset 0 -1px 0 rgba(255,228,170,.06);
+    --well: inset 0 2px 10px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,228,170,.07);
+    --gold-metal: linear-gradient(180deg, #ffe4a6 0%, #f6c05a 40%, #d99a2b 100%);
+    --gold-press: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -2px 0 rgba(120,70,0,.35), 0 10px 20px -10px rgba(242,181,68,.6);
+    --ease: cubic-bezier(.25, .1, .25, 1);
+
+    /* Reservation states */
+    --st-pending: #ff9a3c;
+    --st-confirmed: #f2b544;
+    --st-seated: #7fd18b;
+    --st-cancelled: #8a7d66;
+    --st-noshow: #e0766b;
+  }
+  * { box-sizing: border-box; touch-action: pan-x pan-y; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; min-height: 100svh; background: var(--bg); color: var(--text); font: 400 1rem/1.5 var(--font-text); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; color: var(--gold); margin: 0; line-height: 1.05; font-feature-settings: "locl" 0; }
+  p { margin: 0; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 8px; }
+  .frame { padding-inline: var(--margin); max-width: 1600px; margin-inline: auto; }
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 13px 22px; border: 0; border-radius: 999px; cursor: pointer; font-weight: 600; line-height: 1; text-decoration: none; color: #1d1404; background: var(--gold-metal); box-shadow: inset 0 1px 0 rgba(255,255,255,.65), inset 0 -2px 0 rgba(120,70,0,.35), 0 1px 2px rgba(0,0,0,.5), 0 10px 22px -12px rgba(242,181,68,.6); white-space: nowrap; }
+  .btn:hover { filter: brightness(1.06); }
+  .btn:active { box-shadow: inset 0 3px 7px rgba(90,50,0,.45); }
+  .btn:disabled { opacity: .5; cursor: progress; }
+  .btn.dark { color: var(--gold); background: var(--surface); box-shadow: var(--raised); }
+  .btn.dark:hover { box-shadow: var(--raised-hover); filter: none; }
+  .btn.dark:active { box-shadow: var(--pressed); }
+  .btn svg { width: 17px; height: 17px; flex: none; }
+  .round { width: 44px; height: 44px; flex: none; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; background: var(--surface); box-shadow: var(--raised); color: var(--gold); }
+  .round:active { box-shadow: var(--pressed); }
+  .round svg { width: 19px; height: 19px; }
+  .card { border-radius: calc(var(--radius) + 4px); background: var(--bg-2); box-shadow: var(--raised); padding: clamp(16px, 1.8vw, 24px); }
+  .field { display: grid; gap: 6px; }
+  .field > span { font-size: .88rem; color: var(--text-dim); }
+  .field input, .field select, .field textarea, .search input { width: 100%; min-height: 48px; padding: 11px 14px; border: 0; border-radius: 13px; background: #0a0908; box-shadow: var(--well); color: var(--text); font-weight: 500; }
+  .field textarea { min-height: 70px; resize: vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus, .search input:focus { outline: none; box-shadow: var(--well), 0 0 0 2px var(--gold); }
+  .field select option { background: #13110f; }
+  ::placeholder { color: #6d6150; }
+  .note { min-height: 1.4em; font-size: .92rem; color: var(--gold-hi); }
+  .note.warn { color: var(--st-pending); }
+
+  /* ---------- Login ---------- */
+  .login { min-height: 100svh; display: grid; place-items: center; padding: 24px 16px; }
+  .login-card { width: min(420px, 100%); display: grid; gap: 18px; padding: clamp(24px, 5vw, 40px); }
+  .login-card img { width: 120px; }
+  .login-card h1 { font-size: 2.4rem; }
+  .login-card p.lede { color: var(--text-dim); margin-top: -8px; }
+  .login-card .back { justify-self: center; color: var(--text-dim); font-size: .9rem; }
+  .offline { min-height: 100svh; display: grid; place-items: center; padding: 24px 16px; }
+  .offline .card { width: min(520px, 100%); display: grid; gap: 16px; padding: clamp(24px, 5vw, 40px); }
+  .offline h1 { font-size: 2.2rem; }
+  .offline ol { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+  .offline code { color: var(--gold); font-weight: 600; }
+  .offline .btn { justify-self: start; }
+
+  /* ---------- Top bar ---------- */
+  .abar { position: sticky; top: 0; z-index: 30; background: rgba(12,11,10,.97); box-shadow: 0 1px 0 rgba(255,228,170,.06); }
+  .abar .frame { display: flex; align-items: center; gap: 14px 20px; min-height: 72px; padding-block: 10px; flex-wrap: wrap; }
+  .mark { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--gold); font: 700 1.25rem/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; font-feature-settings: "locl" 0; }
+  .mark img { width: 38px; height: auto; }
+  .tag { padding: 5px 10px; border-radius: 999px; background: #0a0908; box-shadow: var(--well); font: 600 .72rem/1 var(--font-text); letter-spacing: .08em; color: var(--text-dim); }
+  .switch { display: flex; gap: 3px; padding: 4px; border-radius: 999px; background: #0a0908; box-shadow: var(--well); }
+  .switch a { padding: 8px 14px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .88rem; color: var(--text-dim); }
+  .switch a[aria-current="page"] { background: var(--surface); color: var(--gold); box-shadow: var(--raised); }
+  .daynav { display: flex; align-items: center; gap: 8px; margin-inline: auto; }
+  .daynav input { min-height: 44px; padding: 8px 12px; border: 0; border-radius: 12px; background: #0a0908; box-shadow: var(--well); color: var(--gold); font-weight: 600; }
+  .aright { display: flex; align-items: center; gap: 10px; }
+  .waiting { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border: 0; border-radius: 999px; cursor: pointer; background: rgba(255,154,60,.12); box-shadow: inset 0 0 0 1px rgba(255,154,60,.45); color: var(--st-pending); font-weight: 600; font-size: .9rem; white-space: nowrap; }
+  .waiting i { width: 8px; height: 8px; border-radius: 50%; background: var(--st-pending); box-shadow: 0 0 0 4px rgba(255,154,60,.18); }
+
+  /* ---------- Day summary ---------- */
+  .day-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 26px 0 18px; }
+  .day-head h1 { font-size: clamp(2rem, 1.5rem + 2vw, 3rem); }
+  .day-head .upd { color: var(--text-dim); font-size: .88rem; }
+  .day-head .dh-right { display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
+  .day-head .btn { padding: 11px 18px; font-size: .9rem; }
+  .shut { display: grid; gap: 8px; margin: -4px 0 18px; }
+  .shut-row { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; padding: 10px 10px 10px 18px; border-radius: 18px; background: repeating-linear-gradient(135deg, #1c1813 0 10px, #17140f 10px 20px); box-shadow: inset 0 0 0 1px rgba(224,118,107,.45); }
+  .shut-row b { color: #ffb3a8; }
+  .shut-row span { color: var(--text-dim); }
+  .shut-row .btn { margin-left: auto; padding: 9px 14px; font-size: .85rem; }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .stat { padding: 16px 18px; border-radius: 20px; background: var(--bg-2); box-shadow: var(--raised); display: grid; gap: 2px; }
+  .stat b { font: 700 2.4rem/1 var(--font-display); color: var(--gold); font-feature-settings: "lnum" 1, "locl" 0; }
+  .stat span { color: var(--text-dim); font-size: .9rem; }
+  .stat.alert b { color: var(--st-pending); }
+
+  .board { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 18px; margin-top: 18px; align-items: start; }
+  .board > * { min-width: 0; }
+  .card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px 18px; flex-wrap: wrap; margin-bottom: 14px; }
+  .card-top h2 { font-size: 1.9rem; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; font-size: .84rem; color: var(--text-dim); }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-right: 6px; vertical-align: -1px; }
+
+  .hours { display: flex; gap: 6px; overflow-x: auto; padding: 2px 2px 10px; margin: 0 -2px 6px; scrollbar-width: thin; scrollbar-color: #3a3328 transparent; }
+  .hours button { flex: none; min-width: 58px; padding: 9px 8px 7px; border: 0; border-radius: 12px; cursor: pointer; display: grid; gap: 3px; justify-items: center; background: var(--surface); box-shadow: var(--raised); color: var(--gold); font-weight: 600; font-size: .92rem; }
+  .hours small { font-size: .68rem; font-weight: 500; color: var(--text-dim); }
+  .hours button[aria-pressed="true"] { background: var(--gold-metal); color: #1d1404; box-shadow: var(--gold-press); }
+  .hours button[aria-pressed="true"] small { color: #4a3309; }
+  .hours button.now:not([aria-pressed="true"]) { box-shadow: var(--raised), inset 0 0 0 1px rgba(242,181,68,.6); }
+
+  .plan { min-width: 640px; }
+
+  /* Table states on the plan */
+  .plan .tbl.st-pending .top { fill: #3a2610; stroke: var(--st-pending); stroke-width: 2.5; stroke-dasharray: 6 4; }
+  .plan .tbl.st-pending text { fill: var(--st-pending); }
+  .plan .tbl.st-confirmed .top { fill: url(#gSel); stroke: #ffe9b8; }
+  .plan .tbl.st-confirmed text { fill: #1d1404; }
+  .plan .tbl.st-confirmed .chair, .plan .tbl.st-confirmed .bench { fill: #c98d27; stroke: #ffe4a6; }
+  .plan .tbl.st-seated .top { fill: #1f3a25; stroke: var(--st-seated); stroke-width: 2.5; }
+  .plan .tbl.st-seated text { fill: #c9f2cf; }
+  .plan .tbl.st-seated .chair, .plan .tbl.st-seated .bench { fill: #2c5234; stroke: var(--st-seated); }
+  .plan .tbl.held .top { fill: #15120e; stroke: #6b5f4c; stroke-width: 1.5; stroke-dasharray: 3 3; }
+  .plan .tbl.held text { fill: #6b5f4c; }
+  .plan .tbl.held .chair, .plan .tbl.held .bench { opacity: .35; }
+  .plan .tbl.pick .top { filter: url(#glow); stroke-width: 3.5; }
+  .plan .tbl text.who { font: 600 11px var(--font-text); }
+  .lg-free { background: linear-gradient(#3a3329, #221e19); box-shadow: inset 0 0 0 1.5px rgba(242,181,68,.6); }
+  .lg-pending { background: #3a2610; box-shadow: inset 0 0 0 2px var(--st-pending); }
+  .lg-confirmed { background: var(--gold-metal); }
+  .lg-seated { background: #1f3a25; box-shadow: inset 0 0 0 2px var(--st-seated); }
+  .lg-held { background: #15120e; box-shadow: inset 0 0 0 1.5px #6b5f4c; }
+  .tip ul { margin: 6px 0 0; padding: 6px 0 0; list-style: none; border-top: 1px solid rgba(255,228,170,.1); display: grid; gap: 3px; }
+  .tip li { display: flex; gap: 8px; }
+  .tip li i { font-style: normal; font-weight: 600; }
+
+  /* ---------- Reservation list ---------- */
+  .search { position: relative; flex: 1 1 200px; max-width: 280px; }
+  .search input { min-height: 42px; padding-left: 40px; }
+  .search svg { position: absolute; left: 13px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); color: var(--text-dim); pointer-events: none; }
+  .tabs { display: flex; gap: 4px; padding: 5px; border-radius: 16px; background: #0a0908; box-shadow: var(--well); overflow-x: auto; scrollbar-width: none; }
+  .tabs button { flex: 1 0 auto; padding: 9px 12px; border: 0; border-radius: 11px; cursor: pointer; background: transparent; color: var(--text-dim); font-weight: 600; font-size: .88rem; white-space: nowrap; }
+  .tabs button b { margin-left: 4px; font-weight: 600; opacity: .75; }
+  .tabs button[aria-selected="true"] { background: var(--surface); color: var(--gold); box-shadow: var(--raised); }
+  .tfilter { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; padding: 8px 8px 8px 16px; border-radius: 16px; background: var(--surface); box-shadow: var(--raised); font-weight: 600; color: var(--gold); }
+  .tfilter .round { width: 34px; height: 34px; margin-left: auto; }
+  .tfilter .btn { padding: 10px 16px; font-size: .88rem; }
+
+  .list { display: grid; gap: 8px; margin-top: 14px; }
+  .hour-h { margin-top: 10px; display: flex; align-items: center; gap: 12px; color: var(--text-dim); font-size: .85rem; font-weight: 600; letter-spacing: .06em; }
+  .hour-h::after { content: ""; flex: 1; height: 1px; background: rgba(255,228,170,.08); }
+  .hour-h:first-child { margin-top: 0; }
+  .res { display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; grid-template-areas: "tbl who act" "tbl meta act"; gap: 4px 14px; align-items: center; padding: 12px 12px 12px 12px; border-radius: 16px; background: var(--bg-3); box-shadow: inset 0 1px 0 rgba(255,228,170,.05), inset 3px 0 0 var(--st, var(--gold)); }
+  .res.st-pending { --st: var(--st-pending); }
+  .res.st-confirmed { --st: var(--st-confirmed); }
+  .res.st-seated { --st: var(--st-seated); }
+  .res.st-cancelled, .res.st-noshow { --st: var(--st-cancelled); opacity: .62; }
+  .res.st-noshow { --st: var(--st-noshow); }
+  .res.fresh { box-shadow: inset 0 1px 0 rgba(255,228,170,.05), inset 3px 0 0 var(--st), 0 0 0 1.5px rgba(255,154,60,.6); }
+  .r-tbl { grid-area: tbl; align-self: stretch; display: grid; place-items: center; align-content: center; gap: 2px; border-radius: 12px; background: #0a0908; box-shadow: var(--well); padding: 6px 2px; text-align: center; }
+  .r-tbl b { font: 700 1.6rem/1 var(--font-display); color: var(--gold); font-feature-settings: "lnum" 1, "locl" 0; }
+  .r-tbl small { font-size: .66rem; color: var(--text-dim); line-height: 1.1; }
+  .r-who { grid-area: who; display: flex; align-items: baseline; gap: 6px 10px; flex-wrap: wrap; min-width: 0; }
+  .r-who strong { font-weight: 600; color: var(--text); font-size: 1.02rem; overflow-wrap: anywhere; }
+  .r-who .pill { font-size: .74rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; color: var(--st); background: color-mix(in oklab, var(--st), transparent 86%); white-space: nowrap; }
+  .r-meta { grid-area: meta; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .88rem; color: var(--text-dim); min-width: 0; }
+  .r-meta a { color: var(--gold-hi); text-decoration: none; font-weight: 500; }
+  .r-meta a:hover { text-decoration: underline; }
+  .r-meta .r-note { flex-basis: 100%; color: var(--text); font-style: normal; overflow-wrap: anywhere; }
+  .r-meta .r-note::before { content: "„"; color: var(--text-dim); }
+  .r-meta .r-note::after { content: "“"; color: var(--text-dim); }
+  .r-act { grid-area: act; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .r-act button { padding: 9px 12px; border: 0; border-radius: 11px; cursor: pointer; background: var(--surface); box-shadow: var(--raised); color: var(--text); font-size: .84rem; font-weight: 600; white-space: nowrap; }
+  .r-act button:active { box-shadow: var(--pressed); }
+  .r-act button.go { background: var(--gold-metal); color: #1d1404; box-shadow: var(--gold-press); }
+  .r-act button.ok { color: var(--st-seated); }
+  .r-act button.no { color: var(--st-noshow); }
+  .r-act button.armed, .btn.armed { background: #3a1a16; color: #ffb3a8; box-shadow: inset 0 0 0 1.5px var(--st-noshow); }
+  .btn.danger { color: var(--st-noshow); }
+  .empty { padding: 34px 16px; text-align: center; color: var(--text-dim); border-radius: 16px; background: #0a0908; box-shadow: var(--well); }
+
+  /* ---------- Edit dialog ---------- */
+  dialog.edit { width: min(560px, calc(100vw - 20px)); max-height: calc(100svh - 20px); padding: 0; border: 0; border-radius: 26px; background: var(--bg-2); color: var(--text); box-shadow: inset 0 1px 0 rgba(255,228,170,.1), 0 40px 90px -20px #000; overflow: auto; }
+  dialog.edit::backdrop { background: rgba(0,0,0,.75); }
+  dialog.edit form { display: grid; gap: 14px; padding: clamp(20px, 4vw, 32px); }
+  .edit-head { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+  .edit-head h2 { font-size: 2.1rem; }
+  .edit-head p { color: var(--text-dim); font-size: .9rem; margin-top: 4px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .edit-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .edit-actions .btn { flex: 1 1 160px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 5px; border-radius: 16px; background: #0a0908; box-shadow: var(--well); }
+  .seg label { position: relative; display: grid; }
+  .seg input { position: absolute; opacity: 0; inset: 0; margin: 0; }
+  .seg span { display: grid; place-items: center; min-height: 44px; padding: 6px; border-radius: 12px; text-align: center; font-weight: 600; font-size: .92rem; color: var(--text-dim); cursor: pointer; }
+  .seg input:checked + span { background: var(--surface); color: var(--gold); box-shadow: var(--raised); }
+  .seg input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .pick-zone { display: grid; gap: 8px; }
+  .pick-zone + .pick-zone { margin-top: 6px; }
+  .pick-zone header { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-weight: 600; color: var(--text-dim); font-size: .88rem; }
+  .pick-zone header button { padding: 6px 12px; border: 0; border-radius: 999px; cursor: pointer; background: var(--surface); box-shadow: var(--raised); color: var(--gold); font-size: .8rem; font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips button { min-width: 44px; height: 40px; padding: 0 10px; border: 0; border-radius: 12px; cursor: pointer; background: var(--surface); box-shadow: var(--raised); color: var(--gold); font: 700 1.15rem/1 var(--font-display); font-feature-settings: "lnum" 1, "locl" 0; }
+  .chips button[aria-pressed="true"] { background: var(--gold-metal); color: #1d1404; box-shadow: var(--gold-press); }
+
+  .toast { position: fixed; right: 16px; bottom: 16px; z-index: 60; max-width: min(380px, calc(100vw - 32px)); display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 18px; background: #241f19; box-shadow: inset 0 1px 0 rgba(255,228,170,.1), inset 3px 0 0 var(--st-pending), 0 24px 50px -12px #000; opacity: 0; transition: opacity .3s var(--ease); }
+  .toast.on { opacity: 1; }
+  .toast b { color: var(--st-pending); }
+  .toast.gone { box-shadow: inset 0 1px 0 rgba(255,228,170,.1), inset 3px 0 0 var(--st-noshow), 0 24px 50px -12px #000; }
+  .toast.gone b { color: var(--st-noshow); }
+  .toast button { margin-left: auto; flex: none; padding: 10px 16px; border: 0; border-radius: 999px; cursor: pointer; background: var(--gold-metal); color: #1d1404; font-weight: 600; box-shadow: var(--gold-press); }
+
+  @media (max-width: 1180px) {
+    .board { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .abar .frame { gap: 10px; }
+    .mark { font-size: 1rem; }
+    .mark img { width: 30px; height: auto; }
+    .daynav { order: 3; width: 100%; margin: 0; }
+    .daynav input { flex: 1; min-width: 0; }
+    .daynav .btn { padding: 12px 14px; }
+    .abar { position: static; }
+    .aright { margin-left: auto; }
+    .aright .btn .lbl { display: none; }
+    .aright .btn { padding: 12px 14px; }
+    .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat b { font-size: 2rem; }
+    .search { max-width: none; }
+    .res { grid-template-columns: 52px minmax(0, 1fr); grid-template-areas: "tbl who" "tbl meta" "act act"; }
+    .r-act { justify-content: flex-start; margin-top: 6px; }
+    .grid2 { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4M9 16l-4-4 4-4M5 12h11"/></symbol>
+  </defs>
+</svg>
+
+<section class="offline" id="offline" hidden>
+  <div class="card">
+    <h1>Сървърът не е пуснат</h1>
+    <p id="offlineWhy">Админ панелът пази резервациите на сървъра на сайта, а той сега не отговаря.</p>
+    <ol>
+      <li>Отворете папката на сайта и щракнете два пъти върху <code>start.bat</code>.</li>
+      <li>Оставете черния прозорец отворен, докато работите.</li>
+      <li>Админ панелът е на адрес <code>http://localhost:5173/admin/</code>.</li>
+    </ol>
+    <a class="btn" href="http://localhost:5173/admin/">Отвори админ панела</a>
+  </div>
+</section>
+
+<section class="login" id="login" hidden>
+  <form class="card login-card" id="loginForm" novalidate>
+    <img src="../assets/logo.png" alt="Sunny Complex" width="408" height="324">
+    <h1>Вход за персонала</h1>
+    <p class="lede">Резервации и маси за деня.</p>
+    <label class="field"><span>Парола</span><input type="password" name="password" autocomplete="current-password" required></label>
+    <p class="note warn" id="loginNote" aria-live="polite"></p>
+    <button type="submit" class="btn">Вход</button>
+    <a href="../" class="back">Към сайта</a>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header class="abar">
+    <div class="frame">
+      <a href="../" class="mark"><img src="../assets/logo-sun.png" alt="" width="228" height="130">Sunny Complex</a>
+      <nav class="switch" aria-label="Раздели за персонала">
+        <a href="./" aria-current="page">Резервации</a>
+        <a href="../deliveries/">Доставки</a>
+      </nav>
+      <div class="daynav">
+        <button type="button" class="round" id="prevDay" aria-label="Предишен ден"><svg aria-hidden="true"><use href="#i-left"/></svg></button>
+        <input type="date" id="dayInput" aria-label="Ден">
+        <button type="button" class="round" id="nextDay" aria-label="Следващ ден"><svg aria-hidden="true"><use href="#i-right"/></svg></button>
+        <button type="button" class="btn dark" id="todayBtn">Днес</button>
+      </div>
+      <div class="aright">
+        <button type="button" class="waiting" id="waiting" hidden><i aria-hidden="true"></i><span></span></button>
+        <button type="button" class="btn" id="newBtn"><svg aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Нова резервация</span></button>
+        <button type="button" class="round" id="logout" aria-label="Изход" title="Изход"><svg aria-hidden="true"><use href="#i-out"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="frame">
+    <div class="day-head">
+      <h1 id="dayTitle"></h1>
+      <div class="dh-right">
+        <span class="upd" id="updated" aria-live="polite"></span>
+        <button type="button" class="btn dark" id="shutBtn">Затвори деня или маси</button>
+      </div>
+    </div>
+    <div class="shut" id="shut"></div>
+
+    <section class="stats" aria-label="Денят накратко">
+      <div class="stat"><b class="num" id="stRes">0</b><span>резервации</span></div>
+      <div class="stat"><b class="num" id="stGuests">0</b><span>очаквани гости</span></div>
+      <div class="stat" id="stPendBox"><b class="num" id="stPend">0</b><span>чакат потвърждение</span></div>
+      <div class="stat"><b class="num" id="stFree">0</b><span id="stFreeLbl">свободни маси</span></div>
+    </section>
+
+    <div class="board">
+      <section class="card" aria-labelledby="planTitle">
+        <div class="card-top">
+          <h2 id="planTitle">Залата в <span id="hourLbl" class="num"></span></h2>
+          <ul class="legend">
+            <li><i class="lg-free"></i>Свободна</li>
+            <li><i class="lg-pending"></i>Чака</li>
+            <li><i class="lg-confirmed"></i>Потвърдена</li>
+            <li><i class="lg-seated"></i>Дошли</li>
+            <li><i class="lg-held"></i>Блокирана</li>
+          </ul>
+        </div>
+        <div class="hours" id="hours"></div>
+        <div class="plan-wrap" id="planWrap">
+          <svg id="plan" class="plan" role="group" aria-label="План на ресторанта"></svg>
+          <div class="tip" id="tip" role="tooltip" hidden></div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="listTitle">
+        <div class="card-top">
+          <h2 id="listTitle">Резервации</h2>
+          <div class="search"><svg aria-hidden="true"><use href="#i-search"/></svg><input type="search" id="q" placeholder="Име или телефон" aria-label="Търсене"></div>
+        </div>
+        <div class="tabs" id="tabs" role="tablist" aria-label="Статус"></div>
+        <div class="tfilter" id="tfilter" hidden>
+          <span id="tfilterLbl"></span>
+          <button type="button" class="btn" id="bookTable"></button>
+          <button type="button" class="round" id="tfilterX" aria-label="Покажи всички маси"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+        </div>
+        <div class="list" id="list"></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<dialog class="edit" id="edit" aria-labelledby="editTitle">
+  <form id="editForm" novalidate>
+    <div class="edit-head">
+      <div><h2 id="editTitle">Нова резервация</h2><p id="editSub"></p></div>
+      <button type="button" class="round" id="editClose" aria-label="Затвори"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="grid2">
+      <label class="field"><span>Ден</span><input type="date" name="day" required></label>
+      <label class="field"><span>Час</span><select name="hour"></select></label>
+      <label class="field"><span>Гости</span><input type="number" name="guests" min="1" max="30" required></label>
+      <label class="field"><span>Маса</span><select name="table"></select></label>
+      <label class="field"><span>Име</span><input type="text" name="name" required autocomplete="off"></label>
+      <label class="field"><span>Телефон</span><input type="tel" name="phone" autocomplete="off"></label>
+    </div>
+    <label class="field"><span>Бележка</span><textarea name="note" rows="2"></textarea></label>
+    <label class="field"><span>Статус</span><select name="status"></select></label>
+    <p class="note" id="editNote" aria-live="polite"></p>
+    <div class="edit-actions">
+      <button type="submit" class="btn">Запази</button>
+      <button type="button" class="btn dark" id="editCancel">Затвори</button>
+      <button type="button" class="btn dark danger" id="editDrop" hidden>Анулирай резервацията</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="edit" id="shutDlg" aria-labelledby="shutTitle">
+  <form id="shutForm" novalidate>
+    <div class="edit-head">
+      <div><h2 id="shutTitle">Затвори</h2><p id="shutSub">Сайтът няма да приема резервации за избраното. Резервациите, които вече има, остават.</p></div>
+      <button type="button" class="round" data-close aria-label="Затвори"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="seg" role="radiogroup" aria-label="Какво да се затвори">
+      <label><input type="radio" name="what" value="all" checked><span>Целия ресторант</span></label>
+      <label><input type="radio" name="what" value="some"><span>Само някои маси</span></label>
+    </div>
+    <div id="shutPick" hidden></div>
+    <label class="field"><span>Причина <i>(вижда се само тук)</i></span><input type="text" name="reason" maxlength="120" placeholder="Сватба, кръщене, фирмено парти"></label>
+    <p class="note" id="shutNote" aria-live="polite"></p>
+    <div class="edit-actions">
+      <button type="submit" class="btn">Затвори</button>
+      <button type="button" class="btn dark" data-close>Откажи</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="../assets/tables.js"></script>
+<script src="../assets/floor.js"></script>
+<script>
+(async () => {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const NS = 'http://www.w3.org/2000/svg';
+
+  const STATUS = {
+    pending:   { name: 'Чака потвърждение', short: 'Чакат' },
+    confirmed: { name: 'Потвърдена', short: 'Потвърдени' },
+    seated:    { name: 'Дошли', short: 'Дошли' },
+    noshow:    { name: 'Не дойдоха', short: 'Не дойдоха' },
+    cancelled: { name: 'Анулирана', short: 'Анулирани' },
+  };
+  const ACTIVE = ['pending', 'confirmed', 'seated'];
+
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const fromIso = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  const WD_LONG = ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'];
+  const MON_LONG = ['януари', 'февруари', 'март', 'април', 'май', 'юни', 'юли', 'август', 'септември', 'октомври', 'ноември', 'декември'];
+  const longDay = d => `${WD_LONG[d.getDay()]}, ${d.getDate()} ${MON_LONG[d.getMonth()]}`;
+  const hhmm = h => `${h}:00`;
+  const people = n => `${n} ${n === 1 ? 'човек' : 'души'}`;
+  const tablesWord = n => n === 1 ? 'маса' : 'маси';
+  const today = () => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); };
+
+  /* ---------- Talking to the server ---------- */
+  const show = id => ['login', 'app', 'offline'].forEach(x => { $('#' + x).hidden = x !== id; });
+  async function api(path, opts = {}) {
+    const r = await fetch('/api/admin' + path, {
+      ...opts, cache: 'no-store',
+      headers: opts.body ? { 'Content-Type': 'application/json' } : undefined,
+    });
+    if (r.status === 401 && path !== '/login') { stopPolling(); show('login'); throw new Error('Влезте отново.'); }
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'Нещо се обърка.');
+    return j;
+  }
+
+  /* ---------- Login ---------- */
+  const loginForm = $('#loginForm');
+  loginForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = loginForm.querySelector('button'), note = $('#loginNote');
+    note.textContent = ''; btn.disabled = true;
+    try {
+      await api('/login', { method: 'POST', body: JSON.stringify({ password: loginForm.password.value }) });
+      loginForm.reset(); start();
+    } catch (err) { note.textContent = err.message; loginForm.password.select(); }
+    finally { btn.disabled = false; }
+  });
+  $('#logout').addEventListener('click', async () => {
+    stopPolling();
+    try { await api('/logout', { method: 'POST' }); } catch {}
+    show('login'); loginForm.password.focus();
+  });
+
+  /* ---------- Floor ---------- */
+  /* Opened straight from the folder (file://) there is no server to keep reservations */
+  if (location.protocol === 'file:') {
+    $('#offlineWhy').textContent = 'Страницата е отворена директно от папката. Резервациите се пазят от сървъра на сайта, затова админ панелът работи само през него.';
+    show('offline'); return;
+  }
+  let floor;
+  try { floor = await Floor.load(); } catch { show('offline'); return; }
+  const TABLES = floor.tables, ZONES = floor.zones, DUR = floor.duration;
+  const byId = Floor.draw($('#plan'), floor);
+  const layer = $('#plan .tables');
+  /* A second line on bigger tables for the guest's name */
+  TABLES.forEach(t => {
+    t.num = t.g.querySelector('text');
+    t.roomy = !t.round && t.w >= 60;
+    if (!t.roomy) return;
+    t.who = document.createElementNS(NS, 'text');
+    t.who.setAttribute('class', 'who'); t.who.setAttribute('x', t.c[0]); t.who.setAttribute('y', t.c[1] + 12);
+    t.g.append(t.who);
+  });
+
+  /* ---------- State ---------- */
+  const nowHour = () => Math.min(floor.last, Math.max(floor.open, new Date().getHours()));
+  const A = { day: today(), hour: nowHour(), list: [], closures: [], tab: 'active', q: '', table: null, seen: null, waiting: 0 };
+  const isToday = () => A.day.getTime() === today().getTime();
+  const covering = (t, h) => A.list.find(b => b.table === t.id && ACTIVE.includes(b.status) && b.hour <= h && h < b.hour + DUR);
+  const clashing = (table, h, exclude) => A.list.find(b => b.table === table && b.id !== exclude && ACTIVE.includes(b.status) && Math.abs(b.hour - h) < DUR);
+  const shortName = s => s.length > 10 ? s.slice(0, 9) + '…' : s;
+  /* Held back for the whole day: the restaurant is closed, or the table is blocked */
+  const dayShut = () => A.closures.some(c => c.tables === null);
+  const isHeld = t => A.closures.some(c => c.tables === null || c.tables.includes(t.id));
+  /* "зала Непушачи, 3, 5" rather than every table number of a whole hall */
+  const heldLabel = ids => {
+    const rest = new Set(ids), parts = [];
+    Object.entries(ZONES).forEach(([z, name]) => {
+      const hall = TABLES.filter(t => t.zone === z).map(t => t.id);
+      if (hall.every(id => rest.has(id))) { parts.push(`зала ${name}`); hall.forEach(id => rest.delete(id)); }
+    });
+    return [...parts, ...[...rest].map(id => (byId[id].booth ? 'сепаре ' : '') + id)].join(', ');
+  };
+  const STATUS_NAME = b => b.status === 'cancelled' && b.guest_cancelled ? 'Отказана от госта' : STATUS[b.status].name;
+
+  /* ---------- Hours ---------- */
+  const hoursBox = $('#hours');
+  for (let h = floor.open; h <= floor.last; h++) hoursBox.insertAdjacentHTML('beforeend', `<button type="button" data-h="${h}" aria-pressed="false">${hhmm(h)}<small></small></button>`);
+  hoursBox.addEventListener('click', e => { const b = e.target.closest('button'); if (b) { A.hour = +b.dataset.h; render(); } });
+
+  /* ---------- Render ---------- */
+  function render() {
+    const active = A.list.filter(b => ACTIVE.includes(b.status));
+    $('#dayTitle').textContent = (isToday() ? 'Днес · ' : '') + longDay(A.day);
+    $('#dayInput').value = iso(A.day);
+
+    /* Stats */
+    const pend = active.filter(b => b.status === 'pending').length;
+    $('#stRes').textContent = active.length;
+    $('#stGuests').textContent = active.reduce((s, b) => s + b.guests, 0);
+    $('#stPend').textContent = pend;
+    $('#stPendBox').classList.toggle('alert', pend > 0);
+    const freeNow = TABLES.filter(t => !covering(t, A.hour) && !isHeld(t)).length;
+    $('#stFree').textContent = `${freeNow}/${TABLES.length}`;
+    $('#stFreeLbl').textContent = `свободни маси в ${hhmm(A.hour)}`;
+    const w = $('#waiting');
+    w.hidden = !A.waiting;
+    w.querySelector('span').textContent = `${A.waiting} ${A.waiting === 1 ? 'чака' : 'чакат'} потвърждение`;
+    document.title = (A.waiting ? `(${A.waiting}) ` : '') + 'Админ – Sunny Complex';
+
+    /* Hours: how many tables are taken in each */
+    const nh = isToday() ? new Date().getHours() : -1;
+    [...hoursBox.children].forEach(b => {
+      const h = +b.dataset.h, n = TABLES.filter(t => covering(t, h)).length;
+      b.setAttribute('aria-pressed', String(h === A.hour));
+      b.classList.toggle('now', h === nh);
+      b.querySelector('small').textContent = n ? `${n} заети` : 'празно';
+    });
+    $('#hourLbl').textContent = hhmm(A.hour);
+
+    /* Closed day, blocked tables */
+    $('#shut').innerHTML = A.closures.map(c => `<div class="shut-row"><b>${c.tables === null ? 'Ресторантът е затворен' : `Блокирани: ${heldLabel(c.tables)}`}</b>${c.reason ? `<span>${esc(c.reason)}</span>` : ''}<button type="button" class="btn dark" data-open="${c.id}">Отвори отново</button></div>`).join('');
+    $('#shutBtn').hidden = dayShut();
+
+    /* Plan */
+    TABLES.forEach(t => {
+      const b = covering(t, A.hour);
+      const held = !b && isHeld(t);
+      t.g.setAttribute('class', `tbl ${b ? 'st-' + b.status : held ? 'held' : 'free'}${A.table === t.id ? ' pick' : ''}`);
+      t.g.setAttribute('aria-label', `${t.booth ? 'Сепаре' : 'Маса'} ${t.id}: ${b ? `${b.name}, ${people(b.guests)}, ${STATUS[b.status].name.toLowerCase()}` : held ? 'блокирана за деня' : 'свободна'}`);
+      if (t.who) {
+        t.who.textContent = b ? `${shortName(b.name)} · ${b.guests}` : '';
+        t.num.setAttribute('y', t.c[1] + (b ? -6 : 1));
+      }
+    });
+
+    /* Tabs */
+    const counts = { active: active.length, all: A.list.length };
+    Object.keys(STATUS).forEach(s => { counts[s] = A.list.filter(b => b.status === s).length; });
+    const tabs = [['active', 'Активни'], ['pending', 'Чакат'], ['confirmed', 'Потвърдени'], ['seated', 'Дошли'], ['off', 'Анулирани'], ['all', 'Всички']];
+    counts.off = counts.cancelled + counts.noshow;
+    $('#tabs').innerHTML = tabs.map(([k, n]) => `<button type="button" role="tab" data-tab="${k}" aria-selected="${A.tab === k}">${n}<b class="num">${counts[k]}</b></button>`).join('');
+
+    /* Table filter */
+    const tf = $('#tfilter');
+    tf.hidden = !A.table;
+    if (A.table) {
+      const t = byId[A.table];
+      $('#tfilterLbl').textContent = `${t.booth ? 'Сепаре' : 'Маса'} ${t.id} · ${Floor.describe(t, floor)}`;
+      const busy = clashing(t.id, A.hour);
+      $('#bookTable').hidden = !!busy;
+      $('#bookTable').textContent = `+ Резервирай в ${hhmm(A.hour)}`;
+    }
+
+    /* List */
+    const q = A.q.toLowerCase(), qd = A.q.replace(/\D/g, '');
+    const rows = A.list.filter(b =>
+      (A.tab === 'all' || (A.tab === 'active' ? ACTIVE.includes(b.status) : A.tab === 'off' ? !ACTIVE.includes(b.status) : b.status === A.tab)) &&
+      (!A.table || b.table === A.table) &&
+      (!q || b.name.toLowerCase().includes(q) || (qd && b.phone.replace(/\D/g, '').includes(qd))));
+    let html = '', lastHour = null;
+    rows.forEach(b => {
+      if (b.hour !== lastHour) { html += `<div class="hour-h num">${hhmm(b.hour)}</div>`; lastHour = b.hour; }
+      const t = byId[b.table];
+      const tel = b.phone.replace(/[^\d+]/g, '');
+      const acts = {
+        pending: `<button type="button" class="go" data-act="confirmed">Потвърди</button>${CANCEL}`,
+        confirmed: `<button type="button" class="ok" data-act="seated">Дошли</button><button type="button" class="no" data-act="noshow">Не дойдоха</button>${CANCEL}`,
+        seated: `<button type="button" data-act="confirmed">Не са дошли</button>${CANCEL}`,
+        cancelled: `<button type="button" data-act="confirmed">Върни</button>`,
+        noshow: `<button type="button" data-act="seated">Дойдоха</button>`,
+      }[b.status];
+      const small = t && t.seats < b.guests ? ` · <span style="color:var(--st-noshow)">масата е за ${t.seats}</span>` : '';
+      html += `<article class="res st-${b.status}${A.fresh?.has(b.id) ? ' fresh' : ''}" data-id="${b.id}">
+        <div class="r-tbl"><b>${t ? t.id : '—'}</b><small>${t ? (t.booth ? 'сепаре' : ZONES[t.zone].toLowerCase()) : 'без маса'}</small></div>
+        <div class="r-who"><strong>${esc(b.name)}</strong><span class="pill">${STATUS_NAME(b)}</span></div>
+        <div class="r-meta"><span class="num">${hhmm(b.hour)} · ${people(b.guests)}${small}</span>${b.phone ? `<a href="tel:${esc(tel)}" class="num">${esc(b.phone)}</a>` : ''}<span>${b.source === 'web' ? 'от сайта' : 'от персонала'}</span>${b.note ? `<span class="r-note">${esc(b.note)}</span>` : ''}</div>
+        <div class="r-act">${acts}<button type="button" data-act="edit">Промени</button></div>
+      </article>`;
+    });
+    $('#list').innerHTML = html || `<p class="empty">${A.list.length ? 'Няма резервации по този избор.' : 'Няма резервации за този ден.'}</p>`;
+  }
+
+  /* ---------- Loading, and noticing new requests ---------- */
+  const toast = $('#toast');
+  let toastTimer;
+  function notify(html, action, kind = '') {
+    toast.innerHTML = html; toast.hidden = false;
+    toast.className = 'toast' + (kind ? ' ' + kind : '');
+    if (action) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = action.label;
+      b.addEventListener('click', async () => { b.disabled = true; try { await action.run(); hideToast(); } catch (err) { notify(esc(err.message)); } });
+      toast.append(b);
+    }
+    requestAnimationFrame(() => toast.classList.add('on'));
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, action ? 10000 : 7000);
+  }
+  function hideToast() { toast.classList.remove('on'); setTimeout(() => { if (!toast.classList.contains('on')) toast.hidden = true; }, 300); }
+
+  /* ---------- Cancelling ----------
+     It frees the table, so it takes two taps (the first asks "Сигурни?"), and the toast offers to undo it. */
+  const CANCEL = '<button type="button" class="no" data-act="cancel">Анулирай</button>';
+  function confirmTap(btn) {
+    if (btn.dataset.armed) return true;
+    const label = btn.textContent;
+    btn.dataset.armed = '1'; btn.classList.add('armed'); btn.textContent = 'Сигурни? Анулирай';
+    setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.classList.remove('armed'); btn.textContent = label; } }, 4000);
+    return false;
+  }
+  async function cancelRes(b) {
+    const before = b.status;
+    await api(`/reservations/${b.id}`, { method: 'PATCH', body: JSON.stringify({ status: 'cancelled' }) });
+    await load();
+    notify(`<span><b>Анулирана</b><br>№ ${b.id} · ${esc(b.name)}, ${hhmm(b.hour)}${b.table ? `, маса ${b.table}` : ''}</span>`,
+      { label: 'Върни', run: async () => { await api(`/reservations/${b.id}`, { method: 'PATCH', body: JSON.stringify({ status: before }) }); await load(); } }, 'gone');
+  }
+  async function load() {
+    const day = iso(A.day);
+    const j = await api(`/reservations?day=${day}`);
+    if (j.day !== iso(A.day)) return;
+    const ids = new Set(j.reservations.map(b => b.id));
+    A.fresh = new Set();
+    if (A.seen && A.seenDay === day) {
+      const added = j.reservations.filter(b => !A.seen.has(b.id));
+      added.forEach(b => A.fresh.add(b.id));
+      const web = added.filter(b => b.source === 'web');
+      if (web.length) notify(`<span><b>Нова заявка</b><br>${esc(web[0].name)}, ${hhmm(web[0].hour)}, ${web[0].table ? `маса ${web[0].table}` : 'без маса'}, ${people(web[0].guests)}${web.length > 1 ? ` и още ${web.length - 1}` : ''}</span>`);
+    }
+    if (A.seenDay === day) {
+      const gone = j.reservations.filter(b => b.guest_cancelled && b.status === 'cancelled' && A.list.some(o => o.id === b.id && o.status !== 'cancelled'));
+      if (gone.length) notify(`<span><b>Гостът отказа</b><br>№ ${gone[0].id} · ${esc(gone[0].name)}, ${hhmm(gone[0].hour)}${gone[0].table ? `, маса ${gone[0].table}` : ''}</span>`, null, 'gone');
+    }
+    A.seen = ids; A.seenDay = day;
+    A.list = j.reservations; A.waiting = j.pending_upcoming; A.closures = j.closures || [];
+    $('#updated').textContent = `Обновено в ${new Date().toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' })}`;
+    render();
+  }
+  let poll;
+  const stopPolling = () => clearInterval(poll);
+  function startPolling() { stopPolling(); poll = setInterval(() => { if (!document.hidden) load().catch(() => {}); }, 20000); }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('#app').hidden) load().catch(() => {}); });
+
+  /* Bring the chosen hour into view in the scrolling row of hours */
+  const centerHour = () => { const b = hoursBox.querySelector('[aria-pressed="true"]'); if (b) hoursBox.scrollLeft = b.offsetLeft - (hoursBox.clientWidth - b.offsetWidth) / 2; };
+  async function setDay(d) {
+    A.day = d; A.table = null; A.list = []; A.closures = []; A.seen = null; A.seenDay = null;
+    if (isToday()) A.hour = nowHour();
+    render(); centerHour();
+    await load().catch(err => notify(esc(err.message)));
+  }
+  $('#prevDay').addEventListener('click', () => setDay(addDays(A.day, -1)));
+  $('#nextDay').addEventListener('click', () => setDay(addDays(A.day, 1)));
+  $('#todayBtn').addEventListener('click', () => setDay(today()));
+  $('#dayInput').addEventListener('change', e => { if (e.target.value) setDay(fromIso(e.target.value)); });
+  $('#waiting').addEventListener('click', () => { A.tab = 'pending'; render(); $('#list').scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+
+  /* ---------- List actions ---------- */
+  $('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) { A.tab = b.dataset.tab; render(); } });
+  $('#q').addEventListener('input', e => { A.q = e.target.value.trim(); render(); });
+  $('#list').addEventListener('click', async e => {
+    const btn = e.target.closest('[data-act]');
+    if (!btn) return;
+    const id = +btn.closest('.res').dataset.id, b = A.list.find(x => x.id === id);
+    if (btn.dataset.act === 'edit') return openEdit(b);
+    if (btn.dataset.act === 'cancel') {
+      if (!confirmTap(btn)) return;
+      btn.disabled = true;
+      try { await cancelRes(b); } catch (err) { notify(esc(err.message)); btn.disabled = false; }
+      return;
+    }
+    btn.disabled = true;
+    try { await api(`/reservations/${id}`, { method: 'PATCH', body: JSON.stringify({ status: btn.dataset.act }) }); await load(); }
+    catch (err) { notify(esc(err.message)); btn.disabled = false; }
+  });
+
+  /* ---------- Plan: hover for details, click to filter by table ---------- */
+  const wrap = $('#planWrap'), tip = $('#tip');
+  function showTip(g) {
+    const t = byId[g.dataset.id], day = A.list.filter(b => b.table === t.id && ACTIVE.includes(b.status));
+    tip.innerHTML = `<b>${t.booth ? 'Сепаре' : 'Маса'} ${t.id}</b><span>${Floor.describe(t, floor)}</span>`
+      + (day.length ? `<ul>${day.map(b => `<li><i class="num">${hhmm(b.hour)}</i>${esc(b.name)}, ${b.guests} · ${STATUS[b.status].name.toLowerCase()}</li>`).join('')}</ul>` : '<em>Свободна през деня</em>');
+    const r = g.getBoundingClientRect(), w = wrap.getBoundingClientRect();
+    const top = r.top - w.top, below = top < 120;
+    tip.style.left = `${Math.min(Math.max(r.left - w.left + r.width / 2, 120), w.width - 120) + wrap.scrollLeft}px`;
+    tip.style.top = `${below ? top + r.height : top}px`;
+    tip.classList.toggle('below', below);
+    tip.hidden = false;
+    requestAnimationFrame(() => tip.classList.add('on'));
+  }
+  const hideTip = () => { tip.classList.remove('on'); tip.hidden = true; };
+  layer.addEventListener('pointerover', e => { const g = e.target.closest('.tbl'); if (g && e.pointerType === 'mouse') showTip(g); });
+  layer.addEventListener('pointerout', e => { if (!e.relatedTarget || !e.relatedTarget.closest || e.relatedTarget.closest('.tbl') !== e.target.closest('.tbl')) hideTip(); });
+  wrap.addEventListener('scroll', hideTip, { passive: true });
+  const pickTable = id => { A.table = A.table === id ? null : id; A.tab = A.table ? 'all' : 'active'; render(); };
+  layer.addEventListener('click', e => { const g = e.target.closest('.tbl'); if (g) pickTable(+g.dataset.id); });
+  layer.addEventListener('keydown', e => { const g = e.target.closest('.tbl'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pickTable(+g.dataset.id); } });
+  $('#tfilterX').addEventListener('click', () => pickTable(A.table));
+  $('#bookTable').addEventListener('click', () => openEdit(null, { table: A.table }));
+
+  /* ---------- New / edit dialog ---------- */
+  const dlg = $('#edit'), ef = $('#editForm'), enote = $('#editNote');
+  for (let h = floor.open; h <= floor.last; h++) ef.hour.add(new Option(hhmm(h), h));
+  Object.entries(STATUS).forEach(([k, s]) => ef.status.add(new Option(s.name, k)));
+  let editing = null;
+  function fillTables() {
+    const keep = ef.table.value, h = +ef.hour.value, sameDay = ef.day.value === iso(A.day);
+    ef.table.innerHTML = '';
+    ef.table.add(new Option('Без маса (съединени маси)', ''));
+    TABLES.forEach(t => {
+      const c = sameDay && clashing(t.id, h, editing?.id), held = sameDay && isHeld(t);
+      ef.table.add(new Option(`${t.id} · ${t.seats} места · ${ZONES[t.zone]}${t.booth ? ' · сепаре' : ''}${c ? ` · заета (${c.name}, ${hhmm(c.hour)})` : held ? ' · блокирана' : ''}`, t.id));
+    });
+    ef.table.value = keep;
+  }
+  function openEdit(b, preset = {}) {
+    editing = b;
+    $('#editTitle').textContent = b ? `Резервация № ${b.id}` : 'Нова резервация';
+    $('#editSub').textContent = b ? `${b.source === 'web' ? 'Направена от сайта' : 'Въведена от персонала'} · ${b.created_at.replace('T', ' ').slice(0, 16)}` : 'По телефона или на място.';
+    const v = b || { day: iso(A.day), hour: A.hour, guests: 2, table: preset.table ?? '', name: '', phone: '', note: '', status: 'confirmed' };
+    /* A booking made before the hours changed may sit outside them; keep its hour selectable */
+    [...ef.hour.options].forEach(o => { if (o.dataset.extra) o.remove(); });
+    if (v.hour > floor.last) { const o = new Option(hhmm(v.hour), v.hour); o.dataset.extra = '1'; ef.hour.add(o); }
+    ef.day.value = v.day; ef.hour.value = v.hour; ef.guests.value = v.guests;
+    ef.name.value = v.name; ef.phone.value = v.phone; ef.note.value = v.note; ef.status.value = v.status;
+    fillTables(); ef.table.value = v.table ?? '';
+    enote.className = 'note'; enote.textContent = '';
+    const drop = $('#editDrop');
+    drop.hidden = !(b && ACTIVE.includes(b.status));
+    delete drop.dataset.armed; drop.classList.remove('armed'); drop.textContent = 'Анулирай резервацията';
+    dlg.showModal();
+    (b ? ef.status : ef.name).focus();
+  }
+  ef.hour.addEventListener('change', fillTables);
+  ef.day.addEventListener('change', fillTables);
+  ef.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = { day: ef.day.value, hour: +ef.hour.value, guests: +ef.guests.value, table: ef.table.value ? +ef.table.value : null,
+                   name: ef.name.value.trim(), phone: ef.phone.value.trim(), note: ef.note.value.trim(), status: ef.status.value };
+    const warn = t => { enote.className = 'note warn'; enote.textContent = t; };
+    if (!data.day) return warn('Изберете ден.');
+    if (!data.name) { ef.name.focus(); return warn('Напишете име.'); }
+    if (!(data.guests >= 1)) { ef.guests.focus(); return warn('Напишете брой гости.'); }
+    const btn = ef.querySelector('[type="submit"]'); btn.disabled = true;
+    try {
+      await api(editing ? `/reservations/${editing.id}` : '/reservations', { method: editing ? 'PATCH' : 'POST', body: JSON.stringify(data) });
+      dlg.close();
+      if (data.day !== iso(A.day)) await setDay(fromIso(data.day)); else await load();
+    } catch (err) { warn(err.message); }
+    finally { btn.disabled = false; }
+  });
+  $('#editClose').addEventListener('click', () => dlg.close());
+  $('#editCancel').addEventListener('click', () => dlg.close());
+  $('#editDrop').addEventListener('click', async e => {
+    const btn = e.currentTarget;
+    if (!confirmTap(btn)) return;
+    btn.disabled = true;
+    try { await cancelRes(editing); dlg.close(); }
+    catch (err) { enote.className = 'note warn'; enote.textContent = err.message; }
+    finally { btn.disabled = false; }
+  });
+  $('#newBtn').addEventListener('click', () => openEdit(null, { table: A.table ?? '' }));
+
+  /* ---------- Closing the day or blocking tables (private parties) ---------- */
+  const sd = $('#shutDlg'), sf = $('#shutForm'), snote = $('#shutNote'), spick = $('#shutPick');
+  let picked = new Set();
+  function paintPick() {
+    const some = sf.what.value === 'some';
+    spick.hidden = !some;
+    if (!some) return;
+    spick.innerHTML = Object.entries(ZONES).map(([z, name]) => {
+      const ts = TABLES.filter(t => t.zone === z), all = ts.every(t => picked.has(t.id));
+      return `<section class="pick-zone"><header>${name}<button type="button" data-zone="${z}">${all ? 'Махни залата' : 'Цялата зала'}</button></header>
+        <div class="chips">${ts.map(t => `<button type="button" data-t="${t.id}" aria-pressed="${picked.has(t.id)}" aria-label="${t.booth ? 'Сепаре' : 'Маса'} ${t.id}">${t.id}</button>`).join('')}</div></section>`;
+    }).join('');
+  }
+  function shutWarn() {
+    /* Bookings already on the closed tables stay; say how many, so someone calls them */
+    const hit = A.list.filter(b => ACTIVE.includes(b.status) && (sf.what.value === 'all' || picked.has(b.table)));
+    const n = hit.length, what = sf.what.value === 'all' ? 'деня' : 'тези маси';
+    snote.className = 'note' + (n ? ' warn' : '');
+    snote.textContent = !n ? '' : n === 1
+      ? `Има 1 резервация за ${what}. Тя остава; обадете се на госта, ако трябва да я анулирате.`
+      : `Има ${n} резервации за ${what}. Те остават; обадете се на гостите, ако трябва да ги анулирате.`;
+  }
+  $('#shutBtn').addEventListener('click', () => {
+    picked = new Set(A.table ? [A.table] : []);
+    sf.reset(); if (A.table) sf.what.value = 'some';
+    $('#shutTitle').textContent = `Затвори ${longDay(A.day).toLowerCase()}`;
+    paintPick(); shutWarn(); sd.showModal();
+  });
+  sf.addEventListener('change', e => { if (e.target.name === 'what') { paintPick(); shutWarn(); } });
+  spick.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.t) { const id = +b.dataset.t; picked.has(id) ? picked.delete(id) : picked.add(id); }
+    else {
+      const ts = TABLES.filter(t => t.zone === b.dataset.zone), all = ts.every(t => picked.has(t.id));
+      ts.forEach(t => all ? picked.delete(t.id) : picked.add(t.id));
+    }
+    paintPick(); shutWarn();
+  });
+  sd.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => sd.close()));
+  sf.addEventListener('submit', async e => {
+    e.preventDefault();
+    const some = sf.what.value === 'some';
+    if (some && !picked.size) { snote.className = 'note warn'; snote.textContent = 'Изберете поне една маса.'; return; }
+    const btn = sf.querySelector('[type="submit"]'); btn.disabled = true;
+    try {
+      await api('/closures', { method: 'POST', body: JSON.stringify({ day: iso(A.day), tables: some ? [...picked] : null, reason: sf.reason.value.trim() }) });
+      sd.close(); await load();
+    } catch (err) { snote.className = 'note warn'; snote.textContent = err.message; }
+    finally { btn.disabled = false; }
+  });
+  $('#shut').addEventListener('click', async e => {
+    const b = e.target.closest('[data-open]'); if (!b) return;
+    b.disabled = true;
+    try { await api(`/closures/${b.dataset.open}`, { method: 'DELETE' }); await load(); }
+    catch (err) { notify(esc(err.message)); b.disabled = false; }
+  });
+
+  /* ---------- Start ---------- */
+  async function start() {
+    show('app');
+    render(); centerHour();
+    try { await load(); } catch (err) { if (!$('#app').hidden) notify(esc(err.message)); return; }
+    startPolling();
+  }
+  try {
+    const r = await fetch('/api/admin/me', { cache: 'no-store' });
+    if (r.status === 401) { show('login'); loginForm.password.focus(); }
+    else if (r.ok && (r.headers.get('Content-Type') || '').includes('json')) start();
+    else show('offline');
+  } catch { show('offline'); }
+})();
+</script>
+</body>
+</html>

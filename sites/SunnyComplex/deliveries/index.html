@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script src="../assets/serve.js" data-route="/deliveries/"></script>
+<script src="../assets/demo-api.js"></script>
+<meta name="robots" content="noindex, nofollow">
+<title>Доставки – Sunny Complex</title>
+<meta name="theme-color" content="#0c0b0a">
+<link rel="icon" href="../assets/logo-sun.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0c0b0a;
+    --bg-2: #13110f;
+    --bg-3: #1a1714;
+    --gold: #f2b544;
+    --gold-hi: #ffdc93;
+    --text: #ecd8aa;
+    --text-dim: #b8a273;
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    --font-text: "Onest", system-ui, sans-serif;
+    --margin: clamp(14px, 2.4vw, 32px);
+    --radius: 22px;
+
+    --surface: linear-gradient(180deg, #221f1a, #171512);
+    --raised: inset 0 1px 0 rgba(255,228,170,.08), inset 0 -1px 0 rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.6), 0 16px 32px -16px rgba(0,0,0,.95);
+    --raised-hover: inset 0 1px 0 rgba(255,228,170,.12), inset 0 -1px 0 rgba(0,0,0,.5), 0 2px 4px rgba(0,0,0,.6), 0 26px 44px -18px rgba(0,0,0,1);
+    --pressed: inset 0 3px 8px rgba(0,0,0,.75), inset 0 -1px 0 rgba(255,228,170,.06);
+    --well: inset 0 2px 10px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,228,170,.07);
+    --gold-metal: linear-gradient(180deg, #ffe4a6 0%, #f6c05a 40%, #d99a2b 100%);
+    --gold-press: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -2px 0 rgba(120,70,0,.35), 0 10px 20px -10px rgba(242,181,68,.6);
+    --ease: cubic-bezier(.25, .1, .25, 1);
+
+    /* Order states */
+    --st-new: #ff9a3c;
+    --st-preparing: #f2b544;
+    --st-on_way: #8fd6ff;
+    --st-delivered: #7fd18b;
+    --st-cancelled: #8a7d66;
+    --late: #e0766b;
+  }
+  * { box-sizing: border-box; touch-action: pan-x pan-y; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; min-height: 100svh; background: var(--bg); color: var(--text); font: 400 1rem/1.5 var(--font-text); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; color: var(--gold); margin: 0; line-height: 1.05; font-feature-settings: "locl" 0; }
+  p { margin: 0; }
+  button, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 8px; }
+  .frame { padding-inline: var(--margin); max-width: 1700px; margin-inline: auto; }
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 13px 22px; border: 0; border-radius: 999px; cursor: pointer; font-weight: 600; line-height: 1; text-decoration: none; color: #1d1404; background: var(--gold-metal); box-shadow: inset 0 1px 0 rgba(255,255,255,.65), inset 0 -2px 0 rgba(120,70,0,.35), 0 1px 2px rgba(0,0,0,.5), 0 10px 22px -12px rgba(242,181,68,.6); white-space: nowrap; }
+  .btn:hover { filter: brightness(1.06); }
+  .btn:active { box-shadow: inset 0 3px 7px rgba(90,50,0,.45); }
+  .btn:disabled { opacity: .5; cursor: progress; }
+  .btn.dark { color: var(--gold); background: var(--surface); box-shadow: var(--raised); }
+  .btn.dark:hover { box-shadow: var(--raised-hover); filter: none; }
+  .btn.dark:active { box-shadow: var(--pressed); }
+  .btn svg { width: 17px; height: 17px; flex: none; }
+  .round { width: 44px; height: 44px; flex: none; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; background: var(--surface); box-shadow: var(--raised); color: var(--gold); }
+  .round:active { box-shadow: var(--pressed); }
+  .round svg { width: 19px; height: 19px; }
+  .round[aria-pressed="false"] { color: #6d6150; }
+  .card { border-radius: calc(var(--radius) + 4px); background: var(--bg-2); box-shadow: var(--raised); padding: clamp(16px, 1.8vw, 24px); }
+  .field { display: grid; gap: 6px; }
+  .field > span { font-size: .88rem; color: var(--text-dim); }
+  .field input { width: 100%; min-height: 48px; padding: 11px 14px; border: 0; border-radius: 13px; background: #0a0908; box-shadow: var(--well); color: var(--text); font-weight: 500; }
+  .field input:focus { outline: none; box-shadow: var(--well), 0 0 0 2px var(--gold); }
+  .note { min-height: 1.4em; font-size: .92rem; color: var(--gold-hi); }
+  .note.warn { color: var(--st-new); }
+
+  /* ---------- Login / not running ---------- */
+  .login, .offline { min-height: 100svh; display: grid; place-items: center; padding: 24px 16px; }
+  .login-card { width: min(420px, 100%); display: grid; gap: 18px; padding: clamp(24px, 5vw, 40px); }
+  .login-card img { width: 120px; height: auto; }
+  .login-card h1 { font-size: 2.4rem; }
+  .login-card p.lede { color: var(--text-dim); margin-top: -8px; }
+  .login-card .back { justify-self: center; color: var(--text-dim); font-size: .9rem; }
+  .offline .card { width: min(520px, 100%); display: grid; gap: 16px; padding: clamp(24px, 5vw, 40px); }
+  .offline h1 { font-size: 2.2rem; }
+  .offline ol { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+  .offline code { color: var(--gold); font-weight: 600; }
+  .offline .btn { justify-self: start; }
+
+  /* ---------- Top bar ---------- */
+  .abar { position: sticky; top: 0; z-index: 30; background: rgba(12,11,10,.97); box-shadow: 0 1px 0 rgba(255,228,170,.06); }
+  .abar .frame { display: flex; align-items: center; gap: 12px 18px; min-height: 72px; padding-block: 10px; flex-wrap: wrap; }
+  .mark { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--gold); font: 700 1.25rem/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; font-feature-settings: "locl" 0; }
+  .mark img { width: 38px; height: auto; }
+  .switch { display: flex; gap: 3px; padding: 4px; border-radius: 999px; background: #0a0908; box-shadow: var(--well); }
+  .switch a { padding: 8px 14px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .88rem; color: var(--text-dim); }
+  .switch a[aria-current="page"] { background: var(--surface); color: var(--gold); box-shadow: var(--raised); }
+  .daynav { display: flex; align-items: center; gap: 8px; margin-inline: auto; }
+  .daynav input { min-height: 44px; padding: 8px 12px; border: 0; border-radius: 12px; background: #0a0908; box-shadow: var(--well); color: var(--gold); font-weight: 600; }
+  .aright { display: flex; align-items: center; gap: 10px; }
+  .waiting { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(255,154,60,.12); box-shadow: inset 0 0 0 1px rgba(255,154,60,.45); color: var(--st-new); font-weight: 600; font-size: .9rem; white-space: nowrap; }
+  .waiting i { width: 8px; height: 8px; border-radius: 50%; background: var(--st-new); box-shadow: 0 0 0 4px rgba(255,154,60,.18); }
+
+  /* ---------- Day summary ---------- */
+  .day-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 26px 0 18px; }
+  .day-head h1 { font-size: clamp(2rem, 1.5rem + 2vw, 3rem); }
+  .day-head .upd { color: var(--text-dim); font-size: .88rem; }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .stat { padding: 16px 18px; border-radius: 20px; background: var(--bg-2); box-shadow: var(--raised); display: grid; gap: 2px; }
+  .stat b { font: 700 2.4rem/1 var(--font-display); color: var(--gold); font-feature-settings: "lnum" 1, "locl" 0; }
+  .stat span { color: var(--text-dim); font-size: .9rem; }
+
+  /* ---------- Couriers ---------- */
+  .couriers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+  .courier { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 4px 16px; align-items: center; padding: 16px 18px; border-radius: 20px; background: var(--bg-2); box-shadow: var(--raised); }
+  .courier .av { grid-column: 1; grid-row: 1 / span 2; font-feature-settings: "lnum" 1, "locl" 0; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #0a0908; box-shadow: var(--well); color: var(--gold); font: 600 1.3rem/1 var(--font-text); }
+  .courier.busy .av { box-shadow: var(--well), 0 0 0 2px var(--st-on_way); color: var(--st-on_way); }
+  .courier .nm { grid-column: 2; display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .courier .nm strong { font: 600 1.6rem/1.1 var(--font-display); font-feature-settings: "lnum" 1, "locl" 0; color: var(--gold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .courier .nm button { flex: none; width: 32px; height: 32px; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; background: none; color: var(--text-dim); }
+  .courier .nm button svg { width: 16px; height: 16px; }
+  .courier .nm input { min-width: 0; flex: 1; min-height: 40px; padding: 6px 12px; border: 0; border-radius: 10px; background: #0a0908; box-shadow: var(--well), 0 0 0 2px var(--gold); color: var(--text); font-weight: 600; }
+  .courier .state { grid-column: 2; font-size: .92rem; color: var(--text-dim); }
+  .courier .state b { color: var(--st-delivered); font-weight: 600; }
+  .courier.busy .state b { color: var(--st-on_way); }
+  .courier .cash { grid-column: 3; grid-row: 1 / span 2; text-align: right; font-size: .82rem; color: var(--text-dim); }
+  .courier .cash b { display: block; font: 700 1.5rem/1.1 var(--font-display); color: var(--gold); font-feature-settings: "lnum" 1, "locl" 0; }
+
+  /* ---------- Board ---------- */
+  .tabs { display: none; gap: 4px; padding: 5px; margin-top: 18px; border-radius: 16px; background: #0a0908; box-shadow: var(--well); overflow-x: auto; scrollbar-width: none; }
+  .tabs button { flex: 1 0 auto; padding: 10px 12px; border: 0; border-radius: 11px; cursor: pointer; background: transparent; color: var(--text-dim); font-weight: 600; font-size: .88rem; white-space: nowrap; }
+  .tabs button b { margin-left: 4px; opacity: .75; }
+  .tabs button[aria-selected="true"] { background: var(--surface); color: var(--gold); box-shadow: var(--raised); }
+  .board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 18px; align-items: start; }
+  .col { min-width: 0; padding: 12px; border-radius: 22px; background: var(--bg-2); box-shadow: var(--raised); }
+  .col-h { display: flex; align-items: center; gap: 10px; padding: 4px 6px 12px; }
+  .col-h i { width: 10px; height: 10px; border-radius: 50%; background: var(--st); }
+  .col-h h2 { font-size: 1.6rem; }
+  .col-h b { margin-left: auto; min-width: 28px; height: 28px; padding: 0 8px; border-radius: 999px; display: grid; place-items: center; background: #0a0908; box-shadow: var(--well); color: var(--gold); font-size: .85rem; }
+  .col[data-col="new"] { --st: var(--st-new); }
+  .col[data-col="preparing"] { --st: var(--st-preparing); }
+  .col[data-col="on_way"] { --st: var(--st-on_way); }
+  .col[data-col="delivered"] { --st: var(--st-delivered); }
+  .col-list { display: grid; gap: 10px; }
+  .col-empty { padding: 22px 10px; text-align: center; color: #7d6f57; font-size: .9rem; border-radius: 16px; background: #0a0908; box-shadow: var(--well); }
+
+  .ord { --st: var(--st-new); display: grid; gap: 9px; padding: 14px; border-radius: 16px; background: var(--bg-3); box-shadow: inset 0 1px 0 rgba(255,228,170,.05), inset 3px 0 0 var(--st); }
+  .ord.st-preparing { --st: var(--st-preparing); }
+  .ord.st-on_way { --st: var(--st-on_way); }
+  .ord.st-delivered { --st: var(--st-delivered); }
+  .ord.st-cancelled { --st: var(--st-cancelled); opacity: .62; }
+  .ord.fresh { box-shadow: inset 0 1px 0 rgba(255,228,170,.05), inset 3px 0 0 var(--st), 0 0 0 1.5px rgba(255,154,60,.7); }
+  .ord-h { display: flex; align-items: baseline; gap: 8px 10px; flex-wrap: wrap; }
+  .ord-h b { font: 700 1.5rem/1 var(--font-display); color: var(--gold); font-feature-settings: "lnum" 1, "locl" 0; }
+  .ord-h .age { color: var(--text-dim); font-size: .84rem; }
+  .ord-h .age.late { color: var(--late); font-weight: 600; }
+  .ord-h .when { margin-left: auto; padding: 3px 9px; border-radius: 999px; font-size: .78rem; font-weight: 600; color: #1d1404; background: var(--gold-metal); }
+  .who { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+  .who strong { font-weight: 600; overflow-wrap: anywhere; }
+  .who a { color: var(--gold-hi); text-decoration: none; font-weight: 500; }
+  .addr { display: block; padding: 8px 10px; border-radius: 10px; background: #0a0908; box-shadow: var(--well); text-decoration: none; font-size: .92rem; line-height: 1.4; overflow-wrap: anywhere; }
+  .addr small { display: block; color: var(--text-dim); font-size: .78rem; margin-top: 2px; }
+  .addr:hover { color: var(--gold-hi); }
+  .items { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; font-size: .9rem; }
+  .items li { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 6px; }
+  .items li b { color: var(--gold); font-variant-numeric: lining-nums; }
+  .items li span { color: var(--text-dim); font-variant-numeric: lining-nums tabular-nums; }
+  .ord .memo { font-size: .9rem; padding: 6px 10px; border-radius: 10px; background: rgba(242,181,68,.07); overflow-wrap: anywhere; }
+  .tot { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding-top: 8px; border-top: 1px solid rgba(255,228,170,.07); }
+  .tot span { font-size: .86rem; color: var(--text-dim); }
+  .tot span.card-pay { color: var(--st-on_way); }
+  .tot b { font: 700 1.5rem/1 var(--font-display); color: var(--gold); font-feature-settings: "lnum" 1, "locl" 0; }
+  .by { font-size: .86rem; color: var(--text-dim); }
+  .by b { color: var(--text); font-weight: 600; }
+  .acts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .acts .lbl { flex-basis: 100%; font-size: .8rem; color: var(--text-dim); }
+  .acts button { flex: 1 1 auto; padding: 10px 12px; border: 0; border-radius: 11px; cursor: pointer; background: var(--surface); box-shadow: var(--raised); color: var(--text); font-size: .86rem; font-weight: 600; white-space: nowrap; }
+  .acts button:active { box-shadow: var(--pressed); }
+  .acts button.go { background: var(--gold-metal); color: #1d1404; box-shadow: var(--gold-press); }
+  .acts button.ok { color: var(--st-delivered); }
+  .acts button.no { color: var(--late); flex: 0 1 auto; }
+  .acts button.armed { background: #3a1a16; color: #ffb3a8; box-shadow: inset 0 0 0 1.5px var(--late); }
+
+  .gone { margin-top: 18px; }
+  .gone summary { cursor: pointer; color: var(--text-dim); font-weight: 600; padding: 8px 4px; }
+  .gone .col-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-top: 10px; }
+
+  .toast { position: fixed; right: 16px; bottom: 16px; z-index: 60; max-width: min(400px, calc(100vw - 32px)); display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 18px; background: #241f19; box-shadow: inset 0 1px 0 rgba(255,228,170,.1), inset 3px 0 0 var(--st-new), 0 24px 50px -12px #000; opacity: 0; transition: opacity .3s var(--ease); }
+  .toast.on { opacity: 1; }
+  .toast b { color: var(--st-new); }
+  .toast button { margin-left: auto; flex: none; padding: 10px 16px; border: 0; border-radius: 999px; cursor: pointer; background: var(--gold-metal); color: #1d1404; font-weight: 600; box-shadow: var(--gold-press); }
+
+  @media (max-width: 1250px) {
+    .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    .abar { position: static; }
+    .abar .frame { gap: 10px; }
+    .mark { font-size: 1rem; }
+    .mark img { width: 30px; }
+    .daynav { order: 3; width: 100%; margin: 0; }
+    .daynav input { flex: 1; min-width: 0; }
+    .daynav .btn { padding: 12px 14px; }
+    .aright { margin-left: auto; }
+    .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat b { font-size: 2rem; }
+    .couriers { grid-template-columns: 1fr; }
+    .courier { grid-template-columns: 48px minmax(0, 1fr); }
+    .courier .av { width: 48px; height: 48px; }
+    .courier .cash { grid-column: 1 / -1; grid-row: auto; display: flex; align-items: baseline; justify-content: space-between; padding-top: 8px; border-top: 1px solid rgba(255,228,170,.07); text-align: left; }
+    .tabs { display: flex; }
+    .board { grid-template-columns: minmax(0, 1fr); }
+    .board .col:not(.shown) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4M9 16l-4-4 4-4M5 12h11"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16ZM10 20.5a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4ZM13.5 6.5l4 4"/></symbol>
+  </defs>
+</svg>
+
+<section class="offline" id="offline" hidden>
+  <div class="card">
+    <h1>Сървърът не е пуснат</h1>
+    <p id="offlineWhy">Поръчките се пазят на сървъра на сайта, а той сега не отговаря.</p>
+    <ol>
+      <li>Отворете папката на сайта и щракнете два пъти върху <code>start.bat</code>.</li>
+      <li>Оставете черния прозорец отворен, докато работите.</li>
+      <li>Доставките са на адрес <code>http://localhost:5173/deliveries/</code>.</li>
+    </ol>
+    <a class="btn" href="http://localhost:5173/deliveries/">Отвори доставките</a>
+  </div>
+</section>
+
+<section class="login" id="login" hidden>
+  <form class="card login-card" id="loginForm" novalidate>
+    <img src="../assets/logo.png" alt="Sunny Complex" width="408" height="324">
+    <h1>Вход за персонала</h1>
+    <p class="lede">Поръчки за доставка и доставчици.</p>
+    <label class="field"><span>Парола</span><input type="password" name="password" autocomplete="current-password" required></label>
+    <p class="note warn" id="loginNote" aria-live="polite"></p>
+    <button type="submit" class="btn">Вход</button>
+    <a href="../" class="back">Към сайта</a>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header class="abar">
+    <div class="frame">
+      <a href="../" class="mark"><img src="../assets/logo-sun.png" alt="" width="228" height="130">Sunny Complex</a>
+      <nav class="switch" aria-label="Раздели за персонала">
+        <a href="../admin/">Резервации</a>
+        <a href="./" aria-current="page">Доставки</a>
+      </nav>
+      <div class="daynav">
+        <button type="button" class="round" id="prevDay" aria-label="Предишен ден"><svg aria-hidden="true"><use href="#i-left"/></svg></button>
+        <input type="date" id="dayInput" aria-label="Ден">
+        <button type="button" class="round" id="nextDay" aria-label="Следващ ден"><svg aria-hidden="true"><use href="#i-right"/></svg></button>
+        <button type="button" class="btn dark" id="todayBtn">Днес</button>
+      </div>
+      <div class="aright">
+        <span class="waiting" id="waiting" hidden><i aria-hidden="true"></i><span></span></span>
+        <button type="button" class="round" id="sound" aria-pressed="true" aria-label="Звук при нова поръчка" title="Звук при нова поръчка"><svg aria-hidden="true"><use href="#i-bell"/></svg></button>
+        <button type="button" class="round" id="logout" aria-label="Изход" title="Изход"><svg aria-hidden="true"><use href="#i-out"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="frame">
+    <div class="day-head">
+      <h1 id="dayTitle"></h1>
+      <span class="upd" id="updated" aria-live="polite"></span>
+    </div>
+
+    <section class="stats" aria-label="Денят накратко">
+      <div class="stat"><b class="num" id="stCount">0</b><span>поръчки</span></div>
+      <div class="stat"><b class="num" id="stSum">0</b><span>оборот, €</span></div>
+      <div class="stat"><b class="num" id="stDone">0</b><span>доставени</span></div>
+      <div class="stat"><b class="num" id="stAvg">—</b><span>средно до вратата, мин</span></div>
+    </section>
+
+    <section class="couriers" id="couriers" aria-label="Доставчици"></section>
+
+    <div class="tabs" id="tabs" role="tablist" aria-label="Етап"></div>
+    <div class="board" id="board"></div>
+
+    <details class="gone" id="gone" hidden>
+      <summary></summary>
+      <div class="col-list" id="goneList"></div>
+    </details>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(async () => {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  const STAGES = [
+    { id: 'new', name: 'Нови' },
+    { id: 'preparing', name: 'В кухнята' },
+    { id: 'on_way', name: 'На път' },
+    { id: 'delivered', name: 'Доставени' },
+  ];
+  const ACTIVE = ['new', 'preparing', 'on_way'];
+  const LATE_NEW = 5, LATE_TOTAL = 60;  /* minutes: a new order unanswered, or an order not delivered yet */
+
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const fromIso = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  const WD_LONG = ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'];
+  const MON_LONG = ['януари', 'февруари', 'март', 'април', 'май', 'юни', 'юли', 'август', 'септември', 'октомври', 'ноември', 'декември'];
+  const longDay = d => `${WD_LONG[d.getDay()]}, ${d.getDate()} ${MON_LONG[d.getMonth()]}`;
+  const money = c => (c / 100).toFixed(2).replace('.', ',');
+  const clock = s => s ? s.slice(11, 16).replace(/^0/, '') : '';
+  const mins = (a, b = new Date()) => Math.max(0, Math.round((b - new Date(a)) / 60000));
+  const ordersWord = n => n === 1 ? 'поръчка' : 'поръчки';
+
+  /* ---------- Server ---------- */
+  const show = id => ['login', 'app', 'offline'].forEach(x => { $('#' + x).hidden = x !== id; });
+  async function api(path, opts = {}) {
+    const r = await fetch('/api/admin' + path, { ...opts, cache: 'no-store', headers: opts.body ? { 'Content-Type': 'application/json' } : undefined });
+    if (r.status === 401 && path !== '/login') { stopPolling(); show('login'); throw new Error('Влезте отново.'); }
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'Нещо се обърка.');
+    return j;
+  }
+
+  /* ---------- Login ---------- */
+  const loginForm = $('#loginForm');
+  loginForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = loginForm.querySelector('button'), note = $('#loginNote');
+    note.textContent = ''; btn.disabled = true;
+    try { await api('/login', { method: 'POST', body: JSON.stringify({ password: loginForm.password.value }) }); loginForm.reset(); start(); }
+    catch (err) { note.textContent = err.message; loginForm.password.select(); }
+    finally { btn.disabled = false; }
+  });
+  $('#logout').addEventListener('click', async () => {
+    stopPolling();
+    try { await api('/logout', { method: 'POST' }); } catch {}
+    show('login'); loginForm.password.focus();
+  });
+
+  /* ---------- State ---------- */
+  const D = { day: null, today: null, orders: [], couriers: [], waiting: 0, tab: 'new', seen: null, seenDay: null, fresh: new Set(), renaming: null };
+  const courierName = id => (D.couriers.find(c => c.id === id) || {}).name || '—';
+
+  /* ---------- Sound for a new order (a short two-note chime, made in the browser) ---------- */
+  let soundOn = true;
+  try { soundOn = localStorage.getItem('sunny-sound') !== 'off'; } catch {}
+  let audio;
+  function chime() {
+    if (!soundOn) return;
+    try {
+      audio = audio || new AudioContext();
+      [[880, 0], [1320, .18]].forEach(([f, t]) => {
+        const o = audio.createOscillator(), g = audio.createGain();
+        o.frequency.value = f; o.type = 'sine';
+        g.gain.setValueAtTime(0, audio.currentTime + t);
+        g.gain.linearRampToValueAtTime(.25, audio.currentTime + t + .02);
+        g.gain.exponentialRampToValueAtTime(.001, audio.currentTime + t + .5);
+        o.connect(g).connect(audio.destination); o.start(audio.currentTime + t); o.stop(audio.currentTime + t + .55);
+      });
+    } catch {}
+  }
+  const soundBtn = $('#sound');
+  const paintSound = () => soundBtn.setAttribute('aria-pressed', String(soundOn));
+  soundBtn.addEventListener('click', () => {
+    soundOn = !soundOn; paintSound();
+    try { localStorage.setItem('sunny-sound', soundOn ? 'on' : 'off'); } catch {}
+    if (soundOn) chime();
+  });
+  paintSound();
+
+  /* ---------- Toast with an optional undo ---------- */
+  const toast = $('#toast');
+  let toastTimer;
+  function notify(html, action) {
+    toast.innerHTML = html; toast.hidden = false;
+    if (action) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = action.label;
+      b.addEventListener('click', async () => { b.disabled = true; try { await action.run(); hideToast(); } catch (err) { notify(esc(err.message)); } });
+      toast.append(b);
+    }
+    requestAnimationFrame(() => toast.classList.add('on'));
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, action ? 10000 : 7000);
+  }
+  function hideToast() { toast.classList.remove('on'); setTimeout(() => { if (!toast.classList.contains('on')) toast.hidden = true; }, 300); }
+
+  /* ---------- Render ---------- */
+  function orderCard(o) {
+    const age = mins(o.created_at), total = o.delivered_at ? mins(o.created_at, new Date(o.delivered_at)) : age;
+    const late = (o.status === 'new' && age >= LATE_NEW) || (ACTIVE.includes(o.status) && age >= LATE_TOTAL);
+    const where = [o.address, o.details].filter(Boolean).join(', ');
+    const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${o.address}, ${o.town}, България`)}`;
+    const tel = o.phone.replace(/[^\d+]/g, '');
+    const pick = D.couriers.map(c => `<button type="button" class="${o.status === 'preparing' ? 'go' : ''}" data-act="send" data-courier="${c.id}">${esc(c.name)}</button>`).join('');
+    const acts = {
+      new: `<button type="button" class="go" data-act="preparing">Приеми</button><button type="button" class="no" data-act="cancel">Откажи</button>`,
+      preparing: `<span class="lbl">Изпрати с:</span>${pick}<button type="button" class="no" data-act="cancel">Откажи</button>`,
+      on_way: `<button type="button" class="ok" data-act="delivered">Доставена</button><button type="button" data-act="preparing">Върни в кухнята</button><button type="button" class="no" data-act="cancel">Откажи</button>`,
+      delivered: `<button type="button" data-act="on_way">Не е доставена</button>`,
+      cancelled: `<button type="button" data-act="new">Върни</button>`,
+    }[o.status];
+    const by = o.status === 'on_way' ? `<p class="by">С <b>${esc(courierName(o.courier))}</b> от ${clock(o.sent_at)}${D.couriers.length > 1 ? ` · <a href="#" data-act="swap">смени</a>` : ''}</p>`
+      : o.status === 'delivered' ? `<p class="by">Доставена в ${clock(o.delivered_at)} от <b>${esc(courierName(o.courier))}</b>, за ${total} мин</p>` : '';
+    return `<article class="ord st-${o.status}${D.fresh.has(o.id) ? ' fresh' : ''}" data-id="${o.id}">
+      <div class="ord-h"><b>№ ${o.id}</b><span class="age${late ? ' late' : ''}">${clock(o.created_at)}${ACTIVE.includes(o.status) ? ` · преди ${age} мин` : ''}</span>${o.deliver_at !== 'asap' ? `<span class="when">за ${o.deliver_at.replace(/^0/, '')}</span>` : ''}</div>
+      <div class="who"><strong>${esc(o.name)}</strong><a href="tel:${esc(tel)}" class="num">${esc(o.phone)}</a></div>
+      <a class="addr" href="${maps}" target="_blank" rel="noopener">${esc(where)}<small>${esc(o.town)} · отвори картата</small></a>
+      <ul class="items">${o.items.map(it => `<li><b>${it.qty}×</b>${esc(it.name)}<span>${money(it.price * it.qty)}</span></li>`).join('')}</ul>
+      ${o.note ? `<p class="memo">${esc(o.note)}</p>` : ''}
+      <div class="tot"><span class="${o.payment === 'card' ? 'card-pay' : ''}">${o.payment === 'cash' ? 'В брой' : 'С карта'} · с доставка ${money(o.fee)}</span><b>${money(o.total)} €</b></div>
+      ${by}
+      <div class="acts">${acts}</div>
+    </article>`;
+  }
+
+  function render() {
+    const day = fromIso(D.day), isToday = D.day === D.today;
+    $('#dayTitle').textContent = (isToday ? 'Днес · ' : '') + longDay(day);
+    $('#dayInput').value = D.day;
+    const live = D.orders.filter(o => o.status !== 'cancelled');
+    const done = D.orders.filter(o => o.status === 'delivered');
+    $('#stCount').textContent = live.length;
+    $('#stSum').textContent = money(live.reduce((a, o) => a + o.total, 0));
+    $('#stDone').textContent = done.length;
+    $('#stAvg').textContent = done.length ? Math.round(done.reduce((a, o) => a + mins(o.created_at, new Date(o.delivered_at)), 0) / done.length) : '—';
+    const w = $('#waiting');
+    w.hidden = !D.waiting;
+    w.querySelector('span').textContent = `${D.waiting} ${D.waiting === 1 ? 'нова поръчка' : 'нови поръчки'}`;
+    document.title = (D.waiting ? `(${D.waiting}) ` : '') + 'Доставки – Sunny Complex';
+
+    /* Couriers: who is out, how much cash they carry from delivered cash orders */
+    $('#couriers').innerHTML = D.couriers.map(c => {
+      const out = D.orders.filter(o => o.courier === c.id && o.status === 'on_way');
+      const theirs = done.filter(o => o.courier === c.id);
+      const cash = theirs.filter(o => o.payment === 'cash').reduce((a, o) => a + o.total, 0);
+      const editing = D.renaming === c.id;
+      return `<div class="courier${out.length ? ' busy' : ''}" data-courier="${c.id}">
+        <span class="av" aria-hidden="true">${c.id}</span>
+        <div class="nm">${editing
+          ? `<input value="${esc(c.name)}" maxlength="40" aria-label="Име на доставчика" data-rename="${c.id}">`
+          : `<strong>${esc(c.name)}</strong><button type="button" data-edit="${c.id}" aria-label="Смени името" title="Смени името"><svg aria-hidden="true"><use href="#i-pen"/></svg></button>`}</div>
+        <p class="state">${out.length ? `<b>На път</b> с ${out.length} ${ordersWord(out.length)}: № ${out.map(o => o.id).join(', ')}` : '<b>Свободен</b>'} · ${theirs.length} доставени</p>
+        <p class="cash">в брой за отчет<b>${money(cash)} €</b></p>
+      </div>`;
+    }).join('');
+    const inp = document.querySelector('[data-rename]');
+    if (inp) { inp.focus(); inp.select(); }
+
+    /* Columns */
+    const by = id => D.orders.filter(o => o.status === id);
+    $('#tabs').innerHTML = STAGES.map(s => `<button type="button" role="tab" data-tab="${s.id}" aria-selected="${D.tab === s.id}">${s.name}<b>${by(s.id).length}</b></button>`).join('');
+    $('#board').innerHTML = STAGES.map(s => {
+      const list = by(s.id);
+      if (s.id === 'delivered') list.reverse();
+      return `<section class="col${D.tab === s.id ? ' shown' : ''}" data-col="${s.id}" aria-label="${s.name}">
+        <div class="col-h"><i aria-hidden="true"></i><h2>${s.name}</h2><b>${list.length}</b></div>
+        <div class="col-list">${list.map(orderCard).join('') || '<p class="col-empty">Няма</p>'}</div>
+      </section>`;
+    }).join('');
+    const cancelled = by('cancelled');
+    $('#gone').hidden = !cancelled.length;
+    $('#gone summary').textContent = `Отказани (${cancelled.length})`;
+    $('#goneList').innerHTML = cancelled.map(orderCard).join('');
+  }
+
+  /* ---------- Loading ---------- */
+  async function load() {
+    const j = await api(`/orders${D.day ? `?day=${D.day}` : `?day=${iso(new Date())}`}`);
+    if (!D.day) { D.day = j.today; if (j.day !== j.today) return load(); }
+    if (j.day !== D.day) return;
+    D.today = j.today; D.couriers = j.couriers; D.waiting = j.waiting;
+    D.fresh = new Set();
+    if (D.seen && D.seenDay === D.day) {
+      const added = j.orders.filter(o => !D.seen.has(o.id));
+      added.forEach(o => D.fresh.add(o.id));
+      if (added.length) {
+        const o = added[0];
+        notify(`<span><b>Нова поръчка № ${o.id}</b><br>${esc(o.name)}, ${esc(o.address)} · ${money(o.total)} €${added.length > 1 ? ` и още ${added.length - 1}` : ''}</span>`);
+        chime();
+      }
+    }
+    D.seen = new Set(j.orders.map(o => o.id)); D.seenDay = D.day;
+    D.orders = j.orders;
+    $('#updated').textContent = `Обновено в ${new Date().toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' })}`;
+    if (!D.renaming) render();
+  }
+  let poll;
+  const stopPolling = () => clearInterval(poll);
+  function startPolling() { stopPolling(); poll = setInterval(() => { if (!document.hidden) load().catch(() => {}); }, 15000); }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('#app').hidden) load().catch(() => {}); });
+
+  async function setDay(d) {
+    D.day = iso(d); D.orders = []; D.seen = null;
+    render();
+    await load().catch(err => notify(esc(err.message)));
+  }
+  $('#prevDay').addEventListener('click', () => setDay(addDays(fromIso(D.day), -1)));
+  $('#nextDay').addEventListener('click', () => setDay(addDays(fromIso(D.day), 1)));
+  $('#todayBtn').addEventListener('click', () => setDay(fromIso(D.today)));
+  $('#dayInput').addEventListener('change', e => { if (e.target.value) setDay(fromIso(e.target.value)); });
+  $('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) { D.tab = b.dataset.tab; render(); } });
+
+  /* ---------- Actions on an order ---------- */
+  const patch = (id, data) => api(`/orders/${id}`, { method: 'PATCH', body: JSON.stringify(data) });
+  /* Cancelling takes two taps (the first asks "Сигурни?"), and can be undone from the toast */
+  function confirmTap(btn) {
+    if (btn.dataset.armed) return true;
+    const label = btn.textContent;
+    btn.dataset.armed = '1'; btn.classList.add('armed'); btn.textContent = 'Сигурни?';
+    setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.classList.remove('armed'); btn.textContent = label; } }, 4000);
+    return false;
+  }
+  document.addEventListener('click', async e => {
+    const btn = e.target.closest('.ord [data-act]');
+    if (!btn) return;
+    e.preventDefault();
+    const id = +btn.closest('.ord').dataset.id, o = D.orders.find(x => x.id === id), act = btn.dataset.act;
+    if (act === 'cancel' && !confirmTap(btn)) return;
+    btn.disabled = true;
+    try {
+      if (act === 'cancel') {
+        const before = o.status;
+        await patch(id, { status: 'cancelled' });
+        notify(`<span><b>Отказана</b><br>№ ${id} · ${esc(o.name)}</span>`, { label: 'Върни', run: async () => { await patch(id, { status: before }); await load(); } });
+      } else if (act === 'send') {
+        await patch(id, { status: 'on_way', courier: +btn.dataset.courier });
+      } else if (act === 'swap') {
+        const other = D.couriers.find(c => c.id !== o.courier);
+        await patch(id, { courier: other.id });
+      } else if (act === 'delivered') {
+        await patch(id, { status: 'delivered' });
+        notify(`<span><b>Доставена</b><br>№ ${id} · ${esc(o.name)}</span>`, { label: 'Върни', run: async () => { await patch(id, { status: 'on_way' }); await load(); } });
+      } else {
+        await patch(id, { status: act });
+      }
+      await load();
+    } catch (err) { notify(esc(err.message)); btn.disabled = false; }
+  });
+
+  /* ---------- Renaming a courier ---------- */
+  $('#couriers').addEventListener('click', e => { const b = e.target.closest('[data-edit]'); if (b) { D.renaming = +b.dataset.edit; render(); } });
+  async function saveName(inp) {
+    const id = +inp.dataset.rename, name = inp.value.trim();
+    D.renaming = null;
+    if (name && name !== courierName(id)) {
+      try { D.couriers = (await api(`/couriers/${id}`, { method: 'PATCH', body: JSON.stringify({ name }) })).couriers; }
+      catch (err) { notify(esc(err.message)); }
+    }
+    render();
+  }
+  $('#couriers').addEventListener('keydown', e => {
+    const inp = e.target.closest('[data-rename]'); if (!inp) return;
+    if (e.key === 'Enter') saveName(inp);
+    if (e.key === 'Escape') { D.renaming = null; render(); }
+  });
+  $('#couriers').addEventListener('focusout', e => { const inp = e.target.closest('[data-rename]'); if (inp && D.renaming) saveName(inp); });
+
+  /* Keep the "преди N мин" fresh between loads */
+  setInterval(() => { if (!$('#app').hidden && !D.renaming && !document.querySelector('.acts .armed')) render(); }, 30000);
+
+  /* ---------- Start ---------- */
+  async function start() {
+    show('app');
+    try { await load(); } catch (err) { if (!$('#app').hidden) notify(esc(err.message)); return; }
+    startPolling();
+  }
+  if (location.protocol === 'file:') {
+    $('#offlineWhy').textContent = 'Страницата е отворена директно от папката. Поръчките се пазят от сървъра на сайта, затова доставките работят само през него.';
+    show('offline'); return;
+  }
+  try {
+    const r = await fetch('/api/admin/me', { cache: 'no-store' });
+    if (r.status === 401) { show('login'); loginForm.password.focus(); }
+    else if (r.ok && (r.headers.get('Content-Type') || '').includes('json')) start();
+    else show('offline');
+  } catch { show('offline'); }
+})();
+</script>
+</body>
+</html>

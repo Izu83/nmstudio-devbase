@@ -1,0 +1,7 @@
+# Staff password, reservations and orders: never upload these
+data/
+
+# Local editor and tool settings
+.claude/
+__pycache__/
+*.db

@@ -64,24 +64,18 @@ Repository: https://github.com/Izu83/nmstudio-devbase. Site: https://izu83.githu
 
 Pages is set to **Settings → Pages → Deploy from a branch**, branch `main`, folder `/ (root)`.
 
-Getting the base on a new computer (with the projects that are submodules):
-
-```
-git clone --recurse-submodules https://github.com/Izu83/nmstudio-devbase.git
-```
-
 ### Projects that have their own git repository
 
-A project with its own repository (like `sites/SunnyComplex`) is linked as a **submodule**: the base
-stores which commit of that repository to show, and GitHub Pages fetches it when it builds. The
-project's repository must be public.
+The base keeps its own copy of every project's files. Copy a project in **without its `.git`
+folder**: with it, git stores only an empty link instead of the files, and the preview is a 404.
+The project's own repository stays the place where you work on it; to update the base, copy the
+files over again, then commit and push.
 
-- Add one: `git submodule add https://github.com/<user>/<repo>.git sites/<Name>`
-- Show its latest version in the base: `git submodule update --remote sites/<Name>`, then commit and push.
-  Until you do that, the base keeps showing the commit it was linked at.
+On Windows, this copies a project without `.git` and without its `data/` folder:
 
-A project without its own repository is simply copied into `sites/`. Don't copy a project in
-together with its `.git` folder: git then stores only an empty link, and the preview is a 404.
+```
+robocopy D:\Projects\Sites\NewClient sites\NewClient /E /XD .git data .claude node_modules
+```
 
 ## Before you push
 

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script src="../assets/serve.js" data-route="/privacy/"></script>
+<title>Поверителност – Sunny Complex</title>
+<meta name="description" content="Какви лични данни събира Sunny Complex при резервация и доставка, защо, колко дълго ги пазим и какви са правата ви.">
+<meta name="theme-color" content="#0c0b0a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sunny Complex">
+<meta property="og:locale" content="bg_BG">
+<meta property="og:title" content="Поверителност – Sunny Complex">
+<meta property="og:description" content="Какви лични данни събира Sunny Complex при резервация и доставка, защо, колко дълго ги пазим и какви са правата ви.">
+<meta property="og:url" content="https://izu83.github.io/SunnyComplex/privacy/">
+<meta property="og:image" content="https://izu83.github.io/SunnyComplex/assets/share.jpg">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="566">
+<meta property="og:image:alt" content="Басейнът и ресторантът на Sunny Complex в Радомир">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="../assets/icon-180.png">
+<link rel="icon" href="../assets/logo-sun.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0c0b0a;
+    --bg-2: #13110f;
+    --gold: #f2b544;
+    --gold-hi: #ffdc93;
+    --text: #ecd8aa;
+    --text-dim: #b8a273;
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    --font-text: "Onest", system-ui, sans-serif;
+    --margin: clamp(16px, 3vw, 40px);
+    --bar-h: 80px;
+    --surface: linear-gradient(180deg, #221f1a, #171512);
+    --raised: inset 0 1px 0 rgba(255,228,170,.08), inset 0 -1px 0 rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.6), 0 16px 32px -16px rgba(0,0,0,.95);
+    --raised-hover: inset 0 1px 0 rgba(255,228,170,.12), inset 0 -1px 0 rgba(0,0,0,.5), 0 2px 4px rgba(0,0,0,.6), 0 26px 44px -18px rgba(0,0,0,1);
+    --well: inset 0 2px 10px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,228,170,.07);
+  }
+  * { box-sizing: border-box; touch-action: pan-x pan-y; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; background: var(--bg); color: var(--text); font: 400 1.05rem/1.7 var(--font-text); -webkit-font-smoothing: antialiased; }
+  a { color: var(--gold); }
+  h1, h2 { font-family: var(--font-display); font-weight: 600; color: var(--gold); margin: 0; line-height: 1.05; font-feature-settings: "locl" 0; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 8px; }
+  .frame { padding-inline: var(--margin); max-width: 1440px; margin-inline: auto; width: 100%; }
+
+  .bar { height: var(--bar-h); background: rgba(12,11,10,.96); box-shadow: 0 1px 0 rgba(255,228,170,.05); }
+  .bar .frame { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 100%; }
+  .mark { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--gold); font: 700 1.45rem/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; font-feature-settings: "locl" 0; }
+  .mark img { width: 46px; height: auto; }
+  .back { padding: 12px 20px; border-radius: 999px; background: var(--surface); box-shadow: var(--raised); color: var(--gold); font-weight: 600; text-decoration: none; white-space: nowrap; }
+  .back:hover { box-shadow: var(--raised-hover); }
+
+  main { flex: 1; padding-block: clamp(36px, 6vw, 80px); }
+  article { max-width: 68ch; }
+  article > h1 { font-size: clamp(2.6rem, 1.8rem + 3.4vw, 4.6rem); font-weight: 700; }
+  .lede { margin: 18px 0 0; font-size: 1.2rem; line-height: 1.5; }
+  .updated { margin: 10px 0 0; color: var(--text-dim); font-size: .92rem; }
+  section { margin-top: 40px; }
+  section h2 { font-size: 2rem; margin-bottom: 12px; }
+  p, ul { margin: 0 0 12px; }
+  ul { padding-left: 1.2em; }
+  li + li { margin-top: 6px; }
+  b { color: var(--gold-hi); font-weight: 600; }
+  .box { padding: 18px 22px; border-radius: 20px; background: var(--bg-2); box-shadow: var(--raised); }
+  .box p:last-child, .box ul:last-child { margin-bottom: 0; }
+
+  .foot { padding: 0 0 24px; }
+  .foot-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; padding: 16px 22px; border-radius: 999px; background: #0a0908; box-shadow: var(--well); font-size: .9rem; color: var(--text-dim); }
+  .foot-bottom a { color: var(--text); }
+
+  @media (max-width: 640px) {
+    :root { --bar-h: 72px; }
+    .mark { font-size: 1rem; gap: 7px; }
+    .mark img { width: 32px; }
+    .back { padding: 10px 14px; font-size: .9rem; }
+    .foot-bottom { border-radius: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="frame">
+    <a href="../" class="mark" aria-label="Sunny Complex, начало"><img src="../assets/logo-sun.png" alt="" width="228" height="130">Sunny Complex</a>
+    <a href="../" class="back">Към сайта</a>
+  </div>
+</header>
+
+<main class="frame">
+  <article>
+    <h1>Поверителност</h1>
+    <p class="lede">Когато резервирате маса или поръчате доставка, ни давате име и телефон, а за доставка и адрес. Тук пише какво правим с тях.</p>
+    <p class="updated">Последна промяна: ноември 2026</p>
+
+    <section>
+      <h2>Кои сме ние</h2>
+      <div class="box">
+        <p><b>Sunny Complex</b>, Дупнишко шосе, бл. 300, 2400 Радомир</p>
+        <p>Телефон <a href="tel:+359885999989">+359 88 599 9989</a> · имейл <a href="mailto:evrokomersbg@gmail.com">evrokomersbg@gmail.com</a></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Какво събираме</h2>
+      <ul>
+        <li><b>При резервация:</b> име, телефон, бележката ви (ако напишете), денят, часът, броят гости и масата.</li>
+        <li><b>При доставка:</b> име, телефон, адрес, поръчаните ястия, кога да доставим, как ще платите и бележката ви.</li>
+      </ul>
+      <p>Не искаме имейл, ЕГН или данни от карта. Плащането става при доставката.</p>
+    </section>
+
+    <section>
+      <h2>Защо</h2>
+      <p>Само за да запазим масата или да доставим поръчката и да ви се обадим, ако нещо трябва да се уточни. Правното основание е член 6, параграф 1, буква „б“ от Общия регламент за защита на данните: данните са нужни, за да изпълним това, което поискахте.</p>
+      <p>Не ви пращаме реклами и не продаваме данните на никого.</p>
+    </section>
+
+    <section>
+      <h2>Кой ги вижда</h2>
+      <ul>
+        <li>Персоналът на ресторанта, през защитен с парола панел.</li>
+        <li>Доставчикът, който носи поръчката: името, телефонът и адресът за нея.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Колко дълго ги пазим</h2>
+      <p>До 12 месеца. След това името, телефонът, адресът и бележките се изтриват автоматично. Остават само числа без имена, например колко резервации е имало в един ден.</p>
+    </section>
+
+    <section>
+      <h2>Какво остава във вашия браузър</h2>
+      <p>За да не пишете всичко отново, сайтът пази в браузъра на устройството ви: количката, името, телефона и адреса от последната доставка и линковете към вашите резервации. Те не излизат от устройството, докато не изпратите поръчка или заявка. Изтриват се, когато изчистите данните на сайта от настройките на браузъра.</p>
+      <p>Не използваме рекламни или проследяващи бисквитки.</p>
+      <p>Шрифтовете на сайта се зареждат от Google Fonts, а картата на началната страница е от Google Maps. При това Google получава IP адреса на устройството ви.</p>
+    </section>
+
+    <section>
+      <h2>Вашите права</h2>
+      <p>Можете да поискате да видите данните си, да ги поправим или да ги изтрием по-рано. Обадете се или ни пишете на имейла по-горе. Резервация можете да откажете и сами, от линка, който получавате след заявката.</p>
+      <p>Ако смятате, че не спазваме правилата, можете да подадете жалба до Комисията за защита на личните данни: <a href="https://www.cpdp.bg" target="_blank" rel="noopener">www.cpdp.bg</a>.</p>
+    </section>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="frame">
+    <div class="foot-bottom">
+      <span>© 2026 Sunny Complex, Радомир</span>
+      <span><a href="../reservation/">Резервация</a> · <a href="../menu/">Меню</a></span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

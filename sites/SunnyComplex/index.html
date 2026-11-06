@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="bg" data-season="summer">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script src="assets/serve.js" data-route="/"></script>
+<title>Sunny Complex – Радомир</title>
+<meta name="description" content="Sunny Complex в Радомир – открит басейн с детска секция, бар-ресторант и общо 414 места: 264 в ресторанта и 150 край басейна. На 40 км от София.">
+<meta name="theme-color" content="#0c0b0a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sunny Complex">
+<meta property="og:locale" content="bg_BG">
+<meta property="og:title" content="Sunny Complex – Радомир">
+<meta property="og:description" content="Sunny Complex в Радомир – открит басейн с детска секция, бар-ресторант и общо 414 места: 264 в ресторанта и 150 край басейна. На 40 км от София.">
+<meta property="og:url" content="https://izu83.github.io/SunnyComplex/">
+<meta property="og:image" content="https://izu83.github.io/SunnyComplex/assets/share.jpg">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="566">
+<meta property="og:image:alt" content="Басейнът и ресторантът на Sunny Complex в Радомир">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="icon" href="assets/logo-sun.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @property --season { syntax: "<color>"; inherits: true; initial-value: #ff8a1e; }
+
+  :root {
+    color-scheme: dark;
+    --bg: #0c0b0a;
+    --bg-2: #13110f;
+    --bg-3: #1a1714;
+    --gold: #f2b544;
+    --gold-hi: #ffdc93;
+    --gold-deep: #b98325;
+    --text: #ecd8aa;
+    --text-dim: #b8a273;
+    --summer: #ff8a1e;
+    --winter: #8fd6ff;
+    --season: var(--summer);
+
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    --font-text: "Onest", system-ui, sans-serif;
+
+    --step-0: clamp(1rem, .96rem + .2vw, 1.125rem);
+    --step-1: clamp(1.25rem, 1.1rem + .6vw, 1.6rem);
+    --step-2: clamp(2.3rem, 1.6rem + 2.8vw, 4.2rem);
+    --step-3: clamp(3rem, 1.5rem + 5vw, 7rem);
+
+    --margin: clamp(16px, 3vw, 40px);
+    --gap-section: clamp(96px, 11vw, 180px);
+    --radius: 22px;
+
+    --surface: linear-gradient(180deg, #221f1a, #171512);
+    --raised:
+      inset 0 1px 0 rgba(255, 228, 170, .08),
+      inset 0 -1px 0 rgba(0, 0, 0, .5),
+      0 1px 2px rgba(0, 0, 0, .6),
+      0 16px 32px -16px rgba(0, 0, 0, .95);
+    --raised-hover:
+      inset 0 1px 0 rgba(255, 228, 170, .12),
+      inset 0 -1px 0 rgba(0, 0, 0, .5),
+      0 2px 4px rgba(0, 0, 0, .6),
+      0 26px 44px -18px rgba(0, 0, 0, 1);
+    --pressed: inset 0 3px 8px rgba(0, 0, 0, .75), inset 0 -1px 0 rgba(255, 228, 170, .06);
+    --well: inset 0 2px 10px rgba(0, 0, 0, .7), inset 0 -1px 0 rgba(255, 228, 170, .07);
+    --gold-metal: linear-gradient(180deg, #ffe4a6 0%, #f6c05a 40%, #d99a2b 100%);
+
+    --ease-out: cubic-bezier(.16, 1, .3, 1);
+    --ease-inout: cubic-bezier(.65, 0, .35, 1);
+
+    transition: --season 1s var(--ease-inout);
+  }
+  :root[data-season="winter"] { --season: var(--winter); }
+
+  * { box-sizing: border-box; touch-action: pan-x pan-y; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 400 var(--step-0)/1.6 var(--font-text);
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; color: var(--gold); margin: 0; line-height: 1; letter-spacing: -.01em; }
+  /* The display face's Bulgarian letterforms read as italic; keep the upright set */
+  h1, h2, h3, .mark, .dial strong, .fact b, .seat b, .score b, .gauge .reading, .said p { font-feature-settings: "locl" 0; }
+  h2 { font-size: var(--step-2); }
+  h3 { font-size: var(--step-1); line-height: 1.15; }
+  p { margin: 0; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 8px; }
+  ::selection { background: var(--gold); color: #1d1404; }
+
+  .frame { padding-inline: var(--margin); max-width: 1440px; margin-inline: auto; }
+  section { padding-top: var(--gap-section); }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px 28px; border: 0; border-radius: 999px; cursor: pointer;
+    font: 600 1rem/1 var(--font-text); text-decoration: none; letter-spacing: .01em;
+    color: #1d1404; background: var(--gold-metal);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.65), inset 0 -2px 0 rgba(120,70,0,.35),
+                0 1px 2px rgba(0,0,0,.5), 0 12px 26px -12px rgba(242,181,68,.6);
+    transition: transform .4s var(--ease-out), box-shadow .4s var(--ease-out), filter .4s var(--ease-out);
+  }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+  .btn:active { transform: translateY(1px); box-shadow: inset 0 3px 7px rgba(90,50,0,.45); transition-duration: .08s; }
+  .btn.dark { color: var(--gold); background: var(--surface); box-shadow: var(--raised); }
+  .btn.dark:hover { box-shadow: var(--raised-hover); filter: none; }
+  .btn.dark:active { box-shadow: var(--pressed); }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+  .btn.big { padding: 19px 34px; font-size: 1.06rem; }
+
+  /* ---------- Header ---------- */
+  .bar { position: fixed; inset: 0 0 auto; z-index: 50; transition: transform .6s var(--ease-out), background-color .5s var(--ease-out), box-shadow .5s var(--ease-out); }
+  .bar.scrolled { background: rgba(12, 11, 10, .94); box-shadow: 0 1px 0 rgba(255,228,170,.05), 0 14px 30px -20px rgba(0,0,0,1); }
+  .bar.hidden { transform: translateY(-100%); }
+  .bar .frame { display: flex; align-items: center; gap: 22px; height: 80px; }
+  .mark { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--gold); font: 700 1.45rem/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+  .mark img { width: 46px; height: auto; transition: transform 1.2s var(--ease-out); }
+  .mark:hover img { transform: translateY(-3px) rotate(-4deg); }
+  .links { display: flex; gap: 2px; margin: 0 0 0 auto; padding: 0; list-style: none; }
+  .links a { display: block; padding: 10px 13px; border-radius: 999px; text-decoration: none; font-weight: 500; color: var(--text); transition: background-color .3s var(--ease-out), color .3s var(--ease-out); }
+  .links a:hover { background: rgba(242,181,68,.09); color: var(--gold-hi); }
+
+  .season-badge {
+    display: inline-flex; align-items: center; gap: 10px; padding: 7px 16px 7px 7px; border-radius: 999px;
+    background: var(--surface); box-shadow: var(--raised); color: var(--text);
+    font-weight: 600; font-size: .95rem; white-space: nowrap; text-decoration: none;
+    transition: box-shadow .4s var(--ease-out), transform .4s var(--ease-out);
+  }
+  .season-badge:hover { box-shadow: var(--raised-hover); transform: translateY(-1px); }
+  .season-badge .disc {
+    position: relative; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+    background: radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--season), white 40%), var(--season) 72%);
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,.25), 0 0 0 3px color-mix(in oklab, var(--season), transparent 82%), 0 2px 6px rgba(0,0,0,.6);
+    color: #1b1206;
+  }
+  .season-badge .disc svg { position: absolute; width: 20px; height: 20px; transition: opacity .6s var(--ease-out), transform .9s var(--ease-out); }
+  [data-season="summer"] .season-badge .ico-snow,
+  [data-season="winter"] .season-badge .ico-sun { opacity: 0; transform: rotate(-120deg) scale(.3); }
+  .menu-btn { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-top: 120px; }
+  .hero-grid {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(48px, 7vw, 128px); align-items: center; min-height: calc(100svh - 150px);
+  }
+  .hero h1 { font-size: var(--step-3); font-weight: 700; text-transform: uppercase; letter-spacing: .015em; line-height: .92; }
+  .hero h1 span { display: block; }
+  .hero .place { margin-top: 18px; font: 600 1.05rem var(--font-text); color: var(--text-dim); letter-spacing: .02em; }
+  .hero .lede { font-size: var(--step-1); line-height: 1.4; max-width: 28ch; margin-top: 28px; color: var(--text); }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
+
+  .hero-media { position: relative; }
+  .hero-photo {
+    position: relative; overflow: hidden; border-radius: calc(var(--radius) + 10px); aspect-ratio: 16 / 10.5;
+    box-shadow: 0 1px 0 rgba(255,228,170,.1) inset, 0 40px 70px -34px rgba(0,0,0,1);
+    background: var(--bg-3);
+  }
+  .hero-photo img { position: absolute; inset: -4% 0; width: 100%; height: 108%; object-fit: cover; object-position: 12% 50%; will-change: transform; }
+
+  .dial {
+    position: relative; z-index: 2; margin: -64px 0 0 clamp(16px, 4%, 40px); max-width: 470px;
+    display: grid; grid-template-columns: 150px 1fr; gap: 20px; align-items: center;
+    padding: 22px 24px; border-radius: var(--radius);
+    background: var(--surface); box-shadow: var(--raised-hover);
+  }
+  .dial svg { width: 150px; height: 90px; overflow: visible; }
+  .dial .groove { fill: none; stroke: #000; stroke-width: 13; stroke-linecap: round; opacity: .55; }
+  .dial .track { fill: none; stroke: #2c2822; stroke-width: 9; stroke-linecap: round; }
+  .dial .summer-band { fill: none; stroke: var(--summer); stroke-width: 9; stroke-linecap: round; }
+  .dial .knob circle:first-child { fill: url(#knobGold); filter: drop-shadow(0 2px 2px rgba(0,0,0,.6)); }
+  .dial .knob circle:last-child { fill: #1d1404; }
+  .dial .tick { font: 500 10px var(--font-text); fill: var(--text-dim); }
+  .dial strong { display: flex; align-items: center; gap: 8px; font: 700 1.45rem/1.1 var(--font-display); color: var(--gold); }
+  .dial strong i { width: 10px; height: 10px; border-radius: 50%; background: var(--season); box-shadow: 0 0 0 4px color-mix(in oklab, var(--season), transparent 80%); }
+  .dial p { font-size: .95rem; margin-top: 6px; }
+  .dial .count { font-variant-numeric: lining-nums tabular-nums; font-weight: 600; color: var(--gold-hi); }
+
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 56px; }
+  .fact { padding: 24px; border-radius: var(--radius); background: var(--surface); box-shadow: var(--raised); }
+  .fact b { display: block; font: 700 clamp(2.2rem, 1.7rem + 1.6vw, 3.2rem)/1 var(--font-display); color: var(--gold); font-variant-numeric: lining-nums tabular-nums; }
+  .of { font-size: .5em; color: var(--text-dim); margin-left: .06em; letter-spacing: 0; }
+  .fact > span { display: block; margin-top: 10px; color: var(--text-dim); font-size: .98rem; }
+
+  /* ---------- Pool ---------- */
+  .pool { margin-top: var(--gap-section); padding-block: clamp(80px, 9vw, 140px); background: var(--bg-2); }
+  .pool-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; }
+  .pool-head p { font-size: var(--step-1); line-height: 1.4; max-width: 34ch; }
+  .pool-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 56px); margin-top: 64px; align-items: stretch; }
+
+  .gauges { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 30px 24px; border-radius: calc(var(--radius) + 6px); background: #0a0908; box-shadow: var(--well); }
+  .gauge { display: grid; grid-template-rows: auto 1fr auto; justify-items: center; gap: 18px; text-align: center; }
+  .gauge h3 { font-size: 1.35rem; }
+  .tube {
+    position: relative; width: 48px; height: 300px; border-radius: 24px; overflow: hidden;
+    background: linear-gradient(90deg, rgba(255,228,170,.04), rgba(255,228,170,.16) 35%, rgba(255,228,170,.03) 70%, rgba(255,228,170,.09));
+    box-shadow: inset 0 0 0 2px rgba(255,228,170,.14), inset 0 6px 14px rgba(0,0,0,.6);
+  }
+  .tube .fill {
+    position: absolute; left: 8px; right: 8px; bottom: 8px; height: calc(100% - 16px); border-radius: 16px;
+    background: linear-gradient(90deg, #c88a20, #ffe2a0 40%, #f2b544 70%, #d9a03a);
+    box-shadow: 0 0 18px rgba(242,181,68,.35);
+    transform-origin: bottom; transform: scaleY(0); transition: transform 2.2s var(--ease-out);
+  }
+  .tube .marks { position: absolute; inset: 14px 0; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+  .tube .marks i { display: block; width: 10px; height: 2px; margin-left: auto; background: rgba(255,228,170,.3); }
+  .gauge .reading { font: 700 clamp(2rem, 1.6rem + 1.2vw, 2.8rem)/1 var(--font-display); color: var(--gold); font-variant-numeric: lining-nums tabular-nums; }
+  .gauge .reading small { display: block; font: 500 .9rem var(--font-text); color: var(--text-dim); margin-top: 6px; }
+
+  .pool-photos { display: grid; grid-template-columns: 3fr 2fr; grid-template-rows: 1fr auto; gap: 16px; }
+  .pool-photos figure { margin: 0; position: relative; overflow: hidden; border-radius: var(--radius); background: var(--bg-3); box-shadow: 0 24px 40px -24px rgba(0,0,0,1); }
+  .pool-photos figure img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.6s var(--ease-out); }
+  .pool-photos figure:hover img { transform: scale(1.05); }
+  .pool-photos .big { grid-row: span 2; min-height: 460px; }
+  .pool-photos figcaption {
+    position: absolute; left: 14px; bottom: 14px; right: 14px; width: fit-content; padding: 9px 15px; border-radius: 14px;
+    background: rgba(12,11,10,.86); color: var(--gold); font-size: .92rem; font-weight: 500; line-height: 1.3;
+  }
+  .hours { border-radius: var(--radius); padding: 24px; background: var(--surface); box-shadow: var(--raised); }
+  .hours h3 { font-size: 1.5rem; }
+  .hours ul { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 8px; }
+  .hours li { display: flex; gap: 10px; align-items: baseline; }
+  .hours li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex: none; transform: translateY(-2px); box-shadow: 0 0 0 3px rgba(242,181,68,.18); }
+
+  /* ---------- Seasons ---------- */
+  .seasons-head { display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; }
+  .seasons-head p { max-width: 48ch; margin-top: 20px; }
+  .switch { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; padding: 6px; border-radius: 999px; background: #0a0908; box-shadow: var(--well); }
+  .switch button {
+    position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 14px 28px; border: 0; border-radius: 999px; background: none; cursor: pointer;
+    font: 600 1rem var(--font-text); color: var(--text-dim); transition: color .6s var(--ease-out);
+  }
+  .switch button svg { width: 24px; height: 24px; color: var(--text-dim); transition: color .6s var(--ease-out), transform .9s var(--ease-out), filter .6s var(--ease-out); }
+  .switch button:hover svg { transform: rotate(25deg); }
+  .switch button[data-season="summer"][aria-pressed="true"] { color: var(--summer); }
+  .switch button[data-season="winter"][aria-pressed="true"] { color: var(--winter); }
+  .switch button[data-season="summer"][aria-pressed="true"] svg { color: var(--summer); filter: drop-shadow(0 0 6px rgba(255,138,30,.55)); transform: rotate(45deg); }
+  .switch button[data-season="winter"][aria-pressed="true"] svg { color: var(--winter); filter: drop-shadow(0 0 6px rgba(143,214,255,.55)); transform: rotate(60deg); }
+  .switch .thumb {
+    position: absolute; top: 6px; bottom: 6px; left: 6px; width: calc(50% - 6px); border-radius: 999px;
+    background: var(--surface); box-shadow: var(--raised);
+    transition: transform .8s var(--ease-out), box-shadow .8s var(--ease-out);
+  }
+  .switch[data-active="summer"] .thumb { box-shadow: var(--raised), inset 0 0 0 1.5px rgba(255,138,30,.45); }
+  .switch[data-active="winter"] .thumb { transform: translateX(100%); box-shadow: var(--raised), inset 0 0 0 1.5px rgba(143,214,255,.45); }
+  .today-note { font-size: .95rem; color: var(--text-dim); margin-top: 12px; text-align: right; }
+
+  .season-panel { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 56px); margin-top: 56px; align-items: stretch; }
+  .season-media { position: relative; border-radius: calc(var(--radius) + 6px); overflow: hidden; min-height: 460px; background: var(--bg-3); box-shadow: 0 30px 50px -30px rgba(0,0,0,1); }
+  .season-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 1.1s var(--ease-inout), transform 1.8s var(--ease-out); }
+  .season-media img[data-for="winter"] { opacity: 0; transform: scale(1.06); }
+  [data-preview="winter"] .season-media img[data-for="winter"] { opacity: 1; transform: none; }
+  [data-preview="winter"] .season-media img[data-for="summer"] { opacity: 0; transform: scale(1.06); }
+
+  .season-list { display: grid; gap: 14px; align-content: start; }
+  .season-item {
+    display: grid; grid-template-columns: 46px 1fr; gap: 16px; align-items: center; padding: 20px 22px; border-radius: var(--radius);
+    background: var(--surface); box-shadow: var(--raised);
+    transition: opacity .7s var(--ease-out), box-shadow .5s var(--ease-out), background .5s var(--ease-out);
+  }
+  .season-item .state { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: #0a0908; box-shadow: var(--well); color: var(--text-dim); transition: background .6s var(--ease-out), color .6s var(--ease-out); }
+  .season-item .state svg { width: 20px; height: 20px; }
+  .season-item.on .state { background: var(--gold-metal); color: #1d1404; box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 3px 8px -2px rgba(0,0,0,.7); }
+  .season-item.off { opacity: .55; background: transparent; box-shadow: var(--well); }
+  .season-item h3 { font-size: 1.4rem; }
+  .season-item .when { display: block; margin-top: 4px; font-size: .98rem; }
+
+  /* ---------- Restaurant ---------- */
+  .resto { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 80px); align-items: start; }
+  .resto-text { margin-top: 24px; max-width: 40ch; }
+  .seats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+  .seat { padding: 26px; border-radius: var(--radius); background: #0a0908; box-shadow: var(--well); }
+  .seat b { display: block; font: 700 clamp(3rem, 2.3rem + 2.8vw, 5rem)/1 var(--font-display); color: var(--gold); font-variant-numeric: lining-nums tabular-nums; }
+  .seat span { display: block; margin-top: 8px; color: var(--text-dim); }
+  .resto-hours { display: flex; align-items: center; gap: 14px; margin-top: 16px; padding: 18px 22px; border-radius: var(--radius); background: var(--surface); box-shadow: var(--raised); }
+  .resto-hours svg { width: 22px; height: 22px; color: var(--gold); flex: none; }
+  .resto-hours b { color: var(--gold); font-weight: 600; }
+
+  .menu-card { padding: clamp(28px, 4vw, 52px); border-radius: calc(var(--radius) + 6px); background: var(--surface); box-shadow: var(--raised); }
+  .menu-card h3 { font-size: var(--step-2); }
+  .menu-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .menu-tabs button {
+    border: 0; cursor: pointer; padding: 11px 18px; border-radius: 999px; font: 500 .98rem var(--font-text); color: var(--text);
+    background: var(--bg-3); box-shadow: var(--raised); transition: box-shadow .35s var(--ease-out), color .35s var(--ease-out), transform .35s var(--ease-out);
+  }
+  .menu-tabs button:hover { transform: translateY(-1px); color: var(--gold-hi); }
+  .menu-tabs button[aria-selected="true"] { box-shadow: var(--pressed); color: var(--gold); background: #0f0d0b; transform: none; }
+  .menu-pane { margin-top: 26px; }
+  .menu-pane[hidden] { display: none; }
+  .menu-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding-block: 16px; animation: rise .7s var(--ease-out) both; }
+  .menu-row + .menu-row { box-shadow: inset 0 1px 0 rgba(255,228,170,.07); }
+  .menu-row:nth-child(2) { animation-delay: .07s; } .menu-row:nth-child(3) { animation-delay: .14s; }
+  .menu-row b { font-weight: 600; color: var(--gold); }
+  .menu-row span { color: var(--text-dim); }
+  .menu-row .tag { font-size: .9rem; white-space: nowrap; }
+  .menu-row .cost { font: 700 1.55rem/1 var(--font-display); color: var(--gold); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; font-feature-settings: "locl" 0; }
+  .menu-row .cost small { font-size: .62em; margin-left: .12em; color: var(--text-dim); }
+  .menu-cta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 28px; }
+  .menu-note { font-size: .95rem; color: var(--text-dim); }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+
+  /* ---------- Ratings ---------- */
+  .events { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 5vw, 80px); align-items: center; }
+  .events-text { margin-top: 24px; max-width: 44ch; font-size: var(--step-1); line-height: 1.45; }
+  .occasions { display: flex; flex-wrap: wrap; gap: 10px; margin: 32px 0 0; padding: 0; list-style: none; }
+  .occasions li { padding: 10px 18px; border-radius: 999px; background: #0a0908; box-shadow: var(--well); color: var(--text); font-weight: 500; }
+  .call-plate { display: grid; gap: 14px; justify-items: start; padding: clamp(28px, 3.4vw, 44px); border-radius: calc(var(--radius) + 6px); background: var(--gold-metal); color: #1d1404; box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 20px 40px -24px rgba(242,181,68,.45); }
+  .call-plate .cp-k { font-weight: 600; color: #3d2a07; }
+  .call-plate .cp-num { font: 700 clamp(2.2rem, 1.6rem + 2.2vw, 3.4rem)/1 var(--font-display); color: #1d1404; text-decoration: none; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1, "locl" 0; white-space: nowrap; }
+  .call-plate .cp-s { color: #3d2a07; font-size: .95rem; }
+  .call-plate .btn { margin-top: 8px; }
+  .ratings { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 5fr); gap: 16px; margin-top: 56px; }
+  .score { padding: 32px; border-radius: calc(var(--radius) + 6px); background: var(--surface); box-shadow: var(--raised); }
+  .score b { display: block; font: 700 clamp(4.2rem, 3rem + 4.4vw, 7.4rem)/.85 var(--font-display); color: var(--gold); font-variant-numeric: lining-nums tabular-nums; }
+  .score .meter { height: 12px; border-radius: 999px; margin-top: 26px; background: #0a0908; box-shadow: var(--well); overflow: hidden; }
+  .score .meter i { display: block; height: 100%; border-radius: inherit; background: var(--gold-metal); transform-origin: left; transform: scaleX(0); transition: transform 2s var(--ease-out); }
+  .score p { margin-top: 18px; color: var(--text-dim); }
+  .score p strong { color: var(--text); font-weight: 600; }
+  .said { margin: 0; padding: 34px; border-radius: calc(var(--radius) + 6px); background: var(--gold-metal); color: #1d1404; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 20px 40px -24px rgba(242,181,68,.45); }
+  .said p { font: 600 clamp(1.6rem, 1.3rem + 1vw, 2.2rem)/1.2 var(--font-display); }
+  .said footer { font-size: .95rem; color: #3d2a07; }
+
+  /* ---------- Contact ---------- */
+  .contact { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 80px); margin-top: 56px; align-items: stretch; }
+  .contact dl { margin: 0; display: grid; gap: 4px; }
+  .contact .row { display: grid; grid-template-columns: 46px 1fr; gap: 16px; align-items: center; padding: 14px 16px; border-radius: 18px; text-decoration: none; transition: background-color .35s var(--ease-out), transform .5s var(--ease-out); }
+  a.row:hover { background: rgba(242,181,68,.07); transform: translateX(4px); }
+  .contact .ic { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); box-shadow: var(--raised); color: var(--gold); }
+  .contact .ic svg { width: 20px; height: 20px; }
+  .contact dt { font-size: .9rem; color: var(--text-dim); }
+  .contact dd { margin: 0; font-weight: 600; color: var(--text); }
+  .contact .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .map-wrap { border-radius: calc(var(--radius) + 8px); padding: 10px; background: var(--surface); box-shadow: var(--raised); min-height: 440px; }
+  .map-wrap iframe { width: 100%; height: 100%; min-height: 420px; border: 0; border-radius: var(--radius); display: block; filter: invert(.9) hue-rotate(180deg) sepia(.35) saturate(.9) brightness(.95); }
+
+  /* ---------- Footer ---------- */
+  .foot { margin-top: var(--gap-section); padding: 0 0 28px; background: var(--bg-2); }
+  .foot-plate {
+    display: grid; grid-template-columns: minmax(0, 4fr) repeat(3, minmax(0, 3fr)); gap: clamp(24px, 4vw, 56px);
+    padding: clamp(48px, 6vw, 80px) 0 48px; align-items: start;
+  }
+  .foot-brand img { width: min(260px, 70%); height: auto; }
+  .foot-brand p { margin-top: 20px; color: var(--text-dim); max-width: 30ch; }
+  .foot h3 { font-size: 1.6rem; margin-bottom: 16px; }
+  .foot ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .foot a { text-decoration: none; transition: color .3s var(--ease-out); }
+  .foot a:hover { color: var(--gold-hi); }
+  .foot .hrs b { display: block; color: var(--gold); font-weight: 600; }
+  .foot .hrs span { color: var(--text-dim); font-size: .95rem; }
+  .foot-cta { display: grid; gap: 12px; justify-items: start; }
+  .foot-bottom {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+    padding: 18px 22px; border-radius: 999px; background: #0a0908; box-shadow: var(--well);
+    font-size: .9rem; color: var(--text-dim);
+  }
+  .foot-bottom a { color: var(--text); }
+  .to-top {
+    width: 48px; height: 48px; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    background: var(--gold-metal); color: #1d1404; box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 6px 14px -6px rgba(242,181,68,.6);
+    transition: transform .5s var(--ease-out);
+  }
+  .to-top:hover { transform: translateY(-3px); }
+  .to-top:active { transform: translateY(1px); box-shadow: inset 0 3px 7px rgba(90,50,0,.45); }
+  .to-top svg { width: 20px; height: 20px; }
+
+  /* ---------- Reveal ---------- */
+  .js [data-reveal] { opacity: 0; transform: translate3d(0, 28px, 0); }
+  .js [data-reveal].in { opacity: 1; transform: none; transition: opacity 1.1s var(--ease-out), transform 1.3s var(--ease-out); transition-delay: calc(var(--i, 0) * 85ms); }
+
+  /* ---------- Tablet / phone ---------- */
+  /* The header row is full on mid-size screens: tighter links, the short season label */
+  @media (max-width: 1460px) {
+    .bar .frame { gap: 14px; }
+    .mark { flex: none; }
+    .links a { padding: 10px 9px; }
+    .season-badge .label-long { display: none; }
+  }
+  @media (max-width: 1280px) {
+    .links { display: none; }
+    .menu-btn { display: inline-grid; place-items: center; margin-left: auto; width: 46px; height: 46px; border: 0; border-radius: 50%; cursor: pointer; background: var(--surface); box-shadow: var(--raised); color: var(--gold); }
+    .menu-btn:active { box-shadow: var(--pressed); }
+    .menu-btn svg { width: 22px; height: 22px; }
+    .bar .book-open { display: none; }
+    .bar.open .links { display: grid; position: absolute; top: 80px; left: var(--margin); right: var(--margin); padding: 10px; gap: 2px; background: var(--bg-3); border-radius: var(--radius); box-shadow: 0 30px 60px -20px rgba(0,0,0,1); animation: rise .45s var(--ease-out); }
+    .bar.open .links a { padding: 14px 16px; font-size: 1.05rem; }
+  }
+  @media (max-width: 1100px) {
+    .hero-grid, .pool-head, .pool-grid, .season-panel, .resto, .events, .contact { grid-template-columns: 1fr; }
+    .hero-grid { min-height: 0; gap: 48px; }
+    .facts { grid-template-columns: repeat(2, 1fr); }
+    .ratings { grid-template-columns: 1fr 1fr; }
+    .said { grid-column: span 2; }
+    .today-note { text-align: left; }
+    .foot-plate { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .bar .frame { gap: 10px; height: 72px; }
+    .mark { font-size: 1rem; gap: 7px; letter-spacing: .02em; }
+    .mark img { width: 32px; }
+    .season-badge { padding-right: 12px; font-size: .86rem; }
+    .season-badge .label-long { display: none; }
+    .hero { padding-top: 100px; }
+    .hero .actions .btn { flex: 1 1 100%; }
+    .dial { grid-template-columns: 1fr; gap: 8px; margin: -40px 12px 0; padding: 18px; }
+    .dial svg { width: 100%; max-width: 220px; height: auto; }
+    .gauges { padding: 22px 10px; }
+    .tube { height: 240px; }
+    .pool-photos { grid-template-columns: 1fr; }
+    .pool-photos .big { grid-row: auto; min-height: 320px; }
+    .pool-photos figure:not(.big) { min-height: 260px; }
+    .switch { width: 100%; }
+    .switch button { padding: 14px 12px; }
+    .season-media { min-height: 320px; }
+    .ratings { grid-template-columns: 1fr; }
+    .said { grid-column: auto; }
+    .map-wrap, .map-wrap iframe { min-height: 340px; }
+    .foot-plate { grid-template-columns: 1fr; }
+    .foot-bottom { border-radius: 22px; }
+    .fields { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    .js [data-reveal] { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="knobGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe4a6"/><stop offset=".5" stop-color="#f6c05a"/><stop offset="1" stop-color="#c88a20"/></linearGradient>
+    <symbol id="i-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4.6" fill="currentColor"/>
+      <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none">
+        <path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.85 1.85M17.35 17.35l1.85 1.85M4.8 19.2l1.85-1.85M17.35 6.65l1.85-1.85"/>
+      </g>
+    </symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24">
+      <g stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <g id="arm"><path d="M12 12V2.2"/><path d="M9.4 4.4 12 6.6l2.6-2.2"/><path d="M10.1 8.2 12 9.7l1.9-1.5"/></g>
+        <use href="#arm" transform="rotate(60 12 12)"/>
+        <use href="#arm" transform="rotate(120 12 12)"/>
+        <use href="#arm" transform="rotate(180 12 12)"/>
+        <use href="#arm" transform="rotate(240 12 12)"/>
+        <use href="#arm" transform="rotate(300 12 12)"/>
+      </g>
+      <circle cx="12" cy="12" r="1.6" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.6 4.3-2.1 1.4a11 11 0 0 0 7.1 7.1l1.4-2.1 4.3 1.6V19a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5Z"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 21v-7.5h2.7l.4-3.2h-3.1V8.4c0-.9.3-1.6 1.6-1.6h1.6V4a21 21 0 0 0-2.4-.1c-2.4 0-4 1.4-4 4.1v2.3H8.6v3.2h2.7V21"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 12h12"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar" id="bar">
+  <div class="frame">
+    <a href="#top" class="mark" aria-label="Sunny Complex, начало">
+      <img src="assets/logo-sun.png" alt="" width="228" height="130">
+      Sunny Complex
+    </a>
+    <ul class="links" id="links">
+      <li><a href="#pool">Басейн</a></li>
+      <li><a href="#seasons">Сезони</a></li>
+      <li><a href="#restaurant">Ресторант</a></li>
+      <li><a href="menu/">Меню</a></li>
+      <li><a href="#events">Празници</a></li>
+      <li><a href="#reviews">Отзиви</a></li>
+      <li><a href="#contact">Контакти</a></li>
+    </ul>
+    <a href="#seasons" class="season-badge" aria-live="polite">
+      <span class="disc" aria-hidden="true">
+        <svg class="ico-sun"><use href="#i-sun"/></svg>
+        <svg class="ico-snow"><use href="#i-snow"/></svg>
+      </span>
+      <span><span id="seasonWord">Летен</span><span class="label-long"> сезон</span></span>
+    </a>
+    <a href="reservation/" class="btn book-open"><svg aria-hidden="true"><use href="#i-cal"/></svg>Резервирай</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="links" aria-label="Меню">
+      <svg aria-hidden="true"><use href="#i-menu"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="frame">
+      <div class="hero-grid">
+        <div>
+          <h1 data-reveal><span>Sunny</span><span>Complex</span></h1>
+          <p class="place" data-reveal style="--i:1">Дупнишко шосе, бл. 300, Радомир</p>
+          <p class="lede" data-reveal style="--i:2">Открит басейн и бар-ресторант на 40 км от София.</p>
+          <div class="actions" data-reveal style="--i:3">
+            <a href="reservation/" class="btn big"><svg aria-hidden="true"><use href="#i-cal"/></svg>Резервирай</a>
+            <a href="tel:+359885999989" class="btn big dark"><svg aria-hidden="true"><use href="#i-phone"/></svg>+359 88 599 9989</a>
+          </div>
+        </div>
+        <div class="hero-media" data-reveal style="--i:1">
+          <div class="hero-photo">
+            <img id="heroImg" src="assets/pool-panorama.jpg" alt="Басейнът на Sunny Complex по залез, с шезлонги и сламени чадъри и хълмове на хоризонта" fetchpriority="high">
+          </div>
+          <div class="dial" aria-live="polite">
+            <svg viewBox="0 0 150 90" role="img" aria-labelledby="dialTitle">
+              <title id="dialTitle">Годината като дъга; оранжевата част е летният сезон</title>
+              <path class="groove" d="M10 80 A65 65 0 0 1 140 80"/>
+              <path class="track" d="M10 80 A65 65 0 0 1 140 80"/>
+              <path class="summer-band" id="summerBand" d=""/>
+              <g class="knob" id="knob"><circle r="9"/><circle r="3"/></g>
+              <text class="tick" x="4" y="90">яну</text>
+              <text class="tick" x="146" y="90" text-anchor="end">дек</text>
+            </svg>
+            <div>
+              <strong><i></i><span id="dialHead">Летен сезон</span></strong>
+              <p id="dialText">Басейнът е отворен всеки ден от 9:00 до 18:00.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="facts">
+        <div class="fact" data-reveal><b><span data-count="4.4" data-dec="1">4.4</span><small class="of">/5</small></b><span>от 597 отзива в Google</span></div>
+        <div class="fact" data-reveal style="--i:1"><b><span data-count="26">26</span>°C</b><span>вода в големия басейн</span></div>
+        <div class="fact" data-reveal style="--i:2"><b><span data-count="414">414</span></b><span>места общо: 264 в ресторанта и 150 край басейна</span></div>
+        <div class="fact" data-reveal style="--i:3"><b>01:00</b><span>ресторантът работи до</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pool" id="pool">
+    <div class="frame">
+      <div class="pool-head">
+        <h2 data-reveal>Топла вода за големи и малки</h2>
+        <p data-reveal style="--i:1">Голям басейн и детска секция с по-топла вода, шезлонги под сламени чадъри и изглед към хълмовете.</p>
+      </div>
+      <div class="pool-grid">
+        <div class="gauges" data-reveal>
+          <div class="gauge">
+            <h3>Голям басейн</h3>
+            <div class="tube" role="meter" aria-valuemin="15" aria-valuemax="35" aria-valuenow="25.5" aria-label="Температура на големия басейн">
+              <div class="fill" data-temp="25.5"></div>
+              <div class="marks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="reading">25–26°<small>подгрята вода</small></div>
+          </div>
+          <div class="gauge">
+            <h3>Детски басейн</h3>
+            <div class="tube" role="meter" aria-valuemin="15" aria-valuemax="35" aria-valuenow="29.5" aria-label="Температура на детския басейн">
+              <div class="fill" data-temp="29.5"></div>
+              <div class="marks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="reading">29–30°<small>за най-малките</small></div>
+          </div>
+        </div>
+        <div class="pool-photos">
+          <figure class="big" data-reveal style="--i:1">
+            <img src="assets/pool-view.jpg" alt="Басейнът под синьо небе с облаци, редици шезлонги и сламени чадъри, гледан от бара" loading="lazy">
+            <figcaption>Басейнът с изглед към планината</figcaption>
+          </figure>
+          <figure data-reveal style="--i:2">
+            <img src="assets/umbrellas.jpg" alt="Шезлонги под сламени чадъри до басейна, ресторантът е на заден план" loading="lazy">
+            <figcaption>Шезлонги под сламените чадъри</figcaption>
+          </figure>
+          <div class="hours" data-reveal style="--i:3">
+            <h3>Басейнът</h3>
+            <ul>
+              <li>1 юни – 15 септември</li>
+              <li>Всеки ден от 9:00 до 18:00</li>
+              <li>Бар до водата</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="seasons">
+    <div class="frame" id="seasonFrame" data-preview="summer">
+      <div class="seasons-head">
+        <div>
+          <h2 data-reveal>Лято и зима</h2>
+          <p data-reveal style="--i:1">Летният сезон е от 1 юни до 15 септември, когато басейнът е отворен. От 15 септември до края на май ресторантът ви посреща всеки ден от 9:00 до 1:00.</p>
+        </div>
+        <div data-reveal style="--i:2">
+          <div class="switch" id="switch" data-active="summer" role="group" aria-label="Покажи сезон">
+            <span class="thumb" aria-hidden="true"></span>
+            <button type="button" data-season="summer" aria-pressed="true"><svg aria-hidden="true"><use href="#i-sun"/></svg>Лято</button>
+            <button type="button" data-season="winter" aria-pressed="false"><svg aria-hidden="true"><use href="#i-snow"/></svg>Зима</button>
+          </div>
+          <p class="today-note" id="todayNote"></p>
+        </div>
+      </div>
+
+      <div class="season-panel">
+        <div class="season-media" data-reveal>
+          <img data-for="summer" src="assets/pool-bar.jpg" alt="Остъклената сграда на ресторанта, бар в басейна и чадър, под синьо небе" loading="lazy">
+          <img data-for="winter" src="assets/golo-bardo.jpg" alt="Борова гора по склоновете на Голо бърдо край Перник" loading="lazy">
+        </div>
+        <div class="season-list" id="seasonList">
+          <div class="season-item" data-reveal data-summer="on" data-winter="off">
+            <span class="state"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
+            <div><h3>Открит басейн</h3><span class="when" data-summer-text="Отворен, 9:00–18:00" data-winter-text="Затворен до 1 юни">Отворен, 9:00–18:00</span></div>
+          </div>
+          <div class="season-item" data-reveal style="--i:1" data-summer="on" data-winter="off">
+            <span class="state"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
+            <div><h3>DJ през уикенда</h3><span class="when" data-summer-text="Всяка събота и неделя край басейна" data-winter-text="Връща се през юни">Всяка събота и неделя край басейна</span></div>
+          </div>
+          <div class="season-item" data-reveal style="--i:2" data-summer="on" data-winter="on">
+            <span class="state"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
+            <div><h3>Бар-ресторант</h3><span class="when" data-summer-text="264 места в ресторанта и 150 край басейна, 9:00–1:00" data-winter-text="264 места в ресторанта, 9:00–1:00">264 места в ресторанта и 150 край басейна, 9:00–1:00</span></div>
+          </div>
+          <div class="season-item" data-reveal style="--i:3" data-summer="on" data-winter="on">
+            <span class="state"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
+            <div><h3>Тържества</h3><span class="when" data-summer-text="Рождени дни край басейна" data-winter-text="Рождени дни и фирмени партита в залата">Рождени дни край басейна</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="restaurant">
+    <div class="frame resto">
+      <div>
+        <h2 data-reveal>Бар-ресторант</h2>
+        <p data-reveal style="--i:1" class="resto-text">Традиционна и международна кухня, обедно меню през седмицата и маси на открито с изглед към басейна. Гостите най-често хвалят разнообразното меню и спокойната атмосфера.</p>
+        <div class="seats">
+          <div class="seat" data-reveal style="--i:2"><b data-count="264">264</b><span>места в ресторанта</span></div>
+          <div class="seat" data-reveal style="--i:3"><b data-count="150">150</b><span>места край басейна</span></div>
+        </div>
+        <div class="resto-hours" data-reveal style="--i:4"><svg aria-hidden="true"><use href="#i-clock"/></svg><span>Всеки ден от <b>9:00</b> до <b>1:00</b></span></div>
+      </div>
+      <div class="menu-card" data-reveal style="--i:1">
+        <h3>Какво да опитате</h3>
+        <div class="menu-tabs" role="tablist" aria-label="Категории от менюто">
+          <button role="tab" aria-selected="true" aria-controls="m-burg" id="t-burg">Бургери</button>
+          <button role="tab" aria-selected="false" aria-controls="m-sushi" id="t-sushi" tabindex="-1">Суши</button>
+          <button role="tab" aria-selected="false" aria-controls="m-pizza" id="t-pizza" tabindex="-1">Пици</button>
+          <button role="tab" aria-selected="false" aria-controls="m-grill" id="t-grill" tabindex="-1">Скара</button>
+        </div>
+        <div class="menu-pane" role="tabpanel" id="m-burg" aria-labelledby="t-burg">
+          <div class="menu-row"><div><b>Съни бургер</b><br><span>Телешко кюфте, английски бекон, карамелизиран лук и чедър</span></div><span class="cost">11,90<small>€</small></span></div>
+          <div class="menu-row"><div><b>Смаш бургер</b><br><span>2 телешки кюфтета, чедър, течен чедър и домашен бургер сос</span></div><span class="cost">11,90<small>€</small></span></div>
+          <div class="menu-row"><div><b>Чийзбургер</b><br><span>Бриош питка, телешко кюфте, чедър и кетчуп Heinz</span></div><span class="cost">10,90<small>€</small></span></div>
+        </div>
+        <div class="menu-pane" role="tabpanel" id="m-sushi" aria-labelledby="t-sushi" hidden>
+          <div class="menu-row"><div><b>Съни суши комбо, 16 бр.</b><br><span>Съни суши, Аляска, Гора и Урамаки скарида · 440 гр.</span></div><span class="cost">16,36<small>€</small></span></div>
+          <div class="menu-row"><div><b>Салмон суши комбо, 16 бр.</b><br><span>Калипсо, Ичибан, Криспи сьомга и Самър · 510 гр.</span></div><span class="cost">19,94<small>€</small></span></div>
+          <div class="menu-row"><div><b>Урамаки Съни суши, 4 бр.</b><br><span>Пържена скарида, Филаделфия, авокадо и унаги сос · 110 гр.</span></div><span class="cost">4,60<small>€</small></span></div>
+        </div>
+        <div class="menu-pane" role="tabpanel" id="m-pizza" aria-labelledby="t-pizza" hidden>
+          <div class="menu-row"><div><b>Пица Прошуто крудо</b><br><span>Със страчатела и пикантен зехтин · 33 см</span></div><span class="cost">9,90<small>€</small></span></div>
+          <div class="menu-row"><div><b>Пица Белисима</b><br><span>На пещ · 33 см</span></div><span class="cost">8,90<small>€</small></span></div>
+          <div class="menu-row"><div><b>Бягащо пиле</b><br><span>Пушено пилешко филе, моцарела, царевица и топено сирене · 33 см</span></div><span class="cost">8,90<small>€</small></span></div>
+        </div>
+        <div class="menu-pane" role="tabpanel" id="m-grill" aria-labelledby="t-grill" hidden>
+          <div class="menu-row"><div><b>Адана кебап</b><br><span>На дървени въглища · 600 гр.</span></div><span class="cost">11,90<small>€</small></span></div>
+          <div class="menu-row"><div><b>Свинска вратна пържола</b><br><span>С гарнитура · 300 гр.</span></div><span class="cost">8,00<small>€</small></span></div>
+          <div class="menu-row"><div><b>Пилешко сувлаки, 2 бр.</b><br><span>На дървени въглища</span></div><span class="cost">8,50<small>€</small></span></div>
+        </div>
+        <div class="menu-cta"><a href="menu/" class="btn"><svg aria-hidden="true"><use href="#i-list"/></svg>Цялото меню</a><span class="menu-note">Над 300 ястия и напитки, с цени и снимки.</span></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="events">
+    <div class="frame events">
+      <div>
+        <h2 data-reveal>Празници</h2>
+        <p class="events-text" data-reveal style="--i:1">Рожден ден, кръщене, сватба или фирмено парти? Обадете се и заедно ще уговорим деня, менюто и залата. Можем да запазим цяла зала или целия ресторант само за вас.</p>
+        <ul class="occasions" data-reveal style="--i:2">
+          <li>Рождени дни</li>
+          <li>Кръщенета</li>
+          <li>Сватби</li>
+          <li>Абитуриентски балове</li>
+          <li>Фирмени партита</li>
+        </ul>
+      </div>
+      <div class="call-plate" data-reveal style="--i:1">
+        <p class="cp-k">Събития уговаряме по телефона</p>
+        <a class="cp-num" href="tel:+359885999989">+359 88 599 9989</a>
+        <p class="cp-s">Всеки ден от 9:00 до 1:00</p>
+        <a href="tel:+359885999989" class="btn big dark"><svg aria-hidden="true"><use href="#i-phone"/></svg>Обади се</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="frame">
+      <h2 data-reveal>Какво казват гостите</h2>
+      <div class="ratings">
+        <div class="score" data-reveal>
+          <b><span data-count="4.4" data-dec="1">4.4</span><small class="of">/5</small></b>
+          <div class="meter"><i data-score="0.88"></i></div>
+          <p><strong>Google</strong>, 597 отзива</p>
+        </div>
+        <div class="score" data-reveal style="--i:1">
+          <b><span data-count="8.8" data-dec="1">8.8</span><small class="of">/10</small></b>
+          <div class="meter"><i data-score="0.88"></i></div>
+          <p><strong>Орли Хотели</strong>, лауреат 2025 и сребърен медал 2026</p>
+        </div>
+        <blockquote class="said" data-reveal style="--i:2">
+          <p>Разнообразно меню, добро обслужване, чист басейн и спокойна атмосфера.</p>
+          <footer>Обобщение на отзивите в Google</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="frame">
+      <h2 data-reveal>Заповядайте</h2>
+      <div class="contact">
+        <div>
+          <dl>
+            <a class="row" href="https://maps.google.com/?q=42.5375,22.9706" target="_blank" rel="noopener" data-reveal>
+              <span class="ic"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+              <div><dt>Адрес</dt><dd>Дупнишко шосе, бл. 300, 2400 Радомир, България</dd></div>
+            </a>
+            <a class="row" href="tel:+359885999989" data-reveal style="--i:1">
+              <span class="ic"><svg aria-hidden="true"><use href="#i-phone"/></svg></span>
+              <div><dt>Телефон</dt><dd>+359 88 599 9989</dd></div>
+            </a>
+            <a class="row" href="mailto:evrokomersbg@gmail.com" data-reveal style="--i:2">
+              <span class="ic"><svg aria-hidden="true"><use href="#i-mail"/></svg></span>
+              <div><dt>Имейл</dt><dd>evrokomersbg@gmail.com</dd></div>
+            </a>
+            <div class="row" data-reveal style="--i:3">
+              <span class="ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></span>
+              <div><dt>Работно време</dt><dd>Ресторант 9:00–1:00 · Басейн 9:00–18:00</dd></div>
+            </div>
+            <a class="row" href="https://www.facebook.com/SniKompleksGRRadomir" target="_blank" rel="noopener" data-reveal style="--i:4">
+              <span class="ic"><svg aria-hidden="true"><use href="#i-fb"/></svg></span>
+              <div><dt>Facebook</dt><dd>Sunny Complex Радомир</dd></div>
+            </a>
+          </dl>
+          <div class="actions" data-reveal style="--i:5">
+            <a href="reservation/" class="btn"><svg aria-hidden="true"><use href="#i-cal"/></svg>Резервирай</a>
+            <a href="https://maps.google.com/?q=42.5375,22.9706" target="_blank" rel="noopener" class="btn dark"><svg aria-hidden="true"><use href="#i-pin"/></svg>Google Maps</a>
+          </div>
+        </div>
+        <div class="map-wrap" data-reveal style="--i:1">
+          <iframe title="Карта на Sunny Complex в Радомир" loading="lazy" src="https://maps.google.com/maps?q=42.5375,22.9706&z=15&output=embed"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="frame">
+    <div class="foot-plate">
+      <div class="foot-brand">
+        <img src="assets/logo.png" alt="Sunny Complex Radomir" width="408" height="324" loading="lazy">
+        <p>Басейн и бар-ресторант в Радомир, на 40 км от София.</p>
+      </div>
+      <div class="hrs">
+        <h3>Работно време</h3>
+        <ul>
+          <li><b>Ресторант</b><span>всеки ден, 9:00 – 1:00</span></li>
+          <li><b>Басейн</b><span>1 юни – 15 септември, 9:00 – 18:00</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Контакти</h3>
+        <ul>
+          <li><a href="tel:+359885999989">+359 88 599 9989</a></li>
+          <li><a href="mailto:evrokomersbg@gmail.com">evrokomersbg@gmail.com</a></li>
+          <li><a href="https://www.facebook.com/SniKompleksGRRadomir" target="_blank" rel="noopener">Facebook</a></li>
+          <li>Дупнишко шосе, бл. 300, 2400 Радомир</li>
+        </ul>
+      </div>
+      <div class="foot-cta">
+        <h3>Маса или празник?</h3>
+        <a href="reservation/" class="btn"><svg aria-hidden="true"><use href="#i-cal"/></svg>Резервирай</a>
+        <a href="tel:+359885999989" class="btn dark"><svg aria-hidden="true"><use href="#i-phone"/></svg>Обади се</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Sunny Complex, Радомир · <a href="privacy/">Поверителност</a></span>
+      <button type="button" class="to-top" id="toTop" aria-label="Нагоре"><svg aria-hidden="true"><use href="#i-up"/></svg></button>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+(() => {
+  document.documentElement.classList.add('js');
+  const root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s);
+
+  /* ---------- Season from the date ----------
+     Summer: 1 June – 14 September. Winter: 15 September – 31 May. */
+  const isSummerDate = dt => { const m = dt.getMonth(), d = dt.getDate(); return (m >= 5 && m <= 7) || (m === 8 && d < 15); };
+  const today = new Date();
+  const y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
+  const startOfDay = new Date(y, m, d);
+  const isSummer = isSummerDate(today);
+  const season = isSummer ? 'summer' : 'winter';
+  const dayMs = 864e5;
+  const target = isSummer ? new Date(y, 8, 15) : new Date(m >= 5 ? y + 1 : y, 5, 1);
+  const daysLeft = Math.round((target - startOfDay) / dayMs);
+  const months = ['януари','февруари','март','април','май','юни','юли','август','септември','октомври','ноември','декември'];
+  const dayWord = n => n === 1 ? 'ден' : 'дни';
+
+  root.dataset.season = season;
+  $('#seasonWord').textContent = isSummer ? 'Летен' : 'Зимен';
+  $('#dialHead').textContent = isSummer ? 'Летен сезон' : 'Зимен сезон';
+  $('#dialText').innerHTML = isSummer
+    ? `Басейнът е отворен, 9:00–18:00. Сезонът приключва след <span class="count">${daysLeft}</span> ${dayWord(daysLeft)}.`
+    : `Басейнът отваря на 1 юни, след <span class="count">${daysLeft}</span> ${dayWord(daysLeft)}. Ресторантът работи всеки ден до 1:00.`;
+  $('#todayNote').textContent = `Днес е ${d} ${months[m]}: ${isSummer ? 'летен' : 'зимен'} сезон.`;
+
+  /* ---------- Sun-arc dial ---------- */
+  const cx = 75, cy = 80, r = 65;
+  const yearLen = ((y % 4 === 0 && y % 100 !== 0) || y % 400 === 0) ? 366 : 365;
+  const doy = dt => Math.round((dt - new Date(dt.getFullYear(), 0, 1)) / dayMs);
+  const pt = f => { const a = Math.PI * (1 - f); return [cx + r * Math.cos(a), cy - r * Math.sin(a)]; };
+  const [x1, y1] = pt(doy(new Date(y, 5, 1)) / yearLen), [x2, y2] = pt(doy(new Date(y, 8, 15)) / yearLen);
+  $('#summerBand').setAttribute('d', `M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`);
+  const knob = $('#knob');
+  const setKnob = f => { const [kx, ky] = pt(f); knob.setAttribute('transform', `translate(${kx.toFixed(2)} ${ky.toFixed(2)})`); };
+  /* Glide the knob along the arc (not straight across it) from January to today */
+  const todayFrac = doy(startOfDay) / yearLen;
+  setKnob(reduce ? todayFrac : 0);
+  if (!reduce) setTimeout(() => {
+    const dur = 2200, t0 = performance.now();
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    (function glide(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      setKnob(todayFrac * ease(p));
+      if (p < 1) requestAnimationFrame(glide);
+    })(t0);
+    setTimeout(() => setKnob(todayFrac), dur + 150);
+  }, 700);
+
+  /* ---------- Season preview switch ---------- */
+  const sw = $('#switch'), frame = $('#seasonFrame');
+  const items = document.querySelectorAll('#seasonList .season-item');
+  function preview(s) {
+    sw.dataset.active = s; frame.dataset.preview = s;
+    sw.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.season === s)));
+    items.forEach(it => {
+      const on = it.dataset[s] === 'on';
+      it.classList.toggle('on', on); it.classList.toggle('off', !on);
+      it.querySelector('use').setAttribute('href', on ? '#i-check' : '#i-pause');
+      const w = it.querySelector('.when'); w.textContent = w.dataset[s + 'Text'];
+    });
+  }
+  sw.addEventListener('click', e => { const b = e.target.closest('button'); if (b) preview(b.dataset.season); });
+  preview(season);
+
+  /* ---------- Menu tabs ---------- */
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  const selectTab = t => tabs.forEach(x => {
+    const sel = x === t; x.setAttribute('aria-selected', sel); x.tabIndex = sel ? 0 : -1;
+    document.getElementById(x.getAttribute('aria-controls')).hidden = !sel;
+  });
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectTab(t));
+    t.addEventListener('keydown', e => {
+      const dir = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!dir) return; const n = tabs[(i + dir + tabs.length) % tabs.length]; selectTab(n); n.focus();
+    });
+  });
+
+  /* ---------- Mobile menu ---------- */
+  const bar = $('#bar'), menuBtn = $('#menuBtn');
+  menuBtn.addEventListener('click', () => { const open = bar.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', open); });
+  $('#links').addEventListener('click', e => { if (e.target.closest('a')) { bar.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); } });
+
+  /* ---------- Count-up numbers ---------- */
+  function countUp(el) {
+    if (reduce) return;
+    const end = parseFloat(el.dataset.count), dec = +(el.dataset.dec || 0), dur = 1700, t0 = performance.now();
+    const ease = t => 1 - Math.pow(1 - t, 4);
+    (function tick(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      el.textContent = (end * ease(p)).toFixed(dec);
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+    /* Frames can be paused (background tab); always land on the real value */
+    setTimeout(() => { el.textContent = end.toFixed(dec); }, dur + 150);
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    const el = en.target; el.classList.add('in');
+    el.querySelectorAll('[data-count]').forEach(countUp);
+    if (el.matches('[data-count]')) countUp(el);
+    el.querySelectorAll('.fill').forEach(f => f.style.transform = `scaleY(${((parseFloat(f.dataset.temp) - 15) / 20).toFixed(3)})`);
+    el.querySelectorAll('.meter i').forEach(i => i.style.transform = `scaleX(${i.dataset.score})`);
+    io.unobserve(el);
+  }), { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+
+  /* ---------- Header + eased hero parallax ---------- */
+  const heroImg = $('#heroImg');
+  let lastY = scrollY, cur = 0, tgt = 0, raf = 0;
+  function loop() {
+    cur += (tgt - cur) * 0.08;
+    heroImg.style.transform = `translate3d(0, ${cur.toFixed(2)}px, 0)`;
+    raf = Math.abs(tgt - cur) > 0.1 ? requestAnimationFrame(loop) : 0;
+  }
+  addEventListener('scroll', () => {
+    const yNow = scrollY;
+    bar.classList.toggle('scrolled', yNow > 20);
+    bar.classList.toggle('hidden', yNow > lastY && yNow > 400 && !bar.classList.contains('open'));
+    lastY = yNow;
+    if (!reduce && yNow < innerHeight * 1.2) { tgt = yNow * 0.06; if (!raf) raf = requestAnimationFrame(loop); }
+  }, { passive: true });
+  $('#toTop').addEventListener('click', () => scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }));
+})();
+</script>
+</body>
+</html>

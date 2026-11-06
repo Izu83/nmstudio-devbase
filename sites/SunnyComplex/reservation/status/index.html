@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script src="../../assets/serve.js" data-route="/reservation/status/"></script>
+<script src="../../assets/demo-api.js"></script>
+<meta name="robots" content="noindex, nofollow">
+<title>Вашата резервация – Sunny Complex</title>
+<meta name="theme-color" content="#0c0b0a">
+<link rel="icon" href="../../assets/logo-sun.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0c0b0a;
+    --bg-2: #13110f;
+    --gold: #f2b544;
+    --gold-hi: #ffdc93;
+    --text: #ecd8aa;
+    --text-dim: #b8a273;
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    --font-text: "Onest", system-ui, sans-serif;
+    --margin: clamp(16px, 3vw, 40px);
+    --bar-h: 80px;
+    --surface: linear-gradient(180deg, #221f1a, #171512);
+    --raised: inset 0 1px 0 rgba(255,228,170,.08), inset 0 -1px 0 rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.6), 0 16px 32px -16px rgba(0,0,0,.95);
+    --raised-hover: inset 0 1px 0 rgba(255,228,170,.12), inset 0 -1px 0 rgba(0,0,0,.5), 0 2px 4px rgba(0,0,0,.6), 0 26px 44px -18px rgba(0,0,0,1);
+    --pressed: inset 0 3px 8px rgba(0,0,0,.75), inset 0 -1px 0 rgba(255,228,170,.06);
+    --well: inset 0 2px 10px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,228,170,.07);
+    --gold-metal: linear-gradient(180deg, #ffe4a6 0%, #f6c05a 40%, #d99a2b 100%);
+    --gold-press: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -2px 0 rgba(120,70,0,.35), 0 10px 20px -10px rgba(242,181,68,.6);
+    --ease: cubic-bezier(.25, .1, .25, 1);
+
+    --st-pending: #ff9a3c;
+    --st-confirmed: #f2b544;
+    --st-seated: #7fd18b;
+    --st-cancelled: #8a7d66;
+    --st-noshow: #e0766b;
+  }
+  * { box-sizing: border-box; touch-action: pan-x pan-y; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; background: var(--bg); color: var(--text); font: 400 1.05rem/1.6 var(--font-text); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  h1, h2 { font-family: var(--font-display); font-weight: 600; color: var(--gold); margin: 0; line-height: 1; font-feature-settings: "locl" 0; }
+  p { margin: 0; }
+  button { font: inherit; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 8px; }
+  .frame { padding-inline: var(--margin); max-width: 1440px; margin-inline: auto; width: 100%; }
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 24px; border: 0; border-radius: 999px; cursor: pointer; font: 600 1rem/1 var(--font-text); text-decoration: none; color: #1d1404; background: var(--gold-metal); box-shadow: inset 0 1px 0 rgba(255,255,255,.65), inset 0 -2px 0 rgba(120,70,0,.35), 0 1px 2px rgba(0,0,0,.5), 0 12px 26px -12px rgba(242,181,68,.6); }
+  .btn:hover { filter: brightness(1.06); }
+  .btn:active { box-shadow: inset 0 3px 7px rgba(90,50,0,.45); }
+  .btn:disabled { opacity: .5; cursor: progress; }
+  .btn.dark { color: var(--gold); background: var(--surface); box-shadow: var(--raised); }
+  .btn.dark:hover { box-shadow: var(--raised-hover); filter: none; }
+  .btn.dark:active { box-shadow: var(--pressed); }
+  .btn.danger { color: var(--st-noshow); }
+  .btn.armed { background: #3a1a16; color: #ffb3a8; box-shadow: inset 0 0 0 1.5px var(--st-noshow); }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+
+  .bar { height: var(--bar-h); background: rgba(12,11,10,.96); box-shadow: 0 1px 0 rgba(255,228,170,.05); }
+  .bar .frame { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 100%; }
+  .mark { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--gold); font: 700 1.45rem/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; font-feature-settings: "locl" 0; }
+  .mark img { width: 46px; height: auto; }
+
+  main { flex: 1; padding-block: clamp(36px, 6vw, 80px); }
+  main h1 { font-size: clamp(2.6rem, 1.8rem + 3.4vw, 4.6rem); font-weight: 700; }
+  .lede { margin-top: 14px; color: var(--text-dim); max-width: 46ch; }
+  .list { display: grid; gap: 18px; margin-top: clamp(28px, 4vw, 44px); max-width: 640px; }
+
+  .card { display: grid; gap: 18px; padding: clamp(20px, 3vw, 30px); border-radius: 28px; background: var(--bg-2); box-shadow: var(--raised), inset 4px 0 0 var(--st, var(--gold)); }
+  .card.st-pending { --st: var(--st-pending); }
+  .card.st-confirmed { --st: var(--st-confirmed); }
+  .card.st-seated { --st: var(--st-seated); }
+  .card.st-cancelled { --st: var(--st-cancelled); }
+  .card.st-noshow { --st: var(--st-noshow); }
+  .card.past { opacity: .7; }
+  .c-top { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; }
+  .c-top h2 { font-size: 2rem; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: .9rem; color: var(--st); background: color-mix(in oklab, var(--st), transparent 86%); }
+  .pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--st); }
+  .msg { font-size: 1.05rem; }
+  .sum { margin: 0; display: grid; gap: 2px; padding: 6px; border-radius: 18px; background: #0a0908; box-shadow: var(--well); }
+  .sum div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 12px; }
+  .sum dt { color: var(--text-dim); font-size: .93rem; }
+  .sum dd { margin: 0; color: var(--gold); font-weight: 600; text-align: right; font-variant-numeric: lining-nums; }
+  .acts { display: flex; flex-wrap: wrap; gap: 10px; }
+  .note { min-height: 1.4em; font-size: .93rem; color: var(--st-noshow); }
+  .note:empty { display: none; }
+  .empty { padding: 28px; border-radius: 22px; background: #0a0908; box-shadow: var(--well); color: var(--text-dim); display: grid; gap: 16px; justify-items: start; }
+  .upd { margin-top: 14px; font-size: .86rem; color: var(--text-dim); }
+
+  .foot { padding: 0 0 24px; }
+  .foot-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; padding: 16px 22px; border-radius: 999px; background: #0a0908; box-shadow: var(--well); font-size: .9rem; color: var(--text-dim); }
+  .foot-bottom a { color: var(--text); }
+
+  @media (max-width: 640px) {
+    :root { --bar-h: 72px; }
+    .mark { font-size: 1rem; gap: 7px; }
+    .mark img { width: 32px; }
+    .bar .btn { padding: 12px 16px; font-size: .92rem; }
+    .acts .btn { flex: 1 1 100%; }
+    .foot-bottom { border-radius: 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.6 4.3-2.1 1.4a11 11 0 0 0 7.1 7.1l1.4-2.1 4.3 1.6V19a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5Z"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar">
+  <div class="frame">
+    <a href="../../" class="mark" aria-label="Sunny Complex, начало"><img src="../../assets/logo-sun.png" alt="" width="228" height="130">Sunny Complex</a>
+    <a href="../" class="btn dark"><svg aria-hidden="true"><use href="#i-cal"/></svg>Нова резервация</a>
+  </div>
+</header>
+
+<main class="frame">
+  <h1 id="title">Вашата резервация</h1>
+  <p class="lede" id="lede">Тук виждате дали сме потвърдили масата. Ако плановете ви се променят, откажете я, за да я дадем на други гости.</p>
+  <div class="list" id="list" aria-live="polite"></div>
+  <p class="upd" id="upd"></p>
+</main>
+
+<footer class="foot">
+  <div class="frame">
+    <div class="foot-bottom">
+      <span>© 2026 Sunny Complex, Радомир</span>
+      <span><a href="tel:+359885999989">+359 88 599 9989</a> · <a href="../../privacy/">Поверителност</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/tables.js"></script>
+<script>
+(async () => {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const floor = window.FLOOR_DATA || { tables: [], zones: {} };
+  const byId = Object.fromEntries(floor.tables.map(t => [t.id, t]));
+
+  const WD_LONG = ['неделя', 'понеделник', 'вторник', 'сряда', 'четвъртък', 'петък', 'събота'];
+  const MON_LONG = ['януари', 'февруари', 'март', 'април', 'май', 'юни', 'юли', 'август', 'септември', 'октомври', 'ноември', 'декември'];
+  const fromIso = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const longDay = s => { const d = fromIso(s); return `${WD_LONG[d.getDay()]}, ${d.getDate()} ${MON_LONG[d.getMonth()]}`; };
+  const cap = s => s[0].toUpperCase() + s.slice(1);
+  const people = n => `${n} ${n === 1 ? 'човек' : 'души'}`;
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const where = id => { const t = byId[id]; return t ? `${t.booth ? 'Сепаре' : 'Маса'} ${t.id} · ${floor.zones[t.zone]}` : 'Ще съединим маси'; };
+
+  const STATUS = {
+    pending:   ['Чака потвърждение', 'Получихме заявката. Ще ви се обадим, за да потвърдим масата.'],
+    confirmed: ['Потвърдена', 'Масата е запазена за вас. Очакваме ви!'],
+    seated:    ['Заповядахте', 'Благодарим, че бяхте при нас.'],
+    noshow:    ['Изтекла', 'Не ви видяхме този път. Заповядайте пак.'],
+    cancelled: ['Анулирана', 'Резервацията е анулирана. Ако това е грешка, обадете се.'],
+  };
+
+  /* The bookings made from this browser; a link with ?id=…&c=… adds its own */
+  const mine = {
+    get() { try { return JSON.parse(localStorage.getItem('sunny-bookings')) || []; } catch { return []; } },
+    set(l) { try { localStorage.setItem('sunny-bookings', JSON.stringify(l.slice(0, 10))); } catch {} },
+  };
+  const params = new URLSearchParams(location.search);
+  const single = params.get('id') && params.get('c') ? { id: +params.get('id'), code: params.get('c') } : null;
+  const wanted = single ? [single] : mine.get();
+  let shown = [];
+
+  async function fetchOne(b) {
+    const r = await fetch(`/api/booking?id=${b.id}&code=${encodeURIComponent(b.code)}`, { cache: 'no-store' });
+    const j = await r.json().catch(() => ({}));
+    if (r.status === 404) return { ...b, missing: true };
+    if (!r.ok) throw new Error(j.error || 'Нещо се обърка.');
+    return { ...j, code: b.code };
+  }
+
+  function card(b) {
+    if (b.missing) return `<article class="card st-cancelled"><p class="msg">Не намираме резервация № ${b.id}. Проверете линка или се обадете на <a href="tel:+359885999989">+359 88 599 9989</a>.</p></article>`;
+    const [name, text] = STATUS[b.status] || STATUS.pending;
+    const past = b.day < iso(new Date());
+    const msg = b.status === 'cancelled' && b.guest_cancelled ? 'Отказахте тази резервация. Благодарим, че ни уведомихте.' : text;
+    return `<article class="card st-${b.status}${past ? ' past' : ''}" data-id="${b.id}">
+      <div class="c-top"><h2 class="num">№ ${b.id}</h2><span class="pill"><i></i>${b.status === 'cancelled' && b.guest_cancelled ? 'Отказана' : name}</span></div>
+      <p class="msg">${msg}</p>
+      <dl class="sum">
+        <div><dt>Ден</dt><dd>${cap(longDay(b.day))}</dd></div>
+        <div><dt>Час</dt><dd class="num">${b.hour}:00</dd></div>
+        <div><dt>Гости</dt><dd>${people(b.guests)}</dd></div>
+        <div><dt>Маса</dt><dd>${where(b.table)}</dd></div>
+        <div><dt>На името на</dt><dd>${esc(b.name)}</dd></div>
+      </dl>
+      <p class="note" role="alert"></p>
+      <div class="acts">
+        ${b.can_cancel ? '<button type="button" class="btn dark danger" data-cancel>Откажи резервацията</button>' : ''}
+        <a href="tel:+359885999989" class="btn dark"><svg aria-hidden="true"><use href="#i-phone"/></svg>Обадете се</a>
+      </div>
+    </article>`;
+  }
+
+  function render() {
+    const list = $('#list');
+    if (!shown.length) {
+      $('#title').textContent = 'Вашите резервации';
+      $('#lede').hidden = true;
+      list.innerHTML = `<div class="empty"><p>В този браузър няма запазени резервации. Ако имате линк от резервацията, отворете него.</p><a href="../" class="btn"><svg aria-hidden="true"><use href="#i-cal"/></svg>Резервирай маса</a></div>`;
+      return;
+    }
+    $('#title').textContent = shown.length > 1 ? 'Вашите резервации' : 'Вашата резервация';
+    /* Upcoming first, soonest at the top; past ones after */
+    const today = iso(new Date());
+    const sorted = [...shown].sort((a, b) => (a.missing - b.missing) || ((a.day < today) - (b.day < today)) || (a.day < today ? b.day.localeCompare(a.day) : a.day.localeCompare(b.day)) || a.hour - b.hour);
+    list.innerHTML = sorted.map(card).join('');
+    $('#upd').textContent = `Обновено в ${new Date().toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' })}`;
+  }
+
+  async function load() {
+    try {
+      shown = await Promise.all(wanted.map(fetchOne));
+    } catch (err) {
+      $('#list').innerHTML = `<div class="empty"><p>${esc(err.message)} Опитайте пак след малко или се обадете на <a href="tel:+359885999989">+359 88 599 9989</a>.</p></div>`;
+      return;
+    }
+    /* Remember a booking opened from its link; forget ones that no longer exist */
+    const keep = mine.get().filter(b => !shown.some(s => s.id === b.id && s.missing));
+    shown.filter(s => !s.missing && !keep.some(b => b.id === s.id)).forEach(s => keep.unshift({ id: s.id, code: s.code, day: s.day, hour: s.hour }));
+    mine.set(keep);
+    render();
+  }
+
+  /* Cancelling takes two taps */
+  $('#list').addEventListener('click', async e => {
+    const btn = e.target.closest('[data-cancel]');
+    if (!btn) return;
+    const el = btn.closest('.card'), b = shown.find(x => x.id === +el.dataset.id), note = el.querySelector('.note');
+    if (!btn.dataset.armed) {
+      btn.dataset.armed = '1'; btn.classList.add('armed'); btn.textContent = 'Сигурни? Откажи';
+      setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.classList.remove('armed'); btn.textContent = 'Откажи резервацията'; } }, 4000);
+      return;
+    }
+    btn.disabled = true;
+    try {
+      const r = await fetch('/api/booking/cancel', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: b.id, code: b.code }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || 'Нещо се обърка. Обадете се.');
+      Object.assign(b, j);
+      render();
+    } catch (err) { note.textContent = err.message; btn.disabled = false; }
+  });
+
+  if (!wanted.length) { render(); return; }
+  await load();
+  /* The staff may confirm while the page is open */
+  setInterval(() => { if (!document.hidden) load(); }, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+})();
+</script>
+</body>
+</html>

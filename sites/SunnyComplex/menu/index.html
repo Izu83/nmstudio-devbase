@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="bg" data-season="summer">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script src="../assets/serve.js" data-route="/menu/"></script>
+<script src="../assets/demo-api.js"></script>
+<title>Меню – Sunny Complex</title>
+<meta name="description" content="Менюто на Sunny Complex, Радомир: суши, пици на пещ, бургери, скара на дървени въглища, морски дарове, паста, ризото и десерти. Цени в евро.">
+<meta name="theme-color" content="#0c0b0a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sunny Complex">
+<meta property="og:locale" content="bg_BG">
+<meta property="og:title" content="Меню – Sunny Complex">
+<meta property="og:description" content="Менюто на Sunny Complex, Радомир: суши, пици на пещ, бургери, скара на дървени въглища, морски дарове, паста, ризото и десерти. Цени в евро.">
+<meta property="og:url" content="https://izu83.github.io/SunnyComplex/menu/">
+<meta property="og:image" content="https://izu83.github.io/SunnyComplex/assets/share.jpg">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="566">
+<meta property="og:image:alt" content="Басейнът и ресторантът на Sunny Complex в Радомир">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="../assets/icon-180.png">
+<link rel="icon" href="../assets/logo-sun.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @property --season { syntax: "<color>"; inherits: true; initial-value: #ff8a1e; }
+
+  :root {
+    color-scheme: dark;
+    --bg: #0c0b0a;
+    --bg-2: #13110f;
+    --bg-3: #1a1714;
+    --gold: #f2b544;
+    --gold-hi: #ffdc93;
+    --text: #ecd8aa;
+    --text-dim: #b8a273;
+    --summer: #ff8a1e;
+    --winter: #8fd6ff;
+    --season: var(--summer);
+
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    --font-text: "Onest", system-ui, sans-serif;
+
+    --step-0: clamp(1rem, .96rem + .2vw, 1.125rem);
+    --step-1: clamp(1.25rem, 1.1rem + .6vw, 1.6rem);
+    --step-2: clamp(2.3rem, 1.6rem + 2.8vw, 4.2rem);
+    --step-3: clamp(3.4rem, 2rem + 6vw, 8rem);
+
+    --margin: clamp(16px, 3vw, 40px);
+    --radius: 22px;
+    --bar-h: 80px;
+
+    --surface: linear-gradient(180deg, #221f1a, #171512);
+    --raised:
+      inset 0 1px 0 rgba(255, 228, 170, .08),
+      inset 0 -1px 0 rgba(0, 0, 0, .5),
+      0 1px 2px rgba(0, 0, 0, .6),
+      0 16px 32px -16px rgba(0, 0, 0, .95);
+    --raised-hover:
+      inset 0 1px 0 rgba(255, 228, 170, .12),
+      inset 0 -1px 0 rgba(0, 0, 0, .5),
+      0 2px 4px rgba(0, 0, 0, .6),
+      0 26px 44px -18px rgba(0, 0, 0, 1);
+    --pressed: inset 0 3px 8px rgba(0, 0, 0, .75), inset 0 -1px 0 rgba(255, 228, 170, .06);
+    --well: inset 0 2px 10px rgba(0, 0, 0, .7), inset 0 -1px 0 rgba(255, 228, 170, .07);
+    --gold-metal: linear-gradient(180deg, #ffe4a6 0%, #f6c05a 40%, #d99a2b 100%);
+    /* Soft light behind cut-out food, so dishes sit on the card instead of floating */
+    --plate: radial-gradient(ellipse 70% 60% at 50% 55%, rgba(242, 181, 68, .1), rgba(242, 181, 68, 0) 70%);
+    --food-shadow: drop-shadow(0 14px 18px rgba(0, 0, 0, .65));
+
+    --ease: cubic-bezier(.25, .1, .25, 1);
+  }
+  :root[data-season="winter"] { --season: var(--winter); }
+
+  * { box-sizing: border-box; touch-action: pan-x pan-y; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 400 var(--step-0)/1.6 var(--font-text); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; color: var(--gold); margin: 0; line-height: 1; letter-spacing: -.01em; font-feature-settings: "locl" 0; }
+  p { margin: 0; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 8px; }
+  ::selection { background: var(--gold); color: #1d1404; }
+  .frame { padding-inline: var(--margin); max-width: 1440px; margin-inline: auto; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 28px; border: 0; border-radius: 999px; cursor: pointer;
+    font: 600 1rem/1 var(--font-text); text-decoration: none; color: #1d1404; background: var(--gold-metal);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.65), inset 0 -2px 0 rgba(120,70,0,.35), 0 1px 2px rgba(0,0,0,.5), 0 12px 26px -12px rgba(242,181,68,.6);
+    transition: filter .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .btn:hover { filter: brightness(1.06); }
+  .btn:active { box-shadow: inset 0 3px 7px rgba(90,50,0,.45); }
+  .btn.dark { color: var(--gold); background: var(--surface); box-shadow: var(--raised); }
+  .btn.dark:hover { box-shadow: var(--raised-hover); filter: none; }
+  .btn.dark:active { box-shadow: var(--pressed); }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+
+  /* ---------- Header ---------- */
+  .bar { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--bar-h); background: rgba(12,11,10,.96); box-shadow: 0 1px 0 rgba(255,228,170,.05); }
+  .bar .frame { display: flex; align-items: center; gap: 22px; height: 100%; }
+  .mark { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--gold); font: 700 1.45rem/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; font-feature-settings: "locl" 0; }
+  .mark img { width: 46px; height: auto; }
+  .links { display: flex; gap: 2px; margin: 0 0 0 auto; padding: 0; list-style: none; }
+  .links a { display: block; padding: 10px 13px; border-radius: 999px; text-decoration: none; font-weight: 500; color: var(--text); transition: background-color .3s var(--ease), color .3s var(--ease); }
+  .links a:hover { background: rgba(242,181,68,.09); color: var(--gold-hi); }
+  .links a[aria-current="page"] { color: var(--gold); background: #0a0908; box-shadow: var(--well); }
+  .season-badge { display: inline-flex; align-items: center; gap: 10px; padding: 7px 16px 7px 7px; border-radius: 999px; background: var(--surface); box-shadow: var(--raised); color: var(--text); font-weight: 600; font-size: .95rem; white-space: nowrap; text-decoration: none; }
+  .season-badge .disc { position: relative; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; color: #1b1206;
+    background: radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--season), white 40%), var(--season) 72%);
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,.25), 0 0 0 3px color-mix(in oklab, var(--season), transparent 82%), 0 2px 6px rgba(0,0,0,.6); }
+  .season-badge .disc svg { position: absolute; width: 20px; height: 20px; }
+  [data-season="summer"] .season-badge .ico-snow, [data-season="winter"] .season-badge .ico-sun { opacity: 0; }
+  .menu-btn { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-top: calc(var(--bar-h) + clamp(36px, 5vw, 72px)); }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(40px, 6vw, 104px); align-items: center; }
+  .hero h1 { font-size: var(--step-3); font-weight: 700; line-height: .9; }
+  .hero .lede { font-size: var(--step-1); line-height: 1.4; max-width: 32ch; margin-top: 26px; }
+  .hero .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 34px; }
+
+  /* Three dishes on their own plates, side by side, so no label is ever covered */
+  .trio { display: grid; grid-template-columns: 1.25fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; aspect-ratio: 16 / 11; }
+  .trio figure { position: relative; margin: 0; border-radius: calc(var(--radius) + 4px); background: var(--plate), var(--surface); box-shadow: var(--raised); overflow: hidden; display: grid; place-items: center; padding: 18px 18px 44px; }
+  .trio .big { grid-row: span 2; }
+  .trio img { width: 100%; height: 100%; object-fit: contain; filter: var(--food-shadow); }
+  .trio figcaption { position: absolute; left: 16px; bottom: 14px; color: var(--gold); font: 600 1.35rem/1 var(--font-display); font-feature-settings: "locl" 0; }
+
+  /* ---------- Menu layout: sidebar + one category ---------- */
+  .menu { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: clamp(24px, 3vw, 48px); margin-top: clamp(56px, 7vw, 96px); align-items: start; }
+  .side { position: sticky; top: calc(var(--bar-h) + 20px); max-height: calc(100svh - var(--bar-h) - 40px); display: flex; flex-direction: column; gap: 14px; padding: 14px; border-radius: calc(var(--radius) + 6px); background: var(--bg-2); box-shadow: var(--raised); }
+  .search { position: relative; flex: none; }
+  .search svg { position: absolute; left: 16px; top: 50%; width: 20px; height: 20px; transform: translateY(-50%); color: var(--text-dim); pointer-events: none; }
+  .search input { width: 100%; height: 52px; padding: 0 46px 0 46px; border: 0; border-radius: 16px; background: #0a0908; box-shadow: var(--well); color: var(--text); font: 500 1rem var(--font-text); }
+  .search input::placeholder { color: #7d6f57; }
+  .search input:focus { outline: none; box-shadow: var(--well), 0 0 0 2px var(--gold); }
+  .search:focus-within > svg { color: var(--gold); }
+  .search .clear { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border: 0; border-radius: 12px; cursor: pointer; display: none; place-items: center; background: var(--surface); box-shadow: var(--raised); color: var(--gold); }
+  .search .clear svg { position: static; transform: none; width: 15px; height: 15px; color: inherit; }
+  .search.has-q .clear { display: grid; }
+
+  .cat-list { list-style: none; margin: 0; padding: 2px; display: grid; gap: 4px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #3a332a transparent; }
+  .cat-list button {
+    width: 100%; display: grid; grid-template-columns: 46px 1fr auto; gap: 12px; align-items: center; padding: 7px 12px 7px 7px; border: 0; border-radius: 16px; cursor: pointer;
+    background: none; color: var(--text); font: 500 .98rem/1.25 var(--font-text); text-align: left; transition: background-color .3s var(--ease), color .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .cat-list button:hover { background: rgba(242,181,68,.06); color: var(--gold-hi); }
+  .cat-list button[aria-current="true"] { background: #0a0908; box-shadow: var(--pressed); color: var(--gold); }
+  .cat-list .th { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: var(--plate), var(--surface); box-shadow: var(--raised); overflow: hidden; }
+  .cat-list .th img { width: 40px; height: 40px; object-fit: contain; }
+  .cat-list .th svg { width: 20px; height: 20px; color: var(--gold); }
+  .cat-list .n { color: var(--text-dim); font-size: .85rem; font-variant-numeric: tabular-nums; }
+  .cat-list button.none { opacity: .35; }
+
+  /* ---------- Category view ---------- */
+  .view { min-height: 60svh; transition: opacity .28s var(--ease); }
+  .view.fading { opacity: 0; }
+  .cat-head { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 24px; align-items: center; min-height: 200px; padding: clamp(24px, 3vw, 40px); border-radius: calc(var(--radius) + 8px); background: var(--plate), var(--surface); box-shadow: var(--raised); overflow: hidden; }
+  .cat-head h2 { font-size: clamp(2.4rem, 1.6rem + 3vw, 4.6rem); }
+  .cat-head p { margin-top: 12px; color: var(--text-dim); }
+  .cat-head img { width: 100%; max-height: 220px; object-fit: contain; filter: var(--food-shadow); justify-self: end; }
+  .cat-head.no-img { grid-template-columns: 1fr; }
+
+  .dishes { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin-top: 24px; }
+  .dish {
+    position: relative; display: flex; overflow: hidden;
+    border-radius: var(--radius); background: var(--surface); box-shadow: var(--raised); color: var(--text);
+    transition: box-shadow .3s var(--ease);
+  }
+  .dish:hover { box-shadow: var(--raised-hover), inset 0 0 0 1px rgba(242,181,68,.25); }
+  .dish.in-cart { box-shadow: var(--raised), inset 0 0 0 1.5px rgba(242,181,68,.55); }
+  .dish .open { flex: 1; display: flex; flex-direction: column; text-align: left; padding: 0; border: 0; cursor: pointer; background: none; color: inherit; font: inherit; }
+  .dish .meta { padding-right: 54px; }
+  .dish .ph { aspect-ratio: 4 / 3; display: grid; place-items: center; padding: 16px; background: var(--plate); }
+  .dish .ph img { width: 100%; height: 100%; object-fit: contain; filter: var(--food-shadow); opacity: 0; transition: opacity .5s var(--ease); }
+  .dish .ph img.ok { opacity: 1; }
+  .dish .body { display: flex; flex-direction: column; gap: 8px; padding: 4px 20px 20px; flex: 1; }
+  .dish h3 { font-size: 1.45rem; line-height: 1.1; }
+  .dish .d { color: var(--text-dim); font-size: .94rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .dish .meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 10px; }
+  .price { font: 700 1.7rem/1 var(--font-display); color: var(--gold); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; font-feature-settings: "locl" 0; }
+  .price small { font-size: .62em; margin-left: .15em; color: var(--text-dim); }
+  .w { color: var(--text-dim); font-size: .88rem; white-space: nowrap; }
+
+  .plain { list-style: none; padding: 8px; margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2px 20px; border-radius: calc(var(--radius) + 4px); background: var(--bg-2); box-shadow: var(--well); }
+  .plain li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px; }
+  .plain li .row { width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: baseline; padding: 14px 16px; border: 0; border-radius: 14px; cursor: pointer; background: none; color: var(--text); font: inherit; text-align: left; transition: background-color .3s var(--ease); }
+  .plain li .row:hover { background: rgba(242,181,68,.06); }
+  .plain li.in-cart .row { background: rgba(242,181,68,.07); }
+  .plain .nm { font-weight: 600; }
+  .plain .nm span { display: block; font-weight: 400; color: var(--text-dim); font-size: .9rem; }
+  .plain .price { font-size: 1.45rem; }
+  .sub { margin-top: 40px; font-size: 1.9rem; }
+  .group-title { margin-top: 44px; font-size: clamp(1.9rem, 1.5rem + 1.4vw, 2.8rem); }
+  .empty-state { padding: 60px 8px; text-align: center; }
+  .empty-state h2 { font-size: clamp(2rem, 1.6rem + 2vw, 3rem); }
+  .empty-state p { margin-top: 12px; color: var(--text-dim); }
+
+  /* ---------- Dish dialog ---------- */
+  dialog.dish-dlg { width: min(720px, calc(100vw - 24px)); max-height: calc(100svh - 24px); padding: 0; border: 0; border-radius: 28px; background: var(--bg-2); color: var(--text); overflow: auto; box-shadow: inset 0 1px 0 rgba(255,228,170,.1), 0 40px 90px -20px rgba(0,0,0,1); }
+  dialog.dish-dlg[open] { animation: fade .3s var(--ease); }
+  dialog.dish-dlg::backdrop { background: rgba(0,0,0,.78); animation: fade .3s var(--ease); }
+  @keyframes fade { from { opacity: 0; } }
+  .dlg-ph { aspect-ratio: 16 / 10; display: grid; place-items: center; padding: 24px; background: var(--plate), var(--surface); }
+  .dlg-ph img { width: 100%; height: 100%; object-fit: contain; filter: var(--food-shadow); transition: opacity .3s var(--ease); }
+  .dlg-ph img.swap { opacity: 0; }
+  .dlg-body { padding: clamp(22px, 4vw, 36px); display: grid; gap: 14px; }
+  .dlg-body .cat-name { color: var(--text-dim); font-size: .92rem; font-weight: 500; }
+  .dlg-body h2 { font-size: clamp(2rem, 1.6rem + 1.8vw, 3rem); }
+  .dlg-body .d { font-size: 1.05rem; }
+  .dlg-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+  .dlg-row .price { font-size: 2.6rem; }
+  .dlg-nav { display: flex; gap: 10px; }
+  .round { width: 48px; height: 48px; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; background: var(--surface); box-shadow: var(--raised); color: var(--gold); }
+  .round:active { box-shadow: var(--pressed); }
+  .round svg { width: 20px; height: 20px; }
+  .dlg-close { position: absolute; top: 14px; right: 14px; z-index: 2; }
+  .dlg-add { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; padding-top: 18px; border-top: 1px solid rgba(255,228,170,.07); }
+  .dlg-add .btn { flex: 1 1 220px; }
+
+  /* ---------- Ordering for home ---------- */
+  .add { position: absolute; right: 14px; bottom: 14px; width: 44px; height: 44px; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; color: #1d1404; background: var(--gold-metal); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -2px 0 rgba(120,70,0,.35), 0 8px 16px -8px rgba(242,181,68,.7); }
+  .add:active { box-shadow: inset 0 3px 7px rgba(90,50,0,.45); }
+  .add svg { width: 20px; height: 20px; }
+  .plain .add { position: static; width: 40px; height: 40px; margin-right: 6px; }
+  .qty { position: absolute; top: 12px; right: 12px; padding: 5px 11px; border-radius: 999px; background: var(--gold-metal); color: #1d1404; font-size: .8rem; font-weight: 600; box-shadow: 0 6px 14px -6px rgba(0,0,0,.8); }
+  .qty:empty { display: none; }
+  .deliv { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 9px 16px 9px 10px; border-radius: 999px; background: #0a0908; box-shadow: var(--well); font-size: .95rem; }
+  .deliv svg { width: 20px; height: 20px; color: var(--gold); }
+
+  .cart-fab { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: flex; align-items: center; gap: 12px; padding: 8px 20px 8px 8px; border: 0; border-radius: 999px; cursor: pointer; color: var(--text); font: 600 1rem/1 var(--font-text); background: rgba(28,25,21,.98); box-shadow: inset 0 1px 0 rgba(255,228,170,.1), inset 0 0 0 1px rgba(242,181,68,.35), 0 22px 44px -12px #000; transition: opacity .3s var(--ease); }
+  .cart-fab .bag { position: relative; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--gold-metal); color: #1d1404; }
+  .cart-fab .bag svg { width: 22px; height: 22px; }
+  .cart-fab .bag b { position: absolute; top: -4px; right: -4px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; display: grid; place-items: center; background: #0c0b0a; color: var(--gold); font-size: .78rem; box-shadow: 0 0 0 2px var(--gold); }
+  .cart-fab .sum { font: 700 1.35rem/1 var(--font-display); color: var(--gold); font-feature-settings: "lnum" 1, "locl" 0; }
+  .flash { position: fixed; right: 18px; bottom: 92px; z-index: 41; max-width: min(340px, calc(100vw - 36px)); padding: 12px 16px; border-radius: 14px; background: #241f19; box-shadow: inset 3px 0 0 var(--gold), 0 18px 36px -12px #000; font-size: .92rem; opacity: 0; pointer-events: none; transition: opacity .3s var(--ease); }
+  .flash.on { opacity: 1; }
+
+  dialog.cart { margin: 0 0 0 auto; width: min(460px, 100vw); height: 100dvh; max-height: 100dvh; padding: 0; border: 0; border-radius: 28px 0 0 28px; background: var(--bg-2); color: var(--text); box-shadow: -30px 0 80px -20px #000; overflow: hidden; }
+  dialog.cart[open] { display: flex; animation: fade .3s var(--ease); }
+  dialog.cart::backdrop { background: rgba(0,0,0,.7); animation: fade .3s var(--ease); }
+  .cart-in { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .cart-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 22px 14px; }
+  .cart-head h2 { font-size: 2.3rem; }
+  .cart-body { flex: 1; overflow-y: auto; padding: 4px 22px 22px; display: grid; align-content: start; gap: 16px; }
+  .lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; align-items: center; padding: 12px 14px; border-radius: 16px; background: var(--surface); box-shadow: var(--raised); }
+  .line .ln b { display: block; font-weight: 600; line-height: 1.3; }
+  .line .ln span { color: var(--text-dim); font-size: .86rem; }
+  .line .lt { grid-column: 2; font: 700 1.25rem/1 var(--font-display); color: var(--gold); text-align: right; font-feature-settings: "lnum" 1, "locl" 0; }
+  .line .stepper { grid-column: 1; justify-self: start; }
+  .stepper { display: inline-grid; grid-template-columns: 38px 40px 38px; align-items: center; padding: 3px; border-radius: 12px; background: #0a0908; box-shadow: var(--well); }
+  .stepper button { height: 34px; border: 0; border-radius: 9px; cursor: pointer; background: var(--surface); box-shadow: var(--raised); color: var(--gold); font: 600 1.15rem/1 var(--font-text); }
+  .stepper button:active { box-shadow: var(--pressed); }
+  .stepper output { text-align: center; font-weight: 600; color: var(--gold); font-variant-numeric: lining-nums tabular-nums; }
+  .dlg-add .stepper { grid-template-columns: 48px 48px 48px; padding: 4px; border-radius: 999px; }
+  .dlg-add .stepper button { height: 44px; border-radius: 999px; }
+  .cart-empty { padding: 40px 10px; text-align: center; color: var(--text-dim); }
+  .sums { display: grid; gap: 2px; padding: 8px; border-radius: 18px; background: #0a0908; box-shadow: var(--well); }
+  .sums div { display: flex; justify-content: space-between; padding: 7px 10px; color: var(--text-dim); }
+  .sums b { color: var(--text); font-variant-numeric: lining-nums tabular-nums; }
+  .sums .grand { color: var(--text); font-weight: 600; }
+  .sums .grand b { font: 700 1.6rem/1 var(--font-display); color: var(--gold); font-feature-settings: "lnum" 1, "locl" 0; }
+  .cart-foot { padding: 14px 22px 22px; display: grid; gap: 10px; box-shadow: 0 -1px 0 rgba(255,228,170,.06); }
+  .down { padding: 12px 14px; border-radius: 14px; background: rgba(255,138,30,.08); box-shadow: inset 0 0 0 1px rgba(255,138,30,.4); font-size: .92rem; }
+  .down b { color: var(--summer); }
+  .down a { color: var(--gold); font-weight: 600; }
+  .back { justify-self: start; display: inline-flex; align-items: center; gap: 6px; padding: 8px 4px; border: 0; background: none; color: var(--text-dim); font: 500 .95rem var(--font-text); cursor: pointer; }
+  .back svg { width: 16px; height: 16px; }
+  .field { display: grid; gap: 6px; }
+  .field > span { font-size: .88rem; color: var(--text-dim); }
+  .field > span i { font-style: normal; opacity: .7; }
+  .field input, .field select, .field textarea { width: 100%; min-height: 50px; padding: 12px 15px; border: 0; border-radius: 14px; background: #0a0908; box-shadow: var(--well); color: var(--text); font: 500 1rem/1.4 var(--font-text); }
+  .field textarea { min-height: 70px; resize: vertical; }
+  .field select option { background: #13110f; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; box-shadow: var(--well), 0 0 0 2px var(--gold); }
+  .field input[aria-invalid="true"] { box-shadow: var(--well), 0 0 0 2px var(--summer); }
+  .field input::placeholder, .field textarea::placeholder { color: #6d6150; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 5px; border-radius: 16px; background: #0a0908; box-shadow: var(--well); }
+  .seg label { position: relative; display: grid; }
+  .seg input { position: absolute; opacity: 0; inset: 0; margin: 0; }
+  .seg span { padding: 12px 8px; border-radius: 12px; text-align: center; font-weight: 600; font-size: .93rem; color: var(--text-dim); cursor: pointer; }
+  .seg input:checked + span { background: var(--surface); color: var(--gold); box-shadow: var(--raised); }
+  .seg input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .agree { display: flex; gap: 12px; align-items: flex-start; font-size: .9rem; line-height: 1.45; color: var(--text-dim); cursor: pointer; }
+  .agree input { appearance: none; flex: none; display: grid; place-items: center; width: 24px; height: 24px; margin: 0; border-radius: 8px; background: #0a0908; box-shadow: var(--well); cursor: pointer; }
+  .agree input:checked { background: var(--gold-metal); box-shadow: var(--gold-press); }
+  .agree input:checked::after { content: ""; width: 6px; height: 11px; border: solid #1d1404; border-width: 0 2.5px 2.5px 0; transform: translateY(-1px) rotate(45deg); }
+  .agree input[aria-invalid="true"] { box-shadow: var(--well), 0 0 0 2px var(--summer); }
+  .agree a { color: var(--gold); }
+  .onote { min-height: 1.3em; font-size: .92rem; color: var(--gold-hi); }
+  .onote.warn { color: var(--summer); }
+  .done { display: grid; gap: 14px; justify-items: start; padding-top: 10px; }
+  .done .tick { width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; background: var(--gold-metal); color: #1d1404; }
+  .done .tick svg { width: 28px; height: 28px; }
+  .done h3 { font-size: 2rem; }
+
+  /* ---------- Footer ---------- */
+  .foot { margin-top: clamp(96px, 11vw, 180px); padding: 0 0 28px; background: var(--bg-2); }
+  .foot-plate { display: grid; grid-template-columns: minmax(0, 4fr) repeat(3, minmax(0, 3fr)); gap: clamp(24px, 4vw, 56px); padding: clamp(48px, 6vw, 80px) 0 48px; align-items: start; }
+  .foot-brand img { width: min(260px, 70%); height: auto; }
+  .foot-brand p { margin-top: 20px; color: var(--text-dim); max-width: 30ch; }
+  .foot h3 { font-size: 1.6rem; margin-bottom: 16px; }
+  .foot ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .foot a { text-decoration: none; transition: color .3s var(--ease); }
+  .foot a:hover { color: var(--gold-hi); }
+  .foot .hrs b { display: block; color: var(--gold); font-weight: 600; }
+  .foot .hrs span { color: var(--text-dim); font-size: .95rem; }
+  .foot-cta { display: grid; gap: 12px; justify-items: start; }
+  .foot-bottom { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 18px 22px; border-radius: 999px; background: #0a0908; box-shadow: var(--well); font-size: .9rem; color: var(--text-dim); }
+  .to-top { width: 48px; height: 48px; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; background: var(--gold-metal); color: #1d1404; box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 6px 14px -6px rgba(242,181,68,.6); }
+  .to-top:active { box-shadow: inset 0 3px 7px rgba(90,50,0,.45); }
+  .to-top svg { width: 20px; height: 20px; }
+
+  /* Things appear by fading in place; nothing slides or scales */
+  .js [data-fade] { opacity: 0; transition: opacity .7s var(--ease); }
+  .js [data-fade].in { opacity: 1; }
+
+  /* The header row is full on mid-size screens: tighter links, the short season label */
+  @media (max-width: 1460px) {
+    .bar .frame { gap: 14px; }
+    .mark { flex: none; }
+    .links a { padding: 10px 9px; }
+    .season-badge .label-long { display: none; }
+  }
+  @media (max-width: 1280px) {
+    .links { display: none; }
+    .menu-btn { display: inline-grid; place-items: center; margin-left: auto; width: 46px; height: 46px; border: 0; border-radius: 50%; cursor: pointer; background: var(--surface); box-shadow: var(--raised); color: var(--gold); }
+    .menu-btn svg { width: 22px; height: 22px; }
+    .bar .book-open { display: none; }
+    .bar.open .links { display: grid; position: absolute; top: var(--bar-h); left: var(--margin); right: var(--margin); padding: 10px; gap: 2px; background: var(--bg-3); border-radius: var(--radius); box-shadow: 0 30px 60px -20px rgba(0,0,0,1); }
+    .bar.open .links a { padding: 14px 16px; font-size: 1.05rem; }
+  }
+  @media (max-width: 1100px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .trio { max-width: 680px; }
+    .foot-plate { grid-template-columns: 1fr 1fr; }
+  }
+  /* Tablet and phone: the sidebar becomes a bar of categories across the top */
+  @media (max-width: 900px) {
+    .menu { grid-template-columns: minmax(0, 1fr); }
+    .menu > * { min-width: 0; }
+    .side { top: var(--bar-h); max-height: none; padding: 10px; gap: 10px; border-radius: 0 0 22px 22px; margin-inline: calc(var(--margin) * -1); z-index: 30; }
+    .cat-list { display: flex; overflow-x: auto; overflow-y: hidden; gap: 6px; scrollbar-width: none; }
+    .cat-list::-webkit-scrollbar { display: none; }
+    .cat-list li { flex: none; }
+    .cat-list button { grid-template-columns: 34px auto auto; gap: 8px; padding: 5px 12px 5px 5px; border-radius: 999px; white-space: nowrap; background: var(--surface); box-shadow: var(--raised); }
+    .cat-list .th { width: 34px; height: 34px; border-radius: 50%; box-shadow: none; }
+    .cat-list .th img { width: 30px; height: 30px; }
+    .cat-head { grid-template-columns: minmax(0, 1fr) 140px; min-height: 0; }
+    .cat-head img { max-height: 120px; }
+  }
+  @media (max-width: 640px) {
+    .cart-fab { left: 12px; right: 12px; bottom: 12px; justify-content: space-between; }
+    .flash { left: 12px; right: 12px; bottom: 86px; max-width: none; }
+    dialog.cart { width: 100vw; border-radius: 0; }
+    .two { grid-template-columns: 1fr; }
+    :root { --bar-h: 72px; }
+    .bar .frame { gap: 10px; }
+    .mark { font-size: 1rem; gap: 7px; letter-spacing: .02em; }
+    .mark img { width: 32px; }
+    .season-badge { padding-right: 12px; font-size: .86rem; }
+    .season-badge .label-long { display: none; }
+    .hero .actions .btn { flex: 1 1 100%; }
+    .trio figcaption { font-size: 1.1rem; }
+    .dishes { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .dish .ph { padding: 10px; }
+    .dish .body { padding: 2px 12px 14px; gap: 6px; }
+    .dish h3 { font-size: 1.2rem; }
+    .dish .d { -webkit-line-clamp: 2; font-size: .86rem; }
+    .price { font-size: 1.4rem; }
+    .dish .meta { flex-direction: column; align-items: flex-start; gap: 2px; }
+    .plain { grid-template-columns: 1fr; }
+    .cat-head { grid-template-columns: minmax(0, 1fr) 110px; padding: 20px; }
+    .foot-plate { grid-template-columns: 1fr; }
+    .foot-bottom { border-radius: 22px; }
+  }
+  @media (max-width: 370px) { .dishes { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    .js [data-fade] { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.85 1.85M17.35 17.35l1.85 1.85M4.8 19.2l1.85-1.85M17.35 6.65l1.85-1.85"/></g></symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24"><g stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"><g id="arm"><path d="M12 12V2.2"/><path d="M9.4 4.4 12 6.6l2.6-2.2"/><path d="M10.1 8.2 12 9.7l1.9-1.5"/></g><use href="#arm" transform="rotate(60 12 12)"/><use href="#arm" transform="rotate(120 12 12)"/><use href="#arm" transform="rotate(180 12 12)"/><use href="#arm" transform="rotate(240 12 12)"/><use href="#arm" transform="rotate(300 12 12)"/></g><circle cx="12" cy="12" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.6 4.3-2.1 1.4a11 11 0 0 0 7.1 7.1l1.4-2.1 4.3 1.6V19a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5Z"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/></symbol>
+    <symbol id="i-moto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h6l2.5-6h-4M17 11l1.5 6M5.5 14l2-5h4"/><path d="M13 5h3l1 3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></symbol>
+    <symbol id="i-pot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16v3a8 8 0 0 1-16 0v-3ZM2 10h2M20 10h2M9 6c0-1.5 1-1.5 1-3M14 6c0-1.5 1-1.5 1-3"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar" id="bar">
+  <div class="frame">
+    <a href="../" class="mark" aria-label="Sunny Complex, начало">
+      <img src="../assets/logo-sun.png" alt="" width="228" height="130">
+      Sunny Complex
+    </a>
+    <ul class="links" id="links">
+      <li><a href="../#pool">Басейн</a></li>
+      <li><a href="../#seasons">Сезони</a></li>
+      <li><a href="../#restaurant">Ресторант</a></li>
+      <li><a href="./" aria-current="page">Меню</a></li>
+      <li><a href="../#events">Празници</a></li>
+      <li><a href="../#reviews">Отзиви</a></li>
+      <li><a href="../#contact">Контакти</a></li>
+    </ul>
+    <a href="../#seasons" class="season-badge">
+      <span class="disc" aria-hidden="true"><svg class="ico-sun"><use href="#i-sun"/></svg><svg class="ico-snow"><use href="#i-snow"/></svg></span>
+      <span><span id="seasonWord">Летен</span><span class="label-long"> сезон</span></span>
+    </a>
+    <a href="../reservation/" class="btn book-open"><svg aria-hidden="true"><use href="#i-cal"/></svg>Резервирай</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="links" aria-label="Меню на сайта"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="frame hero-grid">
+      <div>
+        <h1 data-fade>Меню</h1>
+        <p class="lede" data-fade><span id="total">332</span> предложения от кухнята и бара: суши, пици на пещ, скара на дървени въглища и още. Цените са в евро.</p>
+        <p class="deliv" data-fade><svg aria-hidden="true"><use href="#i-moto"/></svg>Доставка до вкъщи: добавете ястия с „+“</p>
+        <div class="actions" data-fade>
+          <a href="#menu" class="btn">Към менюто</a>
+          <a href="../reservation/" class="btn dark"><svg aria-hidden="true"><use href="#i-cal"/></svg>Резервирай маса</a>
+        </div>
+      </div>
+      <div class="trio" data-fade aria-hidden="true">
+        <figure class="big"><img src="img/ad8a14ee-8dad-f011-8be2-f8b156bb3278_0.webp" alt=""><figcaption>Суши</figcaption></figure>
+        <figure><img src="img/249db366-8ead-f011-8be2-f8b156bb3278_0.webp" alt=""><figcaption>Пици на пещ</figcaption></figure>
+        <figure><img src="img/fe2670cb-8dad-f011-8be2-f8b156bb3278_0.webp" alt=""><figcaption>Бургери</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="frame menu" id="menu">
+    <aside class="side" aria-label="Категории">
+      <div class="search" id="searchBox">
+        <input type="search" id="q" placeholder="Търсене, напр. сьомга" aria-label="Търсене в менюто" autocomplete="off">
+        <svg aria-hidden="true"><use href="#i-search"/></svg>
+        <button type="button" class="clear" id="qClear" aria-label="Изчисти търсенето"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <ul class="cat-list" id="catList"></ul>
+    </aside>
+    <section class="view" id="view" aria-live="polite">
+      <noscript><p>Менюто се зарежда с JavaScript. Можете да го разгледате и на <a href="https://sunnycomplex.zamboo.bg/menuindex">sunnycomplex.zamboo.bg</a>.</p></noscript>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="frame">
+    <div class="foot-plate">
+      <div class="foot-brand">
+        <img src="../assets/logo.png" alt="Sunny Complex Radomir" width="408" height="324" loading="lazy">
+        <p>Басейн и бар-ресторант в Радомир, на 40 км от София.</p>
+      </div>
+      <div class="hrs">
+        <h3>Работно време</h3>
+        <ul>
+          <li><b>Ресторант</b><span>всеки ден, 9:00 – 1:00</span></li>
+          <li><b>Басейн</b><span>1 юни – 15 септември, 9:00 – 18:00</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Контакти</h3>
+        <ul>
+          <li><a href="tel:+359885999989">+359 88 599 9989</a></li>
+          <li><a href="mailto:evrokomersbg@gmail.com">evrokomersbg@gmail.com</a></li>
+          <li><a href="https://www.facebook.com/SniKompleksGRRadomir" target="_blank" rel="noopener">Facebook</a></li>
+          <li>Дупнишко шосе, бл. 300, 2400 Радомир</li>
+        </ul>
+      </div>
+      <div class="foot-cta">
+        <h3>Маса или празник?</h3>
+        <a href="../reservation/" class="btn"><svg aria-hidden="true"><use href="#i-cal"/></svg>Резервирай</a>
+        <a href="tel:+359885999989" class="btn dark"><svg aria-hidden="true"><use href="#i-phone"/></svg>Обади се</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Sunny Complex, Радомир · <a href="../privacy/">Поверителност</a></span>
+      <button type="button" class="to-top" id="toTop" aria-label="Нагоре"><svg aria-hidden="true"><use href="#i-up"/></svg></button>
+    </div>
+  </div>
+</footer>
+
+<dialog class="dish-dlg" id="dlg" aria-labelledby="dlgName">
+  <button type="button" class="round dlg-close" id="dlgClose" aria-label="Затвори"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+  <div class="dlg-ph" id="dlgPh"><img id="dlgImg" alt=""></div>
+  <div class="dlg-body">
+    <p class="cat-name" id="dlgCat"></p>
+    <h2 id="dlgName"></h2>
+    <p class="d" id="dlgDesc"></p>
+    <div class="dlg-row">
+      <div><span class="price" id="dlgPrice"></span> <span class="w" id="dlgW"></span></div>
+      <div class="dlg-nav">
+        <button type="button" class="round" id="dlgPrev" aria-label="Предишно ястие"><svg aria-hidden="true"><use href="#i-left"/></svg></button>
+        <button type="button" class="round" id="dlgNext" aria-label="Следващо ястие"><svg aria-hidden="true"><use href="#i-right"/></svg></button>
+      </div>
+    </div>
+    <div class="dlg-add" id="dlgAdd">
+      <div class="stepper" role="group" aria-label="Брой">
+        <button type="button" id="dlgMinus" aria-label="По-малко">−</button><output id="dlgQty">1</output><button type="button" id="dlgPlus" aria-label="Повече">+</button>
+      </div>
+      <button type="button" class="btn" id="dlgAddBtn"><svg aria-hidden="true"><use href="#i-bag"/></svg><span></span></button>
+    </div>
+  </div>
+</dialog>
+
+<button type="button" class="cart-fab" id="cartFab" hidden>
+  <span class="bag"><svg aria-hidden="true"><use href="#i-bag"/></svg><b id="fabCount">0</b></span>
+  <span>Количка</span><span class="sum" id="fabSum"></span>
+</button>
+<p class="flash" id="flash" role="status" aria-live="polite"></p>
+
+<dialog class="cart" id="cart" aria-labelledby="cartTitle">
+  <div class="cart-in">
+    <div class="cart-head">
+      <h2 id="cartTitle">Количка</h2>
+      <button type="button" class="round" id="cartClose" aria-label="Затвори"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+
+    <div class="cart-body" id="stepCart">
+      <ul class="lines" id="lines"></ul>
+      <p class="cart-empty" id="cartEmpty">Количката е празна. Натиснете „+“ до ястие, за да го добавите.</p>
+      <div class="sums" id="sums">
+        <div><span>Ястия</span><b id="sumItems"></b></div>
+        <div><span>Доставка</span><b id="sumFee"></b></div>
+        <div class="grand"><span>Общо</span><b id="sumTotal"></b></div>
+      </div>
+      <p class="down" id="down" hidden></p>
+    </div>
+
+    <form class="cart-body" id="checkout" novalidate hidden>
+      <button type="button" class="back" id="backToCart"><svg aria-hidden="true"><use href="#i-left"/></svg>Обратно към количката</button>
+      <label class="field"><span>Име</span><input name="name" autocomplete="name" required placeholder="Вашето име"></label>
+      <label class="field"><span>Телефон</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="08X XXX XXXX"></label>
+      <div class="two">
+        <label class="field"><span>Населено място</span><input name="town" autocomplete="address-level2" value="Радомир"></label>
+        <label class="field"><span>Улица и номер</span><input name="address" autocomplete="street-address" required placeholder="ул. Пример 12"></label>
+      </div>
+      <label class="field"><span>Вход, етаж, апартамент <i>(по желание)</i></span><input name="details" placeholder="вх. А, ет. 3, ап. 7"></label>
+      <label class="field"><span>Кога</span><select name="when" id="when"></select></label>
+      <div class="field"><span id="payLbl">Плащане при доставка</span>
+        <div class="seg" role="radiogroup" aria-labelledby="payLbl">
+          <label><input type="radio" name="payment" value="cash" checked><span>В брой</span></label>
+          <label><input type="radio" name="payment" value="card"><span>С карта</span></label>
+        </div>
+      </div>
+      <label class="field"><span>Бележка <i>(по желание)</i></span><textarea name="note" rows="2" placeholder="Звънец, без лук, прибори"></textarea></label>
+      <label class="agree"><input type="checkbox" name="agree"><span>Прочетох <a href="../privacy/" target="_blank">политиката за поверителност</a>. Данните са само за тази доставка.</span></label>
+      <div class="sums"><div class="grand"><span>Общо с доставка</span><b id="sumTotal2"></b></div></div>
+      <p class="onote" id="onote" aria-live="polite"></p>
+    </form>
+
+    <div class="cart-body" id="stepDone" hidden>
+      <div class="done">
+        <span class="tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
+        <h3 id="doneTitle"></h3>
+        <p id="doneText"></p>
+      </div>
+    </div>
+
+    <div class="cart-foot" id="cartFoot">
+      <button type="button" class="btn" id="cartNext"></button>
+    </div>
+  </div>
+</dialog>
+
+<script src="menu-data.js"></script>
+<script>
+(() => {
+  document.documentElement.classList.add('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s);
+  const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  /* ---------- Season badge (same rule as the home page) ---------- */
+  const now = new Date(), mo = now.getMonth(), dd = now.getDate();
+  const summer = (mo >= 5 && mo <= 7) || (mo === 8 && dd < 15);
+  document.documentElement.dataset.season = summer ? 'summer' : 'winter';
+  $('#seasonWord').textContent = summer ? 'Летен' : 'Зимен';
+
+  /* ---------- Data ---------- */
+  const MENU = window.MENU || [];
+  const all = [];
+  MENU.forEach(cat => {
+    cat.refs = cat.items.map((it, k) => ({ ...it, cat, key: `${cat.id}:${k}` }));
+    /* The menu's "Доставка" line is the delivery fee, not something to put in the cart */
+    cat.extraRefs = (cat.extras || []).map((it, k) => ({ ...it, cat, extra: true, key: `${cat.id}:x${k}`, fee: it.n === 'Доставка' }));
+    [...cat.refs, ...cat.extraRefs].forEach(r => { r.i = all.push(r) - 1; });
+  });
+  const norm = s => s.toLowerCase().replace(/ё/g, 'е');
+  all.forEach(r => { r.hay = norm(`${r.n} ${r.d} ${r.cat.name}`); });
+  $('#total').textContent = all.length;
+  const countWord = n => n === 1 ? 'предложение' : 'предложения';
+  const priceHtml = p => `${esc(p)}<small>€</small>`;
+
+  /* ---------- Sidebar ---------- */
+  const list = $('#catList');
+  list.innerHTML = MENU.map(c => `
+    <li><button type="button" data-cat="${c.id}">
+      <span class="th">${c.img ? `<img src="${c.img}" alt="" loading="lazy">` : '<svg aria-hidden="true"><use href="#i-pot"/></svg>'}</span>
+      <span>${esc(c.name)}</span><span class="n" data-n>${c.refs.length + c.extraRefs.length}</span>
+    </button></li>`).join('');
+  const catBtns = [...list.querySelectorAll('button')];
+
+  /* ---------- Building blocks ---------- */
+  const addBtn = r => r.fee ? '' : `<button type="button" class="add" data-add="${r.i}" aria-label="Добави ${esc(r.n)} в количката"><svg aria-hidden="true"><use href="#i-plus"/></svg></button>`;
+  const card = r => `
+    <div class="dish" data-key="${r.key}">
+      <button type="button" class="open" data-i="${r.i}">
+        <span class="ph"><img src="${r.img}" alt="${esc(r.n)}" loading="lazy" decoding="async"></span>
+        <span class="body">
+          <h3>${esc(r.n)}</h3>
+          ${r.d ? `<span class="d">${esc(r.d)}</span>` : ''}
+          <span class="meta"><span class="price">${priceHtml(r.p)}</span>${r.w ? `<span class="w">${esc(r.w)}</span>` : ''}</span>
+        </span>
+      </button>
+      ${addBtn(r)}<span class="qty" data-q="${r.key}"></span>
+    </div>`;
+  const row = r => `
+    <li data-key="${r.key}"><button type="button" class="row" data-i="${r.i}">
+      <span class="nm">${esc(r.n)}${r.w || r.d ? `<span>${esc([r.w, r.d].filter(Boolean).join(' · '))}</span>` : ''}</span>
+      <span class="price">${priceHtml(r.p)}</span>
+    </button>${addBtn(r)}</li>`;
+  const block = refs => {
+    const pics = refs.filter(r => r.img && !r.extra), text = refs.filter(r => !r.img && !r.extra), extras = refs.filter(r => r.extra);
+    return (pics.length ? `<div class="dishes">${pics.map(card).join('')}</div>` : '') +
+      (text.length ? `<ul class="plain">${text.map(row).join('')}</ul>` : '') +
+      (extras.length ? `<h3 class="sub">Хляб и добавки</h3><ul class="plain">${extras.map(row).join('')}</ul>` : '');
+  };
+
+  /* ---------- One view at a time ---------- */
+  const view = $('#view');
+  let current = MENU[0] && MENU[0].id, visible = [];
+  function render(html, refs) {
+    visible = refs.map(r => r.i);
+    const paint = () => {
+      view.innerHTML = html;
+      view.querySelectorAll('.dish img').forEach(img => {
+        if (img.complete && img.naturalWidth) img.classList.add('ok');
+        else img.addEventListener('load', () => img.classList.add('ok'), { once: true });
+      });
+      view.classList.remove('fading');
+      markCart();
+    };
+    if (reduce || !view.children.length) return paint();
+    view.classList.add('fading');
+    setTimeout(paint, 280);
+  }
+  function showCategory(id, { scroll = true } = {}) {
+    const cat = MENU.find(c => c.id === id) || MENU[0];
+    current = cat.id;
+    catBtns.forEach(b => b.setAttribute('aria-current', String(b.dataset.cat === cat.id)));
+    const n = cat.refs.length + cat.extraRefs.length;
+    const head = `
+      <header class="cat-head${cat.img ? '' : ' no-img'}">
+        <div><h2>${esc(cat.name)}</h2><p>${n} ${countWord(n)}${cat.id === 'dnevno' ? '. Дневното меню се сменя всеки ден, попитайте за днешните ястия.' : ''}</p></div>
+        ${cat.img ? `<img src="${cat.img}" alt="">` : ''}
+      </header>`;
+    render(head + block([...cat.refs, ...cat.extraRefs]), [...cat.refs, ...cat.extraRefs]);
+    if (location.hash.slice(1) !== cat.id) history.replaceState(null, '', '#' + cat.id);
+    // Bring the chosen category into view inside the list only (sideways on phones), never moving the page
+    const li = catBtns.find(b => b.dataset.cat === cat.id).parentElement;
+    const sideways = list.scrollWidth > list.clientWidth;
+    list.scrollTo(sideways
+      ? { left: li.offsetLeft - (list.clientWidth - li.offsetWidth) / 2, behavior: scroll && !reduce ? 'smooth' : 'auto' }
+      : { top: li.offsetTop - (list.clientHeight - li.offsetHeight) / 2, behavior: scroll && !reduce ? 'smooth' : 'auto' });
+    if (scroll) {
+      const top = $('#menu').getBoundingClientRect().top + scrollY - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h')) - 16;
+      if (scrollY > top) scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  list.addEventListener('click', e => {
+    const b = e.target.closest('button[data-cat]'); if (!b) return;
+    if (q.value) { q.value = ''; box.classList.remove('has-q'); resetCounts(); }
+    showCategory(b.dataset.cat);
+  });
+
+  /* ---------- Search across every category ---------- */
+  const q = $('#q'), box = $('#searchBox');
+  const resetCounts = () => catBtns.forEach(b => {
+    const c = MENU.find(x => x.id === b.dataset.cat);
+    b.querySelector('[data-n]').textContent = c.refs.length + c.extraRefs.length; b.classList.remove('none');
+  });
+  let t = 0;
+  function runSearch() {
+    const raw = q.value.trim(), term = norm(raw);
+    box.classList.toggle('has-q', !!term);
+    if (!term) { resetCounts(); return showCategory(current, { scroll: false }); }
+    const hits = all.filter(r => r.hay.includes(term));
+    catBtns.forEach(b => {
+      const n = hits.filter(r => r.cat.id === b.dataset.cat).length;
+      b.querySelector('[data-n]').textContent = n; b.classList.toggle('none', n === 0);
+      b.setAttribute('aria-current', 'false');
+    });
+    if (!hits.length) {
+      return render(`<div class="empty-state"><h2>Нищо не открихме за „${esc(raw)}“</h2><p>Опитайте с друга дума, например „пиле“, „скарида“ или „пица“.</p></div>`, []);
+    }
+    const groups = MENU.map(c => [c, hits.filter(r => r.cat === c)]).filter(([, h]) => h.length);
+    render(`<header class="cat-head no-img"><div><h2>Резултати</h2><p>${hits.length} ${countWord(hits.length)} за „${esc(raw)}“</p></div></header>` +
+      groups.map(([c, h]) => `<h2 class="group-title">${esc(c.name)}</h2>${block(h)}`).join(''), hits);
+  }
+  q.addEventListener('input', () => { clearTimeout(t); t = setTimeout(runSearch, 160); });
+  $('#qClear').addEventListener('click', () => { q.value = ''; runSearch(); q.focus(); });
+
+  /* ---------- Dish dialog ---------- */
+  const dlg = $('#dlg'), dlgImg = $('#dlgImg');
+  let cur = -1;
+  function openDish(i) {
+    const r = all[i]; cur = i;
+    $('#dlgPh').hidden = !r.img;
+    if (r.img) {
+      if (dlg.open && !reduce) { dlgImg.classList.add('swap'); setTimeout(() => { dlgImg.src = r.img; dlgImg.onload = () => dlgImg.classList.remove('swap'); }, 150); }
+      else dlgImg.src = r.img;
+      dlgImg.alt = r.n;
+    }
+    $('#dlgCat').textContent = r.cat.name;
+    $('#dlgName').textContent = r.n;
+    $('#dlgDesc').textContent = r.d || '';
+    $('#dlgDesc').hidden = !r.d;
+    $('#dlgPrice').innerHTML = priceHtml(r.p);
+    $('#dlgW').textContent = r.w || '';
+    $('#dlgAdd').hidden = !!r.fee;
+    dlgQty = 1; paintDlgAdd();
+    if (!dlg.open) dlg.showModal();
+  }
+  const step = dir => { const k = visible.indexOf(cur); if (k >= 0) openDish(visible[(k + dir + visible.length) % visible.length]); };
+  view.addEventListener('click', e => {
+    const a = e.target.closest('[data-add]');
+    if (a) return addToCart(all[+a.dataset.add], 1);
+    const b = e.target.closest('button[data-i]'); if (b) openDish(+b.dataset.i);
+  });
+  $('#dlgClose').addEventListener('click', () => dlg.close());
+  $('#dlgPrev').addEventListener('click', () => step(-1));
+  $('#dlgNext').addEventListener('click', () => step(1));
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
+
+  /* ---------- Home delivery: cart and checkout ----------
+     The cart lives in this browser only. The order is sent to server.py and shows up on /deliveries;
+     the server prices it from the menu again, so what is shown here is only for the guest. */
+  const byKey = Object.fromEntries(all.map(r => [r.key, r]));
+  const cents = p => { const [e, c = '0'] = p.split(','); return +e * 100 + +(c + '0').slice(0, 2); };
+  const money = c => `${(c / 100).toFixed(2).replace('.', ',')} €`;
+  const feeRef = all.find(r => r.fee);
+  let fee = feeRef ? cents(feeRef.p) : 100;
+  const store = {
+    get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  };
+  /* key -> quantity, in the order things were added */
+  const cart = new Map(store.get('sunny-cart', []).filter(([k, n]) => byKey[k] && !byKey[k].fee && n > 0));
+  const count = () => [...cart.values()].reduce((a, b) => a + b, 0);
+  const subtotal = () => [...cart].reduce((a, [k, n]) => a + cents(byKey[k].p) * n, 0);
+
+  const fab = $('#cartFab'), flash = $('#flash');
+  let flashT;
+  function saveCart() { store.set('sunny-cart', [...cart]); paintCart(); markCart(); }
+  function addToCart(r, n) {
+    cart.set(r.key, Math.min(30, (cart.get(r.key) || 0) + n));
+    saveCart();
+    flash.textContent = `Добавено: ${n > 1 ? n + ' × ' : ''}${r.n}`;
+    flash.classList.add('on'); clearTimeout(flashT); flashT = setTimeout(() => flash.classList.remove('on'), 2200);
+  }
+  function markCart() {
+    document.querySelectorAll('[data-key]').forEach(el => el.classList.toggle('in-cart', cart.has(el.dataset.key)));
+    document.querySelectorAll('[data-q]').forEach(el => { const n = cart.get(el.dataset.q); el.textContent = n ? `${n} в количката` : ''; });
+  }
+
+  const cartDlg = $('#cart'), next = $('#cartNext');
+  let stage = 'cart', info = null;
+  function paintCart() {
+    const n = count(), sub = subtotal();
+    fab.hidden = !n;
+    $('#fabCount').textContent = n;
+    $('#fabSum').textContent = money(sub + fee);
+    $('#lines').innerHTML = [...cart].map(([k, q]) => {
+      const r = byKey[k];
+      return `<li class="line"><div class="ln"><b>${esc(r.n)}</b><span>${money(cents(r.p))}${r.w ? ' · ' + esc(r.w) : ''}</span></div>
+        <b class="lt">${money(cents(r.p) * q)}</b>
+        <div class="stepper" role="group" aria-label="${esc(r.n)}"><button type="button" data-dec="${k}" aria-label="По-малко">−</button><output>${q}</output><button type="button" data-inc="${k}" aria-label="Повече">+</button></div></li>`;
+    }).join('');
+    $('#cartEmpty').hidden = !!n;
+    $('#sums').hidden = !n;
+    $('#sumItems').textContent = money(sub);
+    $('#sumFee').textContent = money(fee);
+    $('#sumTotal').textContent = $('#sumTotal2').textContent = money(sub + fee);
+    paintStage();
+  }
+  function paintStage() {
+    $('#stepCart').hidden = stage !== 'cart';
+    $('#checkout').hidden = stage !== 'form';
+    $('#stepDone').hidden = stage !== 'done';
+    $('#cartTitle').textContent = { cart: 'Количка', form: 'Доставка', done: 'Благодарим' }[stage];
+    const closed = info && !info.ok;
+    $('#down').hidden = !closed;
+    if (closed) $('#down').innerHTML = info.text;
+    next.disabled = stage !== 'done' && (!count() || closed);
+    next.innerHTML = stage === 'cart' ? 'Към поръчката' : stage === 'form' ? `Поръчай · ${money(subtotal() + fee)}` : 'Затвори';
+  }
+  $('#lines').addEventListener('click', e => {
+    const b = e.target.closest('[data-inc], [data-dec]'); if (!b) return;
+    const k = b.dataset.inc || b.dataset.dec, n = (cart.get(k) || 0) + (b.dataset.inc ? 1 : -1);
+    if (n > 0) cart.set(k, Math.min(30, n)); else cart.delete(k);
+    saveCart();
+  });
+
+  /* Is the kitchen taking orders? Asked each time the cart opens. */
+  async function checkOpen() {
+    try {
+      const r = await fetch('/api/orders/info', { cache: 'no-store' });
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json();
+      fee = j.fee;
+      info = j.open ? { ok: true } : { ok: false, text: `<b>В момента не приемаме поръчки.</b> Доставяме всеки ден от ${j.from}:00 до ${j.until}:00.` };
+    } catch {
+      info = { ok: false, text: '<b>Онлайн поръчките не работят в момента.</b> Обадете се на <a href="tel:+359885999989">+359 88 599 9989</a>.' };
+    }
+    paintCart();
+  }
+
+  /* Delivery time: as soon as possible, or a half hour later today (until 0:30) */
+  function fillTimes() {
+    const sel = $('#when'), now = new Date(), opts = [['asap', 'Възможно най-скоро']];
+    const t = new Date(now.getTime() + 60 * 60000);
+    t.setMinutes(t.getMinutes() <= 30 ? 30 : 60, 0, 0);
+    const end = new Date(now); if (now.getHours() >= 5) end.setDate(end.getDate() + 1); end.setHours(0, 30, 0, 0);
+    for (; t <= end; t.setMinutes(t.getMinutes() + 30)) {
+      const v = `${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}`;
+      opts.push([v, `около ${t.getHours()}:${String(t.getMinutes()).padStart(2, '0')}`]);
+    }
+    const keep = sel.value;
+    sel.innerHTML = opts.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+    if (opts.some(([v]) => v === keep)) sel.value = keep;
+  }
+
+  const co = $('#checkout'), onote = $('#onote');
+  const saved = store.get('sunny-customer', {});
+  ['name', 'phone', 'town', 'address', 'details'].forEach(k => { if (saved[k]) co[k].value = saved[k]; });
+
+  function openCart() {
+    if (stage === 'done') stage = 'cart';
+    paintCart(); cartDlg.showModal(); checkOpen();
+  }
+  fab.addEventListener('click', openCart);
+  $('#cartClose').addEventListener('click', () => cartDlg.close());
+  cartDlg.addEventListener('click', e => { if (e.target === cartDlg) cartDlg.close(); });
+  $('#backToCart').addEventListener('click', () => { stage = 'cart'; paintStage(); });
+  next.addEventListener('click', () => {
+    if (stage === 'cart') { stage = 'form'; fillTimes(); paintStage(); co.name.focus(); }
+    else if (stage === 'form') co.requestSubmit();
+    else cartDlg.close();
+  });
+
+  co.addEventListener('submit', async e => {
+    e.preventDefault();
+    const v = k => co[k].value.trim();
+    const fail = (text, field) => { onote.className = 'onote warn'; onote.textContent = text; if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); } };
+    co.querySelectorAll('[aria-invalid]').forEach(f => f.removeAttribute('aria-invalid'));
+    if (!v('name')) return fail('Моля, напишете име.', co.name);
+    if (v('phone').replace(/\D/g, '').length < 9) return fail('Моля, напишете телефон, на който да ви потърсим.', co.phone);
+    if (v('address').length < 4) return fail('Моля, напишете улица и номер.', co.address);
+    if (!co.agree.checked) return fail('Отбележете, че сте прочели политиката за поверителност.', co.agree);
+    onote.className = 'onote'; onote.textContent = 'Изпращаме поръчката…';
+    next.disabled = true;
+    const body = { items: [...cart].map(([key, qty]) => ({ key, qty })), name: v('name'), phone: v('phone'), town: v('town'),
+                   address: v('address'), details: v('details'), note: v('note'), payment: co.payment.value, when: co.when.value, agree: true };
+    try {
+      const r = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) { next.disabled = false; return fail(j.error || 'Нещо се обърка. Опитайте пак или се обадете на +359 88 599 9989.'); }
+      store.set('sunny-customer', { name: body.name, phone: body.phone, town: body.town, address: body.address, details: body.details });
+      $('#doneTitle').textContent = `Поръчка № ${j.id} е приета`;
+      $('#doneText').textContent = `Общо ${money(j.total)}, плащане ${body.payment === 'cash' ? 'в брой' : 'с карта'} при доставка${body.when === 'asap' ? '' : `, около ${body.when.replace(/^0/, '')}`}. Доставяме до ${body.address}${body.town ? ', ' + body.town : ''}. Ако нещо не е ясно, ще ви се обадим на ${body.phone}.`;
+      cart.clear(); co.note.value = ''; onote.textContent = '';
+      stage = 'done'; saveCart();
+    } catch {
+      next.disabled = false;
+      fail('Няма връзка. Опитайте пак или се обадете на +359 88 599 9989.');
+    }
+  });
+
+  /* "Add" inside the dish window, with a count */
+  let dlgQty = 1;
+  function paintDlgAdd() {
+    const r = all[cur]; if (!r || r.fee) return;
+    $('#dlgQty').textContent = dlgQty;
+    $('#dlgAddBtn span').textContent = `Добави · ${money(cents(r.p) * dlgQty)}`;
+  }
+  $('#dlgMinus').addEventListener('click', () => { dlgQty = Math.max(1, dlgQty - 1); paintDlgAdd(); });
+  $('#dlgPlus').addEventListener('click', () => { dlgQty = Math.min(30, dlgQty + 1); paintDlgAdd(); });
+  $('#dlgAddBtn').addEventListener('click', () => { addToCart(all[cur], dlgQty); dlg.close(); });
+
+  paintCart();
+
+  /* ---------- Start on the category in the address, or the first one ---------- */
+  showCategory(location.hash.slice(1) || current, { scroll: false });
+  addEventListener('hashchange', () => { const id = location.hash.slice(1); if (id && id !== current && MENU.some(c => c.id === id)) showCategory(id); });
+
+  /* ---------- Gentle fade-in for the hero ---------- */
+  requestAnimationFrame(() => document.querySelectorAll('[data-fade]').forEach(el => el.classList.add('in')));
+  setTimeout(() => document.querySelectorAll('[data-fade]').forEach(el => el.classList.add('in')), 400);
+
+  /* ---------- Site menu on phones, back to top ---------- */
+  const bar = $('#bar'), menuBtn = $('#menuBtn');
+  menuBtn.addEventListener('click', () => { const open = bar.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', open); });
+  $('#toTop').addEventListener('click', () => scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }));
+})();
+</script>
+</body>
+</html>

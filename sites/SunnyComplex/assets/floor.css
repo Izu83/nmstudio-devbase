@@ -1,0 +1,40 @@
+/* Floor plan drawn by floor.js. Pages add their own table states on top of .tbl. */
+.plan-wrap { position: relative; border-radius: 20px; background: #0a0908; box-shadow: inset 0 2px 10px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,228,170,.07); overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: #3a3328 transparent; }
+.plan { display: block; width: 100%; min-width: 760px; height: auto; user-select: none; -webkit-user-select: none; }
+
+.plan .zone rect { fill: rgba(242,181,68,.025); stroke: rgba(242,181,68,.22); stroke-width: 1.5; stroke-dasharray: 7 7; }
+.plan .zl rect { fill: #1a1714; stroke: rgba(242,181,68,.35); }
+.plan .zl text { fill: #f2b544; font: 600 15px "Onest", system-ui, sans-serif; dominant-baseline: central; }
+.plan .zl .ic { fill: none; stroke: #f2b544; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.plan .zone, .plan .zl { transition: opacity .35s ease; }
+.plan .off { opacity: .4; }
+.plan .label { fill: #b8a273; font: 500 14px "Onest", system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; text-anchor: middle; }
+.plan .bar-top { fill: none; stroke: url(#gWood); stroke-width: 22; stroke-linecap: round; filter: url(#lift); }
+.plan .fixture { fill: #15120f; stroke: rgba(242,181,68,.18); stroke-dasharray: 4 4; }
+.plan .walk { fill: none; stroke: rgba(242,181,68,.16); stroke-width: 2; stroke-dasharray: 2 9; stroke-linecap: round; }
+
+.plan .tbl { cursor: pointer; transition: opacity .35s ease; }
+.plan .tbl:focus { outline: none; }
+.plan .tbl .top { fill: url(#gFree); stroke: rgba(242,181,68,.55); stroke-width: 1.5; filter: url(#lift); transition: stroke .25s ease; }
+.plan .tbl .chair { fill: #2b261f; stroke: rgba(242,181,68,.3); stroke-width: 1; }
+.plan .tbl .bench { fill: url(#gBench); stroke: rgba(242,181,68,.35); stroke-width: 1; }
+.plan .tbl text { fill: #f2b544; font: 700 22px "Cormorant Garamond", Georgia, serif; font-feature-settings: "lnum" 1, "locl" 0; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.plan .tbl:hover .top { stroke: #ffdc93; stroke-width: 2.5; }
+.plan .tbl:focus-visible .top { stroke: #ffdc93; stroke-width: 3.5; }
+.plan .tbl.sel .top { fill: url(#gSel); stroke: #ffe9b8; stroke-width: 2; filter: url(#glow); }
+.plan .tbl.sel .chair, .plan .tbl.sel .bench { fill: #c98d27; stroke: #ffe4a6; }
+.plan .tbl.sel text { fill: #1d1404; }
+.plan .tbl.busy { cursor: not-allowed; }
+.plan .tbl.busy .top { fill: url(#hatch); stroke: #3d352a; }
+.plan .tbl.busy .chair, .plan .tbl.busy .bench { fill: #171410; stroke: #2e2820; }
+.plan .tbl.busy text { fill: #6a5e4b; }
+.plan .tbl.small, .plan .tbl.away { opacity: .28; cursor: not-allowed; }
+
+.tip { position: absolute; z-index: 3; left: 0; top: 0; display: grid; gap: 2px; min-width: 150px; padding: 10px 14px; border-radius: 14px; background: #221e19; box-shadow: inset 0 1px 0 rgba(255,228,170,.1), 0 14px 30px -8px rgba(0,0,0,.95); pointer-events: none; font-size: .86rem; line-height: 1.35; white-space: nowrap; transform: translate(-50%, calc(-100% - 12px)); opacity: 0; transition: opacity .2s ease; }
+.tip.below { transform: translate(-50%, 12px); }
+.tip.on { opacity: 1; }
+.tip b { font: 700 1.25rem/1.1 "Cormorant Garamond", Georgia, serif; color: #f2b544; font-feature-settings: "lnum" 1, "locl" 0; }
+.tip em { font-style: normal; font-weight: 600; color: #ffdc93; }
+.tip em.busy, .tip em.small { color: #ff8a1e; }
+
+@media (prefers-reduced-motion: reduce) { .plan *, .tip { transition-duration: .01ms !important; } }

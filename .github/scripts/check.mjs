@@ -25,7 +25,7 @@ if (!Array.isArray(projects)) {
   process.exit(1);
 }
 
-const STATUSES = ['live', 'progress', 'demo', 'archived'];
+const STATUSES = ['live', 'progress', 'demo'];
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const ids = new Set();
 const hasIndex = dir => existsSync(join(dir, 'index.html'));
@@ -57,6 +57,29 @@ projects.forEach((p, i) => {
   }
   if (!(p.pages || []).length && !hasIndex(dir)) errors.push(`Project ${who}: ${p.path} has no index.html`);
 });
+
+/* Categories saved from the base (store/status.js) */
+const statusFile = join(root, 'store', 'status.js');
+if (existsSync(statusFile)) {
+  const box = { window: {} };
+  try {
+    vm.runInNewContext(readFileSync(statusFile, 'utf8'), box, { filename: 'store/status.js' });
+    for (const [id, s] of Object.entries(box.window.PROJECT_STATUS || {})) {
+      if (!STATUSES.includes(s)) errors.push(`store/status.js: "${id}" has the category "${s}" (use ${STATUSES.join(', ')})`);
+      if (!ids.has(id)) warnings.push(`store/status.js: there's no project with the id "${id}"`);
+    }
+  } catch (e) { errors.push(`store/status.js doesn't run: ${e.message}`); }
+}
+
+/* The money data must only ever be stored encrypted */
+const financeFile = join(root, 'store', 'finance.enc.json');
+if (existsSync(financeFile)) {
+  let f = null;
+  try { f = JSON.parse(readFileSync(financeFile, 'utf8')); } catch {}
+  if (!f || !f.data || !f.iv || !f.salt || Object.keys(f).some(k => !['v', 'kdf', 'iter', 'salt', 'iv', 'data'].includes(k))) {
+    errors.push('store/finance.enc.json is not in the encrypted format; the money data must never be stored readable');
+  }
+}
 
 /* Nothing secret in sites/. In a git checkout only tracked files count (ignored ones never go online). */
 const SECRET = [/^admin-password\.txt$/i, /\.db$/i, /\.sqlite3?$/i, /^\.env(\..*)?$/i, /\.pem$/i, /\.key$/i];

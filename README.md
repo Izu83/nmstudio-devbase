@@ -46,6 +46,56 @@ hover, and the address bar can't follow the pages you click to.
 Sites must use relative links (`assets/style.css`, not `/assets/style.css`). Here they live under
 `/nmstudio-devbase/sites/<name>/`, not at the root of a domain.
 
+## Categories: Проекти · Завършени · В работа · Демо
+
+The tabs above the list filter the projects: all of them, finished (`live`), still in progress
+(`progress`) and demos made for a business to see (`demo`).
+
+To move a project to another category, click the status pill on its card (or in the preview's
+"About the project" panel) and pick the new one. This needs you to be signed in (see below). The
+change is saved to [`store/status.js`](store/status.js) in the repo, so you both see it: you see it
+right away, and the public site updates within a minute after the deploy. `status` in `projects.js`
+is only the starting category.
+
+## The admin panel (`admin/`)
+
+Money, per project:
+
+- **Split**: what percentage of every payment each person takes, e.g. you 35%, the other 0% and a
+  third person 65%. The two of you are set up once (Settings); your share is "our profit", and
+  everyone else in a split counts as from outside.
+- **Payments**: the build ("Изработка"), **maintenance** paid every month or every year (for
+  finished and in-progress projects), and anything else with your own text ("Друго": a domain,
+  photos, a new page…). A payment can have its own split if it's shared differently.
+- **To be paid**: every unpaid payment and every maintenance month or year that's due, with a
+  "Paid" button. Paid maintenance periods are ticked on the payment as chips.
+- At the top: collected, our profit (and what each person got), what's still to be paid, and
+  maintenance income a month. You can show a single year.
+- "Other income" is for money that isn't from a particular project.
+
+### Signing in
+
+The site is static, so the panel saves to the repo through the GitHub API. Each of you signs in
+once per device with a GitHub token; it's kept only in that browser.
+
+- Repo owner (Izu83): [new fine-grained token](https://github.com/settings/personal-access-tokens/new),
+  Repository access: only `nmstudio-devbase`, Permissions: **Contents: Read and write**.
+- The other one: be added as a collaborator on the repo (Settings → Collaborators), then make a
+  [classic token](https://github.com/settings/tokens/new?scopes=public_repo&description=NMStudio%20Devbase)
+  with `public_repo`. Fine-grained tokens can't reach another person's repo.
+
+The same sign-in lets you move projects between categories.
+
+### The money is encrypted
+
+The repo and the site are public, so the money data is encrypted in the browser (AES-256-GCM, with a
+key made from your shared password) before it's saved to `store/finance.enc.json`. Without the
+password nobody can read it, including GitHub. **There's no way to get the data back if you both
+forget the password**, so keep it somewhere safe. You can change it in Settings.
+
+Saving the money data doesn't redeploy the site (`[skip ci]`); the panel reads it straight from
+the repo. If you both change something at the same time, both changes are kept.
+
 ## Opening it on your computer
 
 The page has to be served over http, not opened as a file:
@@ -66,7 +116,8 @@ The site is published by GitHub Actions ([`.github/workflows/pages.yml`](.github
 For that, **Settings → Pages → Source** must be set to **GitHub Actions**. Every push to `main` then:
 
 1. checks `projects.js`: it runs, ids are unique, every project folder and page has its `index.html`,
-   and no project has its own `.git` folder;
+   and no project has its own `.git` folder; checks the categories in `store/status.js`, and that
+   `store/finance.enc.json` is encrypted;
 2. checks that nothing secret is in git (`sites/*/data/`, `*.db`, `admin-password.txt`, `.env`, keys);
 3. builds the site without `README.md` and `.github/`, and adds the commit to the style and script
    addresses (`style.css?v=db2e870`), so browsers don't keep showing the old version;
@@ -111,6 +162,9 @@ robocopy D:\Projects\Sites\NewClient sites\NewClient /E /XD .git data .claude no
 | `index.html` | The list of projects |
 | `preview/index.html` | One project in a device frame (`preview/?p=<id>&page=<path>&d=desktop\|tablet\|mobile`) |
 | `projects.js` | The projects and our notes on them |
+| `admin/index.html` | The admin panel: money, splits, maintenance |
+| `store/status.js` | Categories set with the button on the cards |
+| `store/finance.enc.json` | The money data, encrypted (made on the first sign-in) |
 | `assets/` | Styles and scripts of the base |
 | `sites/` | The projects themselves |
 | `.github/workflows/pages.yml` | Checks, builds and publishes the site on every push |

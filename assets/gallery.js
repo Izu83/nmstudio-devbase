@@ -4,10 +4,12 @@
   const $ = id => document.getElementById(id);
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  let filter = 'all';
+  const TABS = ['all', 'live', 'progress', 'demo'];
+  const fromUrl = new URLSearchParams(location.search).get('cat');
+  let filter = TABS.includes(fromUrl) ? fromUrl : 'all';
   let query = '';
 
-  const status = p => NM.STATUSES.includes(p.status) ? p.status : 'live';
+  const status = p => NM.status(p);
   const lastChange = p => p.updated || p.started || '';
   /* In progress first, then by last change, newest first */
   const sorted = () => [...projects].sort((a, b) =>
@@ -22,21 +24,21 @@
     const items = [
       [n, n === 1 ? t('stats.project') : t('stats.projects')],
       [count('live'), t('stats.live')],
-      [count('progress'), t('stats.progress')]
+      [count('progress'), t('stats.progress')],
+      [count('demo'), t('stats.demo')]
     ];
     if (latest) items.push([NM.date(latest), t('stats.updated')]);
     $('stats').innerHTML = items.map(([b, s]) => `<li><b>${esc(b)}</b><span>${esc(s)}</span></li>`).join('');
   }
 
+  /* Проекти · Завършени · В работа · Демо */
   function renderFilters() {
-    const present = NM.STATUSES.filter(s => projects.some(p => status(p) === s));
     const box = $('filters');
     $('search').hidden = projects.length <= 6;
-    if (present.length < 2) { box.hidden = true; return; }
-    box.hidden = false;
-    box.innerHTML = [['all', t('work.all')], ...present.map(s => [s, t('status.' + s)])]
-      .map(([k, label]) => `<button class="filter" type="button" data-k="${esc(k)}" aria-pressed="${k === filter}">${esc(label)}</button>`)
-      .join('');
+    const count = k => k === 'all' ? projects.length : projects.filter(p => status(p) === k).length;
+    box.innerHTML = TABS.map(k =>
+      `<button class="filter${k === 'all' ? '' : ' f-' + k}" type="button" role="tab" data-k="${k}" aria-selected="${k === filter}">` +
+      `${esc(t('tab.' + k))}<span class="n">${count(k)}</span></button>`).join('');
   }
 
   function matches(p) {
@@ -51,22 +53,24 @@
     const thumb = p.cover
       ? `<img src="${esc(p.cover)}" alt="" loading="lazy">`
       : `<div class="loading"></div><iframe tabindex="-1" aria-hidden="true" title="" data-src="${esc(NM.siteUrl(p))}"></iframe>`;
-    const meta = `<span class="status s-${status(p)}">${esc(t('status.' + status(p)))}</span>` +
-      [pick(p.category), NM.date(lastChange(p))].filter(Boolean).map(esc).join(' · ');
+    const st = status(p);
+    const meta = `<button class="status s-${st} move" type="button" aria-haspopup="menu" aria-expanded="false" title="${esc(t('move.title'))}">` +
+      `${esc(t('status.' + st))}<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>` +
+      [pick(p.category), NM.date(lastChange(p))].filter(Boolean).map(x => `<span>${esc(x)}</span>`).join('<span aria-hidden="true">·</span>');
     return `
-      <a class="card reveal" style="--d:${(i % 2) * 90}ms" href="${esc(NM.previewUrl(p))}" data-id="${esc(p.id)}">
+      <article class="card reveal" style="--d:${(i % 2) * 90}ms" data-id="${esc(p.id)}">
         <div class="shot">
           <div class="bar"><i></i><i></i><i></i><span class="url">${esc(NM.shownDomain(p))}</span></div>
           <div class="view${p.cover ? ' ready' : ''}">${thumb}</div>
         </div>
         <div class="card-body">
           <span class="meta">${meta}</span>
-          <h3>${esc(p.name)}</h3>
+          <h3><a class="stretch" href="${esc(NM.previewUrl(p))}">${esc(p.name)}</a></h3>
           ${p.description ? `<p>${esc(pick(p.description))}</p>` : ''}
           ${(p.tech || []).length ? `<div class="tech">${p.tech.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
-          <span class="visit">${esc(t('work.open'))}<span class="badge">${arrow}</span></span>
+          <span class="visit" aria-hidden="true">${esc(t('work.open'))}<span class="badge">${arrow}</span></span>
         </div>
-      </a>`;
+      </article>`;
   }
 
   function renderCards() {
@@ -144,17 +148,33 @@
 
   function render() { renderStats(); renderFilters(); renderCards(); }
 
+  function setFilter(k) {
+    filter = k;
+    const q = new URLSearchParams(location.search);
+    k === 'all' ? q.delete('cat') : q.set('cat', k);
+    history.replaceState(null, '', (q.toString() ? `?${q}` : location.pathname) + location.hash);
+    $('filters').querySelectorAll('.filter').forEach(x => x.setAttribute('aria-selected', x.dataset.k === k));
+    renderCards();
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     render();
     NM.onLang(render);
 
     $('filters').addEventListener('click', e => {
       const b = e.target.closest('.filter');
-      if (!b) return;
-      filter = b.dataset.k;
-      $('filters').querySelectorAll('.filter').forEach(x => x.setAttribute('aria-pressed', x === b));
-      renderCards();
+      if (b) setFilter(b.dataset.k);
     });
+    /* The status pill on a card moves the project to another category */
+    $('cards').addEventListener('click', e => {
+      const b = e.target.closest('.move');
+      if (!b) return;
+      e.preventDefault();
+      const p = projects.find(x => x.id === b.closest('.card').dataset.id);
+      Base.statusMenu(b, p, () => { renderStats(); renderFilters(); renderCards(); });
+    });
+    /* Signed in: the newest categories come straight from the repo */
+    Base.refreshStatus().then(changed => { if (changed) render(); });
     $('search').addEventListener('input', e => { query = e.target.value.trim().toLowerCase(); renderCards(); });
   });
 })();

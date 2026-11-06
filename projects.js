@@ -7,10 +7,11 @@
    name      the project's name
    path      the site's folder, relative to this file (ends with /),
              or a full https:// address if it's hosted somewhere else
-   status    'live'      finished, the client uses it
-             'progress'  we're still working on it
-             'demo'      a demo / concept, no client yet
-             'archived'  old or no longer online
+   status    'live'      finished (Завършени)
+             'progress'  we're still working on it (В работа)
+             'demo'      a demo for the business to see (Демо)
+             This is only the starting category: once a project is moved with the button
+             on its card, store/status.js wins.
    client    who it's for, and how to reach them (optional)
    by        who of us built it
    started   'YYYY-MM-DD' (optional)

@@ -94,8 +94,9 @@
     $('name').textContent = project.name;
     document.title = `${project.name} | NMStudio Devbase`;
     $('dName').textContent = project.name;
-    const st = NM.STATUSES.includes(project.status) ? project.status : 'live';
-    $('dMeta').innerHTML = `<span class="status s-${st}">${esc(t('status.' + st))}</span>${esc(pick(project.category))}`;
+    const st = NM.status(project);
+    $('dMeta').innerHTML = `<button class="status s-${st} move" type="button" aria-haspopup="menu" aria-expanded="false" title="${esc(t('move.title'))}">` +
+      `${esc(t('status.' + st))}<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>${esc(pick(project.category))}`;
     $('dDesc').textContent = pick(project.description);
     const facts = [
       ['d.client', pick(project.client)],
@@ -179,6 +180,11 @@
     }
 
     NM.onLang(() => { renderInfo(); renderPages(); });
+    $('dMeta').addEventListener('click', e => {
+      const b = e.target.closest('.move');
+      if (b) Base.statusMenu(b, project, renderInfo);
+    });
+    Base.refreshStatus().then(changed => { if (changed) renderInfo(); });
     addEventListener('resize', layout);
     if ('ResizeObserver' in window) new ResizeObserver(layout).observe($('stage'));
 

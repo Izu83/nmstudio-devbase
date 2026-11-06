@@ -30,12 +30,13 @@ jobs:
         run: |
           rsync -a ./ _site/ \
             --exclude .git --exclude .github --exclude .claude \
-            --exclude README.md --exclude .gitignore
+            --exclude README.md --exclude .gitignore \
+            --exclude store/finance.enc.json
           # Make browsers load the new styles and scripts after each deploy
           v="${GITHUB_SHA::7}"
-          sed -i -E "s#(href|src)=\"((\.\./)?(assets/[^\"?]+\.(css|js)|projects\.js))\"#\1=\"\2?v=$v\"#g" \
-            _site/index.html _site/preview/index.html
-          grep -c "?v=$v" _site/index.html _site/preview/index.html
+          sed -i -E "s#(href|src)=\"((\.\./)?(assets/[^\"?]+\.(css|js)|projects\.js|store/status\.js))\"#\1=\"\2?v=$v\"#g" \
+            _site/index.html _site/preview/index.html _site/admin/index.html
+          grep -c "?v=$v" _site/index.html _site/preview/index.html _site/admin/index.html
           du -sh _site
 
       - name: Check the built folder

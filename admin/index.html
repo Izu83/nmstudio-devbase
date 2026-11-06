@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="bg" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Админ | NMStudio Devbase</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="https://nmstudio.info/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/admin.css">
+<script src="../projects.js"></script>
+<script src="../store/status.js"></script>
+<script src="../assets/common.js"></script>
+<script src="../assets/base.js"></script>
+</head>
+<body class="adm">
+<div class="bg" aria-hidden="true">
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <div class="grid"></div><div class="grain"></div>
+</div>
+
+<header class="site-header">
+  <div class="wrap top">
+    <a class="logo" href="../" aria-label="NMStudio Devbase">
+      <img src="https://nmstudio.info/img/logo.webp" alt="NMStudio" width="120" height="60">
+      <span class="logo-tag">Admin</span>
+    </a>
+    <nav>
+      <a href="../" data-i18n="nav.work">Проекти</a>
+      <span class="save" id="save" hidden></span>
+      <button class="lang" type="button" id="lang">EN</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app" aria-live="polite"></main>
+
+<footer class="wrap">
+  <p>NMStudio Devbase · <span data-i18n="footer.internal">само за нас</span></p>
+  <a href="../" data-i18n="pv.back">Всички проекти</a>
+</footer>
+
+<script src="../assets/admin.js"></script>
+</body>
+</html>

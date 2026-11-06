@@ -23,6 +23,17 @@
       'stats.project': 'проект',
       'stats.live': 'завършени',
       'stats.progress': 'в работа',
+      'stats.demo': 'демо',
+      'nav.admin': 'Админ',
+      'tab.all': 'Проекти',
+      'tab.live': 'Завършени',
+      'tab.progress': 'В работа',
+      'tab.demo': 'Демо',
+      'move.title': 'Премести в',
+      'move.login': 'Влезте в админ панела, за да местите проекти.',
+      'move.loginBtn': 'Вход',
+      'move.saved': 'Преместено. Сайтът се обновява до минута.',
+      'move.error': 'Не успях да запиша: ',
       'stats.updated': 'последна промяна',
       'status.live': 'Завършен',
       'status.progress': 'В работа',
@@ -41,7 +52,7 @@
       'work.title': 'Проекти',
       'work.all': 'Всички',
       'work.search': 'Търсене…',
-      'work.empty': 'Няма проекти, които отговарят.',
+      'work.empty': 'Няма проекти тук.',
       'work.open': 'Разгледайте',
       'footer.back': 'Към nmstudio.info',
       'pv.back': 'Всички проекти',
@@ -71,6 +82,17 @@
       'stats.project': 'project',
       'stats.live': 'finished',
       'stats.progress': 'in progress',
+      'stats.demo': 'demo',
+      'nav.admin': 'Admin',
+      'tab.all': 'Projects',
+      'tab.live': 'Finished',
+      'tab.progress': 'In progress',
+      'tab.demo': 'Demo',
+      'move.title': 'Move to',
+      'move.login': 'Sign in to the admin panel to move projects.',
+      'move.loginBtn': 'Sign in',
+      'move.saved': 'Moved. The site updates within a minute.',
+      'move.error': "Couldn't save: ",
       'stats.updated': 'last change',
       'status.live': 'Live',
       'status.progress': 'In progress',
@@ -89,7 +111,7 @@
       'work.title': 'Projects',
       'work.all': 'All',
       'work.search': 'Search…',
-      'work.empty': 'No projects match.',
+      'work.empty': 'No projects here.',
       'work.open': 'Explore',
       'footer.back': 'To nmstudio.info',
       'pv.back': 'All projects',
@@ -109,6 +131,9 @@
       'pv.fullscreen': 'Full screen'
     }
   };
+
+  /* Pages can add their own words: NM.extend({ bg: {...}, en: {...} }) */
+  const extend = more => { for (const l in more) Object.assign(dict[l] || (dict[l] = {}), more[l]); };
 
   const t = key => (dict[lang] && dict[lang][key]) || dict.bg[key] || key;
   /* A project text field: plain string or { bg, en } */
@@ -162,14 +187,28 @@
     : null;
 
   window.NM = {
-    t, pick, store, projects, siteUrl, previewUrl, shownDomain, isExternal,
+    t, pick, store, projects, extend, setLang: next => setLang(next), siteUrl, previewUrl, shownDomain, isExternal,
     get lang() { return lang; },
     date(iso) {
       if (!iso) return '';
       const d = new Date(iso + 'T12:00:00');
       return isNaN(d) ? iso : d.toLocaleDateString(lang === 'bg' ? 'bg-BG' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     },
-    STATUSES: ['progress', 'live', 'demo', 'archived'],
+    STATUSES: ['live', 'progress', 'demo'],
+    /* A project's category: what was saved from the base (store/status.js) wins over projects.js */
+    status(p) {
+      const saved = (window.PROJECT_STATUS || {})[p.id];
+      const s = saved || p.status;
+      return NM.STATUSES.includes(s) ? s : 'live';
+    },
+    root,
+    money(n) {
+      const v = Math.round((+n || 0) * 100) / 100;
+      const digits = Number.isInteger(v) ? 0 : 2;     // 1000 €, but 360,50 €
+      return new Intl.NumberFormat(lang === 'bg' ? 'bg-BG' : 'en-GB', { style: 'currency', currency: 'EUR', minimumFractionDigits: digits, maximumFractionDigits: digits })
+        .format(v);
+    },
+    apply,
     onLang(fn) { listeners.push(fn); },
     observeReveal(scope) {
       scope.querySelectorAll('.reveal:not(.in)').forEach(el => io ? io.observe(el) : el.classList.add('in'));

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="bg" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Преглед | NMStudio Devbase</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="https://nmstudio.info/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/preview.css">
+<script src="../projects.js"></script>
+<script src="../assets/common.js"></script>
+</head>
+<body class="pv">
+<div class="bg" aria-hidden="true">
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <div class="grid"></div><div class="grain"></div>
+</div>
+
+<header class="pv-bar">
+  <div class="pv-left">
+    <a class="pv-icon pv-back" href="../" data-i18n-title="pv.back">
+      <svg class="icon" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg>
+    </a>
+    <a class="pv-logo" href="../" aria-label="NMStudio Devbase"><img src="https://nmstudio.info/img/logo.webp" alt="NMStudio" width="80" height="40"></a>
+    <div class="pv-title">
+      <strong id="name"></strong>
+      <span id="addr"></span>
+    </div>
+  </div>
+
+  <div class="pv-center">
+    <div class="seg" role="group" id="devices">
+      <button type="button" data-d="desktop" data-i18n-title="pv.desktop"><svg class="icon" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="8.5" rx="1.2"/><path d="M5.5 14h5M8 11v3"/></svg></button>
+      <button type="button" data-d="tablet" data-i18n-title="pv.tablet"><svg class="icon" viewBox="0 0 16 16"><rect x="3" y="1.5" width="10" height="13" rx="1.5"/><path d="M7 12.5h2"/></svg></button>
+      <button type="button" data-d="mobile" data-i18n-title="pv.mobile"><svg class="icon" viewBox="0 0 16 16"><rect x="4.5" y="1.5" width="7" height="13" rx="1.6"/><path d="M7.2 12.6h1.6"/></svg></button>
+    </div>
+    <label class="pv-page" id="pageWrap" hidden>
+      <span class="sr" data-i18n="pv.page">Страница</span>
+      <select id="page"></select>
+      <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+    </label>
+  </div>
+
+  <div class="pv-right">
+    <button class="pv-icon" type="button" id="reload" data-i18n-title="pv.reload"><svg class="icon" viewBox="0 0 16 16"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5v3h-3"/></svg></button>
+    <button class="pv-icon hide-s" type="button" id="full" data-i18n-title="pv.fullscreen"><svg class="icon" viewBox="0 0 16 16"><path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/></svg></button>
+    <a class="pv-icon" id="newtab" target="_blank" rel="noopener" data-i18n-title="pv.newtab"><svg class="icon" viewBox="0 0 16 16"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M12 9.5v3a1 1 0 0 1-1 1H3.5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3"/></svg></a>
+    <button class="pv-icon" type="button" id="infoBtn" aria-expanded="false" data-i18n-title="pv.info"><svg class="icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 7.2V11"/><circle cx="8" cy="5" r=".4" fill="currentColor"/></svg></button>
+    <button class="lang" type="button" id="lang">EN</button>
+  </div>
+</header>
+
+<main class="stage" id="stage">
+  <div class="device" id="device">
+    <div class="device-top"><i></i><i></i><i></i><span id="devAddr"></span></div>
+    <div class="screen" id="screen">
+      <iframe id="frame" title=""></iframe>
+      <div class="screen-loading" id="spinner"></div>
+    </div>
+  </div>
+  <div class="pv-size" id="size"></div>
+  <p class="pv-missing" id="missing" hidden>
+    <span data-i18n="pv.notfound">Няма такъв проект.</span>
+    <a class="btn btn-ghost" href="../" data-i18n="pv.back">Всички проекти</a>
+  </p>
+  <button class="pv-icon pv-nav prev" type="button" id="prev" data-i18n-title="pv.prev" hidden><svg class="icon" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></button>
+  <button class="pv-icon pv-nav next" type="button" id="next" data-i18n-title="pv.next" hidden><svg class="icon" viewBox="0 0 16 16"><path d="m6 3 5 5-5 5"/></svg></button>
+  <button class="pv-icon pv-exit" type="button" id="exitFull" data-i18n-title="pv.close"><svg class="icon" viewBox="0 0 16 16"><path d="m4 4 8 8M12 4l-8 8"/></svg></button>
+</main>
+
+<aside class="drawer" id="drawer" aria-labelledby="dName" hidden>
+  <button class="pv-icon drawer-close" type="button" id="closeInfo" data-i18n-title="pv.close"><svg class="icon" viewBox="0 0 16 16"><path d="m4 4 8 8M12 4l-8 8"/></svg></button>
+  <span class="meta" id="dMeta"></span>
+  <h3 id="dName"></h3>
+  <p id="dDesc"></p>
+  <dl class="facts" id="dFacts"></dl>
+  <div class="block" id="dNotesWrap" hidden>
+    <span class="label" data-i18n="d.notes">Бележки</span>
+    <p class="note" id="dNote"></p>
+  </div>
+  <div class="block" id="dRunWrap" hidden>
+    <span class="label" data-i18n="d.run">Стартиране локално</span>
+    <div class="run"><code id="dRun"></code><button class="copy" type="button" id="dCopy" data-i18n="d.copy">Копирай</button></div>
+  </div>
+  <div class="tech" id="dTech"></div>
+  <div class="links" id="dLinks"></div>
+</aside>
+
+<script src="../assets/preview.js"></script>
+</body>
+</html>

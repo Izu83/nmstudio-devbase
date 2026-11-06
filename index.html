@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="bg" data-root="./">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NMStudio Devbase</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="https://nmstudio.info/img/favicon.png">
+<link rel="apple-touch-icon" href="https://nmstudio.info/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="projects.js"></script>
+<script src="assets/common.js"></script>
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+  <div class="grid"></div><div class="grain"></div>
+</div>
+
+<header class="site-header">
+  <div class="wrap top">
+    <a class="logo" href="./" aria-label="NMStudio Devbase">
+      <img src="https://nmstudio.info/img/logo.webp" alt="NMStudio" width="120" height="60">
+      <span class="logo-tag">Devbase</span>
+    </a>
+    <nav>
+      <a href="#work" data-i18n="nav.work">Проекти</a>
+      <a href="https://nmstudio.info" data-i18n="nav.studio">nmstudio.info</a>
+      <button class="lang" type="button" id="lang">EN</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="wrap intro">
+    <h1 class="reveal">
+      <span data-i18n="hero.title.1">Всичките ни проекти,</span><br>
+      <span data-i18n="hero.title.2">на едно място.</span>
+    </h1>
+    <p class="hero-sub reveal" style="--d:120ms" data-i18n="hero.sub"></p>
+    <ul class="stats reveal" style="--d:220ms" id="stats"></ul>
+  </section>
+
+  <section class="wrap work" id="work">
+    <div class="toolbar">
+      <h2 data-i18n="work.title">Проекти</h2>
+      <div class="filters" id="filters" role="group"></div>
+      <input class="search" id="search" type="search" data-i18n-placeholder="work.search" hidden>
+    </div>
+    <div class="cards" id="cards"></div>
+    <p class="empty" id="empty" data-i18n="work.empty" hidden></p>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p>NMStudio Devbase · <span data-i18n="footer.internal">само за нас</span></p>
+  <a href="https://nmstudio.info" data-i18n="footer.back">Към nmstudio.info</a>
+</footer>
+
+<script src="assets/gallery.js"></script>
+</body>
+</html>

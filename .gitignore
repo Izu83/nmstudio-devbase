@@ -1,0 +1,10 @@
+# Passwords, bookings and orders of the projects: never upload these
+sites/*/data/
+*.db
+admin-password.txt
+
+# Local editor and tool settings
+.claude/
+__pycache__/
+.DS_Store
+Thumbs.db

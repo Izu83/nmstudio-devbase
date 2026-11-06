@@ -299,7 +299,8 @@
     el.setAttribute('role', 'menu');
     const cur = NM.status(project);
     if (!token()) {
-      el.innerHTML = `<p>${esc(t('move.login'))}</p><a class="menu-btn" href="${esc(new URL('admin/', NM.root).href)}">${esc(t('move.loginBtn'))}</a>`;
+      el.innerHTML = `<p>${esc(t('move.login'))}</p><a class="menu-btn" href="${esc(new URL('./#money', NM.root).href)}">${esc(t('move.loginBtn'))}</a>`;
+      el.querySelector('a').addEventListener('click', closeMenu);
     } else {
       el.innerHTML = `<span class="menu-title">${esc(t('move.title'))}</span>` + NM.STATUSES.map(s =>
         `<button type="button" role="menuitemradio" aria-checked="${s === cur}" data-s="${s}"><span class="status s-${s}">${esc(t('status.' + s))}</span></button>`).join('');
@@ -309,11 +310,12 @@
         const s = b.dataset.s;
         closeMenu();
         if (s === cur) return;
+        const moved = () => { onMoved && onMoved(); document.dispatchEvent(new Event('nm:status')); };
         const run = setStatus(project, s);
-        onMoved && onMoved();          // shows the new category right away
+        moved();                       // shows the new category right away
         try { await run; toast(t('move.saved')); }
         catch (err) { toast(t('move.error') + err.message, true); }
-        onMoved && onMoved();
+        moved();
       });
     }
     document.body.appendChild(el);

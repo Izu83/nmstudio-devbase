@@ -275,7 +275,7 @@ footer a:hover { color: var(--text); }
   .logo img { height: 50px; }
   .logo-tag { display: none; }
   nav { gap: 10px; }
-  nav a:not(.nav-call):not([href="admin/"]) { display: none; }
+  nav a:not(.nav-call):not([href="#money"]) { display: none; }
   .nav-call { font-size: 14px; padding: 5px 14px; }
   section { padding-top: 56px; padding-bottom: 56px; }
   .intro { padding-top: 48px; padding-bottom: 24px; }

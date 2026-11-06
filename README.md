@@ -4,7 +4,8 @@ Our base for every site we make. Each project's files are kept in `sites/`, and 
 lists them all. Click one to open it live in a desktop, tablet or phone frame, switch between
 its pages, and read our notes on it (client, who built it, dates, how to run it).
 
-It looks like nmstudio.info, but it's for the two of us. The pages tell Google not to index them.
+It looks like nmstudio.info, but it's for the two of us, and it's also where we keep track of the
+money (the "Пари" section at the bottom). The pages tell Google not to index them.
 
 ## Adding a project
 
@@ -57,9 +58,10 @@ change is saved to [`store/status.js`](store/status.js) in the repo, so you both
 right away, and the public site updates within a minute after the deploy. `status` in `projects.js`
 is only the starting category.
 
-## The admin panel (`admin/`)
+## Money (the "Пари" section)
 
-Money, per project:
+Under the projects there's a "Пари" (money) section; once it's unlocked, every project card also shows
+what it brought in, and clicking those numbers opens that project's money. Per project:
 
 - **Split**: what percentage of every payment each person takes, e.g. you 35%, the other 0% and a
   third person 65%. The two of you are set up once (Settings); your share is "our profit", and
@@ -75,7 +77,7 @@ Money, per project:
 
 ### Signing in
 
-The site is static, so the panel saves to the repo through the GitHub API. Each of you signs in
+The site is static, so it saves to the repo through the GitHub API. Each of you signs in
 once per device with a GitHub token; it's kept only in that browser.
 
 - Repo owner (Izu83): [new fine-grained token](https://github.com/settings/personal-access-tokens/new),
@@ -93,7 +95,7 @@ key made from your shared password) before it's saved to `store/finance.enc.json
 password nobody can read it, including GitHub. **There's no way to get the data back if you both
 forget the password**, so keep it somewhere safe. You can change it in Settings.
 
-Saving the money data doesn't redeploy the site (`[skip ci]`); the panel reads it straight from
+Saving the money data doesn't redeploy the site (`[skip ci]`); the page reads it straight from
 the repo. If you both change something at the same time, both changes are kept.
 
 ## Opening it on your computer
@@ -162,10 +164,9 @@ robocopy D:\Projects\Sites\NewClient sites\NewClient /E /XD .git data .claude no
 | `index.html` | The list of projects |
 | `preview/index.html` | One project in a device frame (`preview/?p=<id>&page=<path>&d=desktop\|tablet\|mobile`) |
 | `projects.js` | The projects and our notes on them |
-| `admin/index.html` | The admin panel: money, splits, maintenance |
 | `store/status.js` | Categories set with the button on the cards |
 | `store/finance.enc.json` | The money data, encrypted (made on the first sign-in) |
-| `assets/` | Styles and scripts of the base |
+| `assets/` | Styles and scripts of the base (`money.js`: the money section, `base.js`: saving to the repo) |
 | `sites/` | The projects themselves |
 | `.github/workflows/pages.yml` | Checks, builds and publishes the site on every push |
 | `.github/scripts/check.mjs` | The check (`node .github/scripts/check.mjs`) |

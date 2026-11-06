@@ -1,9 +1,9 @@
-/* The admin panel: what each project brings in, how it's split, maintenance and anything still to be paid.
-   The data is encrypted in the browser and saved to the repo (store/finance.enc.json). */
+/* The money section of the base: what each project brings in, how it's split, maintenance and anything
+   still to be paid. The data is encrypted in the browser and saved to the repo (store/finance.enc.json). */
 (() => {
   const { t, pick, esc, projects } = NM;
   const $ = id => document.getElementById(id);
-  const app = $('app');
+  const app = $('moneyApp');
 
   NM.extend({
     bg: {
@@ -271,7 +271,6 @@
   const vault = Base.vault();
   let doc = null;
   let year = 'all';
-  let tab = 'all';
   const open = new Set(JSON.parse(NM.store.get('nm-admin-open') || '[]'));
   const saveOpen = () => NM.store.set('nm-admin-open', JSON.stringify([...open]));
 
@@ -285,9 +284,12 @@
 
   /* ---------- Screens ---------- */
   function gate(title, sub, body, error = '') {
+    $('yearWrap').hidden = true;
+    doc = null;
+    announce();
     app.innerHTML = `
       <section class="gate">
-        <h1>${esc(title)}</h1>
+        <h3>${esc(title)}</h3>
         <p class="lead">${sub}</p>
         <form id="gateForm" novalidate>${body}
           <p class="err" id="gateErr" ${error ? '' : 'hidden'}>${esc(error)}</p>
@@ -440,7 +442,7 @@
     }).join('');
     return `
       <section class="block">
-        <h2>${esc(t('due.title'))}</h2>
+        <h3 class="sub">${esc(t('due.title'))}</h3>
         ${rows ? `<ul class="dues">${rows}</ul>` : `<p class="muted">${esc(t('due.none'))}</p>`}
       </section>`;
   }
@@ -450,9 +452,9 @@
     const k = `${pid}:${iid}`;
     const rows = split.map((x, i) => `
       <div class="split-row">
-        <input class="in" list="peopleList" value="${esc(x.who)}" placeholder="${esc(t('p.who'))}" aria-label="${esc(t('p.who'))}"
+        <input class="fi" list="peopleList" value="${esc(x.who)}" placeholder="${esc(t('p.who'))}" aria-label="${esc(t('p.who'))}"
           data-act="split-who" data-pid="${esc(pid)}" data-iid="${esc(iid)}" data-i="${i}" data-k="${esc(k)}:w${i}">
-        <label class="pct"><input class="in" type="number" inputmode="decimal" min="0" max="100" step="any" value="${esc(x.pct)}" aria-label="%"
+        <label class="pct"><input class="fi" type="number" inputmode="decimal" min="0" max="100" step="any" value="${esc(x.pct)}" aria-label="%"
           data-act="split-pct" data-pid="${esc(pid)}" data-iid="${esc(iid)}" data-i="${i}" data-k="${esc(k)}:p${i}"><span>%</span></label>
         <span class="split-cut ${doc.people.includes(x.who) ? 'us' : ''}">${doc.people.includes(x.who) ? '★' : ''}</span>
         <button class="x" type="button" title="${esc(t('i.del'))}" aria-label="${esc(t('i.del'))}" data-act="split-del" data-pid="${esc(pid)}" data-iid="${esc(iid)}" data-i="${i}">×</button>
@@ -472,21 +474,21 @@
     const key = f => `data-k="${esc(pid)}:${esc(it.id)}:${f}"`;
     const field = (f, label, input) => `<label class="field sm"><span>${esc(label)}</span>${input}</label>`;
     const base = `
-      ${field('label', t('i.label'), `<input class="in" value="${esc(it.label || '')}" placeholder="${esc(t('i.label.ph'))}" data-act="item" data-f="label" ${d} ${key('label')}>`)}
-      ${field('amount', t('i.amount'), `<input class="in num" type="number" inputmode="decimal" min="0" step="any" value="${esc(it.amount ?? '')}" data-act="item" data-f="amount" ${d} ${key('amount')}>`)}
-      ${field('kind', t('i.kind'), `<select class="in" data-act="item" data-f="kind" ${d} ${key('kind')}>
+      ${field('label', t('i.label'), `<input class="fi" value="${esc(it.label || '')}" placeholder="${esc(t('i.label.ph'))}" data-act="item" data-f="label" ${d} ${key('label')}>`)}
+      ${field('amount', t('i.amount'), `<input class="fi num" type="number" inputmode="decimal" min="0" step="any" value="${esc(it.amount ?? '')}" data-act="item" data-f="amount" ${d} ${key('amount')}>`)}
+      ${field('kind', t('i.kind'), `<select class="fi" data-act="item" data-f="kind" ${d} ${key('kind')}>
         ${['once', 'month', 'year'].map(k => `<option value="${k}"${it.kind === k ? ' selected' : ''}>${esc(t('i.' + k))}</option>`).join('')}</select>`)}`;
     let extra = '', below = '';
     if (it.kind === 'once') {
       extra = `
-        ${field('due', t('i.due'), `<input class="in" type="date" value="${esc(it.due || '')}" data-act="item" data-f="due" ${d} ${key('due')}>`)}
+        ${field('due', t('i.due'), `<input class="fi" type="date" value="${esc(it.due || '')}" data-act="item" data-f="due" ${d} ${key('due')}>`)}
         <div class="field sm"><span>${esc(t('i.paid'))}</span>
           <button class="paid-btn${it.paidOn ? ' on' : ''}" type="button" data-act="toggle-paid" ${d} aria-pressed="${!!it.paidOn}">
             ${it.paidOn ? `✓ ${esc(short(it.paidOn))}` : esc(t('i.markPaid'))}</button></div>`;
     } else {
       extra = `
-        ${field('start', t('i.start'), `<input class="in" type="date" value="${esc(it.start || '')}" data-act="item" data-f="start" ${d} ${key('start')}>`)}
-        ${field('end', t('i.end'), `<input class="in" type="date" value="${esc(it.end || '')}" data-act="item" data-f="end" ${d} ${key('end')}>`)}`;
+        ${field('start', t('i.start'), `<input class="fi" type="date" value="${esc(it.start || '')}" data-act="item" data-f="start" ${d} ${key('start')}>`)}
+        ${field('end', t('i.end'), `<input class="fi" type="date" value="${esc(it.end || '')}" data-act="item" data-f="end" ${d} ${key('end')}>`)}`;
       const ps = periods(it);
       const due = ps.filter(p => p.due);
       const paidN = due.filter(p => (it.paid || {})[p.key]).length;
@@ -576,40 +578,31 @@
     const years = [...new Set(L.events.map(e => (e.date || '').slice(0, 4)).filter(Boolean))].sort().reverse();
     if (year !== 'all' && !years.includes(year)) years.unshift(year);
     const ids = [...projects.map(p => p.id), ...Object.keys(doc.projects).filter(id => id !== OTHER && !projects.some(p => p.id === id))];
-    const count = k => k === 'all' ? projects.length : projects.filter(p => NM.status(p) === k).length;
-    const shown = ids.filter(id => tab === 'all' || (projects.find(p => p.id === id) && NM.status(projects.find(p => p.id === id)) === tab));
     const names = [...new Set([...doc.people, ...Object.values(doc.projects).flatMap(a => [...(a.split || []), ...(a.items || []).flatMap(i => i.split || [])].map(x => x.who))].filter(Boolean))];
 
+    $('year').innerHTML = `<option value="all">${esc(t('a.all.years'))}</option>` +
+      years.map(y => `<option value="${y}"${y === year ? ' selected' : ''}>${y}</option>`).join('');
+    $('yearWrap').hidden = false;
+
     app.innerHTML = `
-      <div class="adm-head">
-        <h1>${esc(t('a.title'))}</h1>
-        <label class="year"><select id="year" aria-label="${esc(t('a.all.years'))}">
-          <option value="all">${esc(t('a.all.years'))}</option>
-          ${years.map(y => `<option value="${y}"${y === year ? ' selected' : ''}>${y}</option>`).join('')}
-        </select><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></label>
-      </div>
       ${statsHtml(L)}
       ${duesHtml(L)}
       <section class="block">
-        <div class="toolbar">
-          <h2>${esc(t('p.title'))}</h2>
-          <div class="filters" role="tablist" id="admTabs">${['all', 'live', 'progress', 'demo'].map(k =>
-            `<button class="filter${k === 'all' ? '' : ' f-' + k}" type="button" role="tab" data-act="tab" data-k="${k}" aria-selected="${k === tab}">${esc(t('tab.' + k))}<span class="n">${count(k)}</span></button>`).join('')}</div>
-        </div>
-        <div class="accts">${shown.map(id => acctHtml(id, L)).join('')}${tab === 'all' ? acctHtml(OTHER, L) : ''}</div>
+        <h3 class="sub">${esc(t('p.title'))}</h3>
+        <div class="accts">${ids.map(id => acctHtml(id, L)).join('')}${acctHtml(OTHER, L)}</div>
       </section>
       <section class="block settings">
-        <h2>${esc(t('set.title'))}</h2>
+        <h3 class="sub">${esc(t('set.title'))}</h3>
         <div class="set-grid">
           <div>
             <span class="label">${esc(t('set.people'))}</span>
             <p class="hint">${esc(t('set.people.sub'))}</p>
-            <div class="two">${doc.people.map((w, i) => `<input class="in" value="${esc(w)}" data-act="person" data-i="${i}" data-k="person${i}" aria-label="${esc(t('a.names'))}">`).join('')}</div>
+            <div class="two">${doc.people.map((w, i) => `<input class="fi" value="${esc(w)}" data-act="person" data-i="${i}" data-k="person${i}" aria-label="${esc(t('a.names'))}">`).join('')}</div>
           </div>
           <form id="passForm">
             <span class="label">${esc(t('set.pass'))}</span>
-            <div class="two"><input class="in" type="password" id="np1" placeholder="${esc(t('a.pass'))}" autocomplete="new-password">
-              <input class="in" type="password" id="np2" placeholder="${esc(t('a.pass2'))}" autocomplete="new-password"></div>
+            <div class="two"><input class="fi" type="password" id="np1" placeholder="${esc(t('a.pass'))}" autocomplete="new-password">
+              <input class="fi" type="password" id="np2" placeholder="${esc(t('a.pass2'))}" autocomplete="new-password"></div>
             <button class="pill-btn ghost" type="submit">${esc(t('set.pass.btn'))}</button>
           </form>
           <div>
@@ -624,7 +617,30 @@
       const el = app.querySelector(`[data-k="${CSS.escape(fk)}"]`);
       if (el) { el.focus({ preventScroll: true }); if (sel) try { el.setSelectionRange(...sel); } catch {} }
     }
+    announce();
   }
+
+  /* The project cards above show each project's numbers */
+  function announce() { document.dispatchEvent(new Event('nm:money')); }
+  function projectSummary(pid) {
+    if (!doc) return null;
+    const L = ledger(doc);
+    const ev = L.events.filter(e => e.pid === pid);
+    return {
+      collected: ev.reduce((s, e) => s + e.amount, 0),
+      profit: ev.reduce((s, e) => s + e.amount * ourFrac(e.split, doc.people), 0),
+      pending: L.dues.filter(d => d.pid === pid).reduce((s, d) => s + d.amount, 0),
+      monthly: monthly(doc, pid).total,
+      any: !!((doc.projects[pid] || {}).items || []).length
+    };
+  }
+  function openAcct(pid) {
+    if (!doc) { $('money').scrollIntoView({ behavior: 'smooth' }); return; }
+    open.add(pid); saveOpen(); render();
+    const el = app.querySelector(`.acct[data-id="${CSS.escape(pid)}"]`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  window.Money = { project: projectSummary, open: openAcct };
 
   /* ---------- Changes ---------- */
   const change = fn => vault.change(fn);
@@ -634,7 +650,6 @@
     const el = e.target;
     const { act, pid, iid, f } = el.dataset;
     const i = +el.dataset.i;
-    if (el.id === 'year') { year = el.value; return render(); }
     if (act === 'split-who') change(d => { const s = splitOf(d, pid, iid); if (s && s[i]) s[i].who = el.value.trim(); });
     else if (act === 'split-pct') change(d => { const s = splitOf(d, pid, iid); if (s && s[i]) s[i].pct = num(el.value); });
     else if (act === 'item') {
@@ -673,11 +688,7 @@
     const { act, pid, iid, key, kind } = b.dataset;
     const i = +b.dataset.i;
     if (act === 'toggle') { open.has(pid) ? open.delete(pid) : open.add(pid); saveOpen(); render(); }
-    else if (act === 'tab') { tab = b.dataset.k; render(); }
-    else if (act === 'move') {
-      const p = projects.find(x => x.id === pid);
-      Base.statusMenu(b, p, render);
-    }
+    else if (act === 'move') Base.statusMenu(b, projects.find(x => x.id === pid));
     else if (act === 'signout') signOut();
     else if (act === 'split-add') change(d => { splitOf(d, pid, iid).push({ who: '', pct: 0 }); });
     else if (act === 'split-del') change(d => { splitOf(d, pid, iid).splice(i, 1); });
@@ -727,9 +738,11 @@
   });
   /* Enter in a field saves it straight away */
   app.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && e.target.matches('input.in') && !e.target.closest('form')) e.target.blur();
+    if (e.key === 'Enter' && e.target.matches('input.fi') && !e.target.closest('form')) e.target.blur();
   });
 
+  $('year').addEventListener('change', e => { year = e.target.value; render(); });
+  document.addEventListener('nm:status', render);
   vault.on('change', d => { doc = d; render(); });
   vault.on('status', s => {
     const el = $('save');
@@ -745,7 +758,7 @@
   document.addEventListener('visibilitychange', () => {
     if (!doc) return;
     if (document.hidden) vault.flush();
-    else { vault.reload().catch(() => {}); Base.refreshStatus().then(c => { if (c) render(); }); }
+    else vault.reload().catch(() => {});
   });
   addEventListener('beforeunload', e => { if (vault.busy) { vault.flush(); e.preventDefault(); e.returnValue = ''; } });
 

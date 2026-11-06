@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/money.css">
 <script src="projects.js"></script>
 <script src="store/status.js"></script>
 <script src="assets/common.js"></script>
@@ -31,7 +32,7 @@
     </a>
     <nav>
       <a href="#work" data-i18n="nav.work">Проекти</a>
-      <a href="admin/" data-i18n="nav.admin">Админ</a>
+      <a href="#money" data-i18n="nav.money">Пари</a>
       <a href="https://nmstudio.info" data-i18n="nav.studio">nmstudio.info</a>
       <button class="lang" type="button" id="lang">EN</button>
     </nav>
@@ -58,6 +59,21 @@
     <p class="empty" id="empty" data-i18n="work.empty" hidden></p>
   </section>
 
+  <section class="wrap money" id="money">
+    <div class="toolbar">
+      <h2 data-i18n="money.title">Пари</h2>
+      <div class="money-tools">
+        <span class="save" id="save" hidden></span>
+        <label class="year" id="yearWrap" hidden>
+          <span class="sr" data-i18n="money.year">Година</span>
+          <select id="year"></select>
+          <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+        </label>
+      </div>
+    </div>
+    <div id="moneyApp" aria-live="polite"></div>
+  </section>
+
 </main>
 
 <footer class="wrap">
@@ -66,5 +82,6 @@
 </footer>
 
 <script src="assets/gallery.js"></script>
+<script src="assets/money.js"></script>
 </body>
 </html>

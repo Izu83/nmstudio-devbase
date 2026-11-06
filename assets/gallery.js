@@ -66,6 +66,7 @@
         <div class="card-body">
           <span class="meta">${meta}</span>
           <h3><a class="stretch" href="${esc(NM.previewUrl(p))}">${esc(p.name)}</a></h3>
+          <button class="card-money" type="button" data-id="${esc(p.id)}" hidden></button>
           ${p.description ? `<p>${esc(pick(p.description))}</p>` : ''}
           ${(p.tech || []).length ? `<div class="tech">${p.tech.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
           <span class="visit" aria-hidden="true">${esc(t('work.open'))}<span class="badge">${arrow}</span></span>
@@ -81,6 +82,22 @@
     $('empty').hidden = list.length > 0;
     NM.observeReveal(box);
     box.querySelectorAll('.card').forEach(setupThumb);
+    fillMoney();
+  }
+
+  /* Once the money is unlocked, each card shows what the project brought in */
+  function fillMoney() {
+    document.querySelectorAll('.card-money').forEach(b => {
+      const m = window.Money && Money.project(b.dataset.id);
+      b.hidden = !m;
+      if (!m) return;
+      const part = (v, k, cls) => `<span class="${cls}"><b>${esc(NM.money(v))}</b> ${esc(t(k))}</span>`;
+      b.innerHTML = m.any
+        ? [part(m.collected, 'p.collected', ''), part(m.profit, 'p.profit', 'pos'),
+           m.pending ? part(m.pending, 'p.pending', 'neg') : '',
+           m.monthly ? `<span><b>${esc(NM.money(m.monthly))}</b>${esc(t('p.month'))}</span>` : ''].join('')
+        : `<span>${esc(t('card.nomoney'))}</span>`;
+    });
   }
 
   /* Live thumbnails: a 1440×900 page scaled down to the card, loaded when it comes near the screen */
@@ -167,12 +184,15 @@
     });
     /* The status pill on a card moves the project to another category */
     $('cards').addEventListener('click', e => {
+      const mb = e.target.closest('.card-money');
+      if (mb) { Money.open(mb.dataset.id); return; }
       const b = e.target.closest('.move');
       if (!b) return;
       e.preventDefault();
-      const p = projects.find(x => x.id === b.closest('.card').dataset.id);
-      Base.statusMenu(b, p, () => { renderStats(); renderFilters(); renderCards(); });
+      Base.statusMenu(b, projects.find(x => x.id === b.closest('.card').dataset.id));
     });
+    document.addEventListener('nm:status', render);
+    document.addEventListener('nm:money', fillMoney);
     /* Signed in: the newest categories come straight from the repo */
     Base.refreshStatus().then(changed => { if (changed) render(); });
     $('search').addEventListener('input', e => { query = e.target.value.trim().toLowerCase(); renderCards(); });

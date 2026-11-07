@@ -31,6 +31,30 @@
 */
 window.PROJECTS = [
   {
+    id: 'izzy',
+    name: "Izzy's",
+    path: 'sites/Izzy/',
+    status: 'demo',
+    client: "Izzy's Coffee and Brunch, София",
+    by: ['Izu83'],
+    started: '2026-11-07',
+    updated: '2026-11-07',
+    category: { bg: 'Кафе и брънч', en: 'Cafe & brunch' },
+    description: {
+      bg: 'Едностранен сайт за кафене и брънч в центъра на София: закуски, брънч, кафе и коктейли, менюта за изтегляне (PDF), контакти и упътване до заведението.',
+      en: 'One-page site for a cafe and brunch spot in central Sofia: breakfast, brunch, coffee and cocktails, downloadable menus (PDF), contacts and directions.'
+    },
+    tech: ['HTML', 'CSS', 'JavaScript'],
+    pages: [
+      { path: '', label: { bg: 'Начало', en: 'Home' } }
+    ],
+    run: 'python -m http.server 5173',
+    notes: {
+      bg: 'Демо за заведението. Менютата са в menus/ като PDF.',
+      en: 'A demo for the business. The menus are PDFs in menus/.'
+    }
+  },
+  {
     id: 'sunnycomplex',
     name: 'Sunny Complex',
     path: 'sites/SunnyComplex/',

@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Izzy's · кафе и брънч в София</title>
+  <meta name="description" content="Закуски, брънч, кафе и коктейли от пресни български продукти. Скрити встрани от бул. „Княгиня Мария Луиза“ 17, в графити зоната до Сердика. Всеки ден от 9:00.">
+  <meta name="theme-color" content="#F3F2EE">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js')</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CafeOrCoffeeShop",
+    "name": "Izzy's Coffee and Brunch",
+    "address": {"@type": "PostalAddress", "streetAddress": "бул. Княгиня Мария Луиза 17", "addressLocality": "София", "postalCode": "1000", "addressCountry": "BG"},
+    "telephone": "+359879399131",
+    "email": "izzys.sofia@gmail.com",
+    "priceRange": "€10–15",
+    "servesCuisine": ["Закуски", "Брънч", "Кафе", "Българска"],
+    "openingHoursSpecification": [
+      {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "17:00"},
+      {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday","Sunday"], "opens": "09:00", "closes": "21:30"}
+    ],
+    "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "1502"}
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#menu">Към менюто</a>
+
+  <header class="bar" data-bar>
+    <div class="wrap bar__in">
+      <a class="wordmark" href="#top" aria-label="Izzy's, към началото">Izzy's</a>
+      <nav class="bar__nav" aria-label="Основна навигация">
+        <a href="#menu">Меню</a>
+        <a href="#plate" class="hide-sm">Сглоби чиния</a>
+        <a href="#visit">Контакти</a>
+      </nav>
+      <a class="btn btn--small" href="tel:+359879399131">Обади се</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <h1 id="hero-title" class="hero__title">
+          <span class="line hero__l1"><span>Izzy's</span></span>
+          <span class="line hero__l2"><span>кафе и брънч</span></span>
+        </h1>
+        <div class="hero__row">
+          <p class="hero__lead reveal">Закуски, брънч, кафе и коктейли от пресни български продукти. Скрити встрани от „Мария&nbsp;Луиза“, в&nbsp;графити зоната до&nbsp;Сердика.</p>
+          <div class="hero__side reveal">
+            <p class="status" data-status><span class="status__dot" aria-hidden="true"></span><span data-status-text>Отворено всеки ден от 9:00</span></p>
+            <p class="rating"><strong>4,8</strong> в Google от 1&nbsp;502 отзива</p>
+            <div class="hero__actions">
+              <a class="btn" href="#menu">Виж менюто <span class="btn__arrow" aria-hidden="true">→</span></a>
+              <a class="link" href="https://www.google.com/maps/dir/?api=1&amp;destination=Izzy%27s+Coffee+and+Brunch+Sofia&amp;destination_place_id=ChIJRcGJIHeFqkARfS3XE8Tz3s0" target="_blank" rel="noopener">Упътване</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figure class="hero__media">
+        <img src="images/hero-2400.jpg" srcset="images/hero-900.jpg 900w, images/hero-1600.jpg 1600w, images/hero-2400.jpg 2400w" sizes="100vw" width="2400" height="1503" alt="Лампи с метални абажури светят над бара на Izzy's, до зелени рафтове с кутии чай и черната дъска с кафетата." fetchpriority="high">
+      </figure>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee" aria-label="Някои от ястията и напитките ни">
+      <div class="marquee__track">
+        <ul class="marquee__list" role="list">
+          <li>Яйца по панагюрски</li><li>Яйца Бенедикт</li><li>Шакшука</li><li>Френски тост</li><li>Авокадо тост</li><li>Флат уайт</li><li>Еспресо мартини</li><li>Ябълков пай със сладолед</li>
+        </ul>
+        <ul class="marquee__list" role="list" aria-hidden="true">
+          <li>Яйца по панагюрски</li><li>Яйца Бенедикт</li><li>Шакшука</li><li>Френски тост</li><li>Авокадо тост</li><li>Флат уайт</li><li>Еспресо мартини</li><li>Ябълков пай със сладолед</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- About -->
+    <section class="section about" aria-labelledby="about-title">
+      <div class="wrap about__grid">
+        <div class="about__text">
+          <h2 id="about-title" class="h2" data-split>Просто, но изискано</h2>
+          <p class="about__big reveal">Малко уютно кафене в сърцето на София, скрито от главната улица и поддържано от група приятели.</p>
+          <p class="reveal">Гостите ни идват от цял свят за здравословна закуска, приготвена на момента от местни продукти. Сосът холандез се прави на място, а хлябът пристига пресен от пекарната всяка сутрин.</p>
+        </div>
+        <figure class="about__media clip">
+          <img src="images/coffee-1600.jpg" srcset="images/coffee-900.jpg 900w, images/coffee-1600.jpg 1600w" sizes="(max-width: 860px) 100vw, 45vw" width="1600" height="2133" loading="lazy" alt="Кафе, приготвено от бариста в Izzy's.">
+        </figure>
+      </div>
+    </section>
+
+    <!-- What we make -->
+    <section class="section cats" id="food" aria-labelledby="cats-title">
+      <div class="wrap">
+        <h2 id="cats-title" class="h2 h2--wide" data-split>От кафе до коктейл</h2>
+        <div class="cats__grid">
+          <ul class="cats__list" role="list">
+            <li class="cat is-active">
+              <button class="cat__btn" type="button" aria-expanded="true" aria-controls="cat-0"><h3 class="cat__name">Закуски</h3></button>
+              <div class="cat__body" id="cat-0">
+                <p>Яйца, приготвени както ги обичате, авокадо тост, топла овесена каша или гранола с блендирани горски плодове. С местни български продукти, с вегетариански и веган варианти.</p>
+                <img class="cat__img" src="images/breakfast-900.jpg" width="900" height="1200" loading="lazy" alt="Закуска в Izzy's.">
+              </div>
+            </li>
+            <li class="cat">
+              <button class="cat__btn" type="button" aria-expanded="false" aria-controls="cat-1"><h3 class="cat__name">Брънч</h3></button>
+              <div class="cat__body" id="cat-1">
+                <p>Любимите класики: яйца Бенедикт, шакшука, американски френски тост и яйца по панагюрски, традиционната българска закуска. Холандезът е домашен, като всичко останало.</p>
+                <img class="cat__img" src="images/brunch-900.jpg" width="900" height="1200" loading="lazy" alt="Брънч в Izzy's.">
+              </div>
+            </li>
+            <li class="cat">
+              <button class="cat__btn" type="button" aria-expanded="false" aria-controls="cat-2"><h3 class="cat__name">Сандвичи</h3></button>
+              <div class="cat__body" id="cat-2">
+                <p>Пресен хляб от пекарната всяка сутрин, с еленски бут, бри и смокиня или пушена сьомга. А за нещо сладко: кроасани, бисквитки, чийзкейк и ябълков пай.</p>
+                <img class="cat__img" src="images/snacks-900.jpg" width="900" height="1200" loading="lazy" alt="Сандвич и сладки в Izzy's.">
+              </div>
+            </li>
+            <li class="cat">
+              <button class="cat__btn" type="button" aria-expanded="false" aria-controls="cat-3"><h3 class="cat__name">Кафе</h3></button>
+              <div class="cat__body" id="cat-3">
+                <p>Висококачествени зърна и опитни баристи. Късо, дълго, топло, студено, с подправки или сироп. Ако имате нещо специално наум, ще направим всичко възможно.</p>
+                <img class="cat__img" src="images/coffee-900.jpg" width="900" height="1200" loading="lazy" alt="Кафе в Izzy's.">
+              </div>
+            </li>
+            <li class="cat">
+              <button class="cat__btn" type="button" aria-expanded="false" aria-controls="cat-4"><h3 class="cat__name">Коктейли</h3></button>
+              <div class="cat__body" id="cat-4">
+                <p>На почивка сте или имате бавен уикенд? Отпуснете се с класически коктейл, местна бира или чаша вино. Два на цената на един в събота и неделя от 16:00 до 19:00.</p>
+                <img class="cat__img" src="images/cocktails-900.jpg" width="900" height="1200" loading="lazy" alt="Коктейл в Izzy's.">
+              </div>
+            </li>
+          </ul>
+          <figure class="cats__figure clip" aria-hidden="true">
+            <img class="is-active" src="images/breakfast-1600.jpg" width="1600" height="2133" loading="lazy" alt="">
+            <img src="images/brunch-1600.jpg" width="1600" height="2133" loading="lazy" alt="">
+            <img src="images/snacks-1600.jpg" width="1600" height="2133" loading="lazy" alt="">
+            <img src="images/coffee-1600.jpg" width="1600" height="2133" loading="lazy" alt="">
+            <img src="images/cocktails-1600.jpg" width="1600" height="2133" loading="lazy" alt="">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu -->
+    <section class="section menu" id="menu" aria-labelledby="menu-title">
+      <div class="wrap">
+        <div class="menu__head">
+          <h2 id="menu-title" class="h2" data-split>Менюто</h2>
+          <p class="menu__note reveal">Цените са в евро, без включено обслужване. Алергени: <span class="nowrap">1&nbsp;яйце</span>, <span class="nowrap">2&nbsp;пшеница</span>, <span class="nowrap">3&nbsp;млечни</span>, <span class="nowrap">4&nbsp;риба</span>, <span class="nowrap">5&nbsp;ядки</span>. Питайте ни за веган замени.</p>
+        </div>
+
+        <div class="tabs reveal" role="tablist" aria-label="Раздели на менюто" data-tabs>
+          <button role="tab" id="t-breakfast" aria-controls="p-breakfast" aria-selected="true">Закуски</button>
+          <button role="tab" id="t-brunch" aria-controls="p-brunch" aria-selected="false" tabindex="-1">Брънч</button>
+          <button role="tab" id="t-sandwiches" aria-controls="p-sandwiches" aria-selected="false" tabindex="-1">Сандвичи и десерти</button>
+          <button role="tab" id="t-coffee" aria-controls="p-coffee" aria-selected="false" tabindex="-1">Кафе и чай</button>
+          <button role="tab" id="t-cocktails" aria-controls="p-cocktails" aria-selected="false" tabindex="-1">Коктейли</button>
+          <button role="tab" id="t-bar" aria-controls="p-bar" aria-selected="false" tabindex="-1">Бира, вино и др.</button>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-breakfast" aria-labelledby="t-breakfast" tabindex="0">
+          <h3 class="panel__title">Закуски</h3>
+          <ul class="items" role="list">
+            <li class="item"><p class="item__name">Яйца на тост <span class="item__g">250 г</span></p><p class="item__price">6,60</p><p class="item__desc">Две яйца поширани, на очи или бъркани върху препечен квасен хляб, със свежа салатка. <span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Авокадо тост <span class="item__g">300 г</span></p><p class="item__price">7,70</p><p class="item__desc">Квасен хляб с нарязано или намачкано авокадо, лимонов сок и свежа салатка. <span class="al">2, 3</span></p></li>
+            <li class="item"><p class="item__name">Яйца по панагюрски <span class="item__g">300 г</span></p><p class="item__price">8,25</p><p class="item__desc">Поширани яйца в чесново кисело мляко с копър, полети със запържено масло с пушена паприка и натрошено сирене. С препечен хляб. Нарязан бекон +2,50. <span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Бери боул <span class="item__g">350 г</span></p><p class="item__price">7,70</p><p class="item__desc">Блендирани замразени плодове, ленено масло и овесено мляко, с гранола, пресни плодове и мед или кленов сироп. <span class="al">5</span></p></li>
+            <li class="item"><p class="item__name">Овесена каша <span class="item__g">425 г</span></p><p class="item__price">7,70</p><p class="item__desc">Овесени ядки в краве или растително мляко (+1,00), с пресни плодове и мед или кленов сироп. <span class="al">3</span></p></li>
+            <li class="item"><p class="item__name">Купа гранола <span class="item__g">380 г</span></p><p class="item__price">6,00</p><p class="item__desc">Кисело мляко с гранола, пресни плодове и мед или кленов сироп. <span class="al">3</span></p></li>
+          </ul>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-brunch" aria-labelledby="t-brunch" tabindex="0">
+          <h3 class="panel__title">Брънч</h3>
+          <ul class="items" role="list">
+            <li class="item"><p class="item__name">Яйца Бенедикт <span class="item__g">300 г</span></p><p class="item__price">11,00</p><p class="item__desc">Поширани яйца, хрупкав квасен хляб, еленски бут, домашен сос холандез, див лук и свежа салатка. <span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Яйца Роял <span class="item__g">300 г</span></p><p class="item__price">12,00</p><p class="item__desc">Поширани яйца, хрупкав квасен хляб, пушена сьомга, домашен сос холандез, див лук и свежа салатка. <span class="al">1, 2, 3, 4</span></p></li>
+            <li class="item"><p class="item__name">Яйца Флорентин <span class="item__g">300 г</span></p><p class="item__price">9,90</p><p class="item__desc">Поширани яйца, хрупкав квасен хляб, сотиран спанак, домашен сос холандез, див лук и свежа салатка. <span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Шакшука <span class="item__g">330 г</span></p><p class="item__price">9,90</p><p class="item__desc">Поширани яйца в сос от червени чушки, домати и сирене, с препечено хлебче. Нарязан бекон +2,50. <span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Френски тост <span class="item__g">300 г</span></p><p class="item__price">9,35</p><p class="item__desc">Бриош, кроасан или кроасан с шоколад, натопени в мляко, яйце, ванилия, кленов сироп и канела. С пресни плодове и кленов сироп, сирене и конфитюр или шоколадов сироп и плодове. Безглутенов хляб +1,65. <span class="al">1, 2, 3</span></p></li>
+          </ul>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-sandwiches" aria-labelledby="t-sandwiches" tabindex="0">
+          <h3 class="panel__title">Сандвичи и десерти</h3>
+          <ul class="items" role="list">
+            <li class="item"><p class="item__name">Български хам и чийз <span class="item__g">350 г</span></p><p class="item__price">8,80</p><p class="item__desc">Еленски бут, чедър, маруля, домат, лютеница и майонеза или пикантна майонеза. <span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Английски плауман <span class="item__g">350 г</span></p><p class="item__price">7,70</p><p class="item__desc">Шунка, чедър, масло, туршия Бранстън, маруля и домат. <span class="al">2, 3</span></p></li>
+            <li class="item"><p class="item__name">Бри и смокиня <span class="item__g">300 г</span></p><p class="item__price">8,25</p><p class="item__desc">Бри, конфитюр от смокиня и бейби салата. <span class="al">2, 3</span></p></li>
+            <li class="item"><p class="item__name">BLT <span class="item__g">350 г</span></p><p class="item__price">7,70</p><p class="item__desc">Бекон, маруля и домат с майонеза или пикантна майонеза. <span class="al">1, 2</span></p></li>
+            <li class="item"><p class="item__name">Сьомга, авокадо и крема сирене <span class="item__g">400 г</span></p><p class="item__price">9,40</p><p class="item__desc">Пушена сьомга, авокадо, крема сирене с билки и лимонов сок. <span class="al">2, 3, 4</span></p></li>
+            <li class="item"><p class="item__name">Кроасан <span class="item__g">60 г</span></p><p class="item__price">2,00</p><p class="item__desc"><span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Кроасан с шоколад <span class="item__g">70 г</span></p><p class="item__price">2,75</p><p class="item__desc"><span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Шоколадова бисквитка <span class="item__g">75 г</span></p><p class="item__price">3,30</p><p class="item__desc"><span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Чийзкейк <span class="item__g">150 г</span></p><p class="item__price">4,40</p><p class="item__desc">С горски плодове и малинов сироп. <span class="al">1, 2, 3</span></p></li>
+            <li class="item"><p class="item__name">Ябълков пай със сладолед <span class="item__g">150 г</span></p><p class="item__price">4,90</p><p class="item__desc">Печен ябълков пай с ванилов сладолед и карамелен сироп. <span class="al">2, 3</span></p></li>
+          </ul>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-coffee" aria-labelledby="t-coffee" tabindex="0">
+          <h3 class="panel__title">Кафе и чай</h3>
+          <p class="panel__sub">Единично / двойно. Повечето кафета ги има и студени.</p>
+          <ul class="items items--tight" role="list">
+            <li class="item"><p class="item__name">Еспресо</p><p class="item__price">1,65 / 2,50</p></li>
+            <li class="item"><p class="item__name">Ристрето</p><p class="item__price">1,65 / 2,50</p></li>
+            <li class="item"><p class="item__name">Дълго кафе</p><p class="item__price">1,65 / 2,50</p></li>
+            <li class="item"><p class="item__name">Американо</p><p class="item__price">1,95 / 2,75</p></li>
+            <li class="item"><p class="item__name">Капучино</p><p class="item__price">2,85 / 4,40</p></li>
+            <li class="item"><p class="item__name">Лате</p><p class="item__price">2,85 / 4,40</p></li>
+            <li class="item"><p class="item__name">Лате макиато</p><p class="item__price">2,85 / 4,40</p></li>
+            <li class="item"><p class="item__name">Макиато</p><p class="item__price">2,00 / 3,30</p></li>
+            <li class="item"><p class="item__name">Мока</p><p class="item__price">3,30 / 4,95</p></li>
+            <li class="item"><p class="item__name">Флат уайт</p><p class="item__price">3,85</p></li>
+            <li class="item"><p class="item__name">Айс лате</p><p class="item__price">3,85</p></li>
+            <li class="item"><p class="item__name">Фрапе</p><p class="item__price">3,30</p></li>
+            <li class="item"><p class="item__name">Топъл шоколад</p><p class="item__price">2,85 / 4,40</p></li>
+            <li class="item"><p class="item__name">Чай лате</p><p class="item__price">2,85 / 4,40</p></li>
+            <li class="item"><p class="item__name">Сироп или растително мляко</p><p class="item__price">+0,50 / 0,75</p></li>
+            <li class="item"><p class="item__name">Чай <span class="item__g">английска закуска, жасмин, мента, лайка, горски плодове, ройбос</span></p><p class="item__price">2,00</p></li>
+            <li class="item"><p class="item__name">Домашен студен чай</p><p class="item__price">3,30</p></li>
+            <li class="item"><p class="item__name">Фреш портокал</p><p class="item__price">3,85</p></li>
+            <li class="item"><p class="item__name">Домашна лимонада <span class="item__g">с ягода или маракуя 3,85</span></p><p class="item__price">2,85</p></li>
+            <li class="item"><p class="item__name">Кока-Кола, Зеро, минерална или газирана вода</p><p class="item__price">1,65</p></li>
+          </ul>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-cocktails" aria-labelledby="t-cocktails" tabindex="0">
+          <h3 class="panel__title">Коктейли</h3>
+          <p class="panel__sub">Щастлив час: два на цената на един, събота и неделя, 16:00–19:00.</p>
+          <ul class="items" role="list">
+            <li class="item"><p class="item__name">Мимоза</p><p class="item__price">5,25</p><p class="item__desc">Просеко и портокалов сок.</p></li>
+            <li class="item"><p class="item__name">Апероль шприц</p><p class="item__price">7,70</p><p class="item__desc">Апероль, просеко и газирана вода.</p></li>
+            <li class="item"><p class="item__name">Блъди Мери</p><p class="item__price">8,80</p><p class="item__desc">Водка, доматен сок, табаско, лимонов сок, сос Уорчестър и подправки.</p></li>
+            <li class="item"><p class="item__name">Еспресо мартини</p><p class="item__price">8,80</p><p class="item__desc">Водка, кафе ликьор и нашето еспресо.</p></li>
+            <li class="item"><p class="item__name">Porn star мартини</p><p class="item__price">8,25</p><p class="item__desc">Водка, ликьор и пюре от маракуя, с шот просеко.</p></li>
+            <li class="item"><p class="item__name">Маргарита</p><p class="item__price">7,70</p><p class="item__desc">Текила, портокалов ликьор, лимон и лайм, с ръб от сол или чили.</p></li>
+            <li class="item"><p class="item__name">Куба либре</p><p class="item__price">7,70</p><p class="item__desc">Ром, сок от лайм и Кока-Кола.</p></li>
+            <li class="item"><p class="item__name">Дайкири</p><p class="item__price">7,15</p><p class="item__desc">Бял ром, лимон, лайм и захарен сироп.</p></li>
+            <li class="item"><p class="item__name">Pink Pepper Gin-ius</p><p class="item__price">7,00</p><p class="item__desc">Джин, тоник и ягодово пюре.</p></li>
+            <li class="item"><p class="item__name">Водка или уиски сауър</p><p class="item__price">6,60</p><p class="item__desc">С лимон, лайм и захарен сироп.</p></li>
+            <li class="item"><p class="item__name">Джин с тоник</p><p class="item__price">6,60</p><p class="item__desc">Джин с тоник Schweppes.</p></li>
+          </ul>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-bar" aria-labelledby="t-bar" tabindex="0">
+          <h3 class="panel__title">Бира, вино и спиртни напитки</h3>
+          <ul class="items items--tight" role="list">
+            <li class="item"><p class="item__name">Шуменско <span class="item__g">330 мл</span></p><p class="item__price">2,00</p></li>
+            <li class="item"><p class="item__name">Загорка <span class="item__g">500 мл</span></p><p class="item__price">2,20</p></li>
+            <li class="item"><p class="item__name">July Morning <span class="item__g">330 мл</span></p><p class="item__price">2,75</p></li>
+            <li class="item"><p class="item__name">42 <span class="item__g">500 мл</span></p><p class="item__price">4,95</p></li>
+            <li class="item"><p class="item__name">Хайнекен 0.0 <span class="item__g">330 мл</span></p><p class="item__price">3,30</p></li>
+            <li class="item"><p class="item__name">Сайдер <span class="item__g">330 мл</span></p><p class="item__price">3,10</p></li>
+            <li class="item"><p class="item__name">Червено вино Черга <span class="item__g">187 мл</span></p><p class="item__price">3,95</p></li>
+            <li class="item"><p class="item__name">Бяло вино Пино Гриджо <span class="item__g">375 мл</span></p><p class="item__price">7,15</p></li>
+            <li class="item"><p class="item__name">Просеко <span class="item__g">200 мл</span></p><p class="item__price">5,50</p></li>
+            <li class="item"><p class="item__name">Ракия, водка, ром, джин или текила <span class="item__g">50 / 100 мл</span></p><p class="item__price">2,75 / 4,95</p></li>
+            <li class="item"><p class="item__name">Уиски <span class="item__g">50 / 100 мл</span></p><p class="item__price">3,95 / 6,60</p></li>
+          </ul>
+        </div>
+
+        <p class="menu__pdf">Печатните менюта на български и английски: <a class="link" href="menus/izzys-food-menu.pdf">храна (PDF)</a> и <a class="link" href="menus/izzys-drinks-menu.pdf">напитки (PDF)</a>.</p>
+      </div>
+    </section>
+
+    <!-- Staff favourites -->
+    <section class="section staff" id="favourites" aria-labelledby="staff-title">
+      <div class="wrap">
+        <div class="staff__head">
+          <h2 id="staff-title" class="h2" data-split>Любимото на екипа</h2>
+          <p class="staff__lead reveal">Izzy's се движи от малка група приятели. Това са чиниите, които всеки от нас си поръчва, когато дойде неговият ред да хапне.</p>
+        </div>
+        <ul class="staff__list" role="list">
+          <li class="fav reveal"><h3 class="fav__name">Дейвид</h3><p class="fav__desc">Две яйца на очи и два слайса бекон върху препечен квасен хляб, със свежа салатка.</p><p class="fav__price">10,50 €</p></li>
+          <li class="fav reveal"><h3 class="fav__name">Мартин</h3><p class="fav__desc">Две поширани яйца с бекон и пушена сьомга върху тост, със свежа салатка.</p><p class="fav__price">11,50 €</p></li>
+          <li class="fav reveal"><h3 class="fav__name">Филип</h3><p class="fav__desc">Авокадо тост с поширано яйце, сос холандез и свежа салатка.</p><p class="fav__price">9,90 €</p></li>
+          <li class="fav reveal"><h3 class="fav__name">Харини</h3><p class="fav__desc">BLT сандвич с пикантна майонеза и яйце на очи.</p><p class="fav__price">8,80 €</p></li>
+          <li class="fav reveal"><h3 class="fav__name">Дани</h3><p class="fav__desc">Френски тост с бъркани яйца и двойна порция бекон, полят с кленов сироп. Чедър +2,20.</p><p class="fav__price">9,50 €</p></li>
+          <li class="fav reveal"><h3 class="fav__name">Сими</h3><p class="fav__desc">Препечен бриош с люта майонеза, чедър, див лук и бекон.</p><p class="fav__price">9,50 €</p></li>
+          <li class="fav reveal"><h3 class="fav__name">Полет</h3><p class="fav__desc">Бейби салата с краставици, чери домати, печена капия, маслини, авокадо и сирене.</p><p class="fav__price">7,80 €</p></li>
+          <li class="fav reveal"><h3 class="fav__name">Лили <span class="fav__tag">веган</span></h3><p class="fav__desc">Бери боул без гранола, с повече сезонни плодове и кленов сироп.</p><p class="fav__price">7,20 €</p></li>
+        </ul>
+      </div>
+      <div class="strip" aria-hidden="true" data-strip>
+        <div class="strip__track">
+          <img src="images/breakfast-900.jpg" width="900" height="1200" loading="lazy" alt="">
+          <img src="images/hero-900.jpg" width="900" height="564" loading="lazy" alt="" class="strip__wide">
+          <img src="images/brunch-900.jpg" width="900" height="1200" loading="lazy" alt="">
+          <img src="images/cocktails-900.jpg" width="900" height="1200" loading="lazy" alt="">
+          <img src="images/snacks-900.jpg" width="900" height="1200" loading="lazy" alt="">
+          <img src="images/coffee-900.jpg" width="900" height="1200" loading="lazy" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- Build your own plate -->
+    <section class="section plate" id="plate" aria-labelledby="plate-title">
+      <div class="wrap plate__grid">
+        <div class="plate__controls">
+          <h2 id="plate-title" class="h2" data-split>Сглоби си чинията</h2>
+          <p class="plate__lead reveal">Започнете с тост от квасен хляб и добавете каквото пожелаете. Поръчайте на бара точно както е написано тук.</p>
+
+          <form class="builder reveal" data-builder>
+            <fieldset class="group">
+              <legend class="group__title">Тостът <span class="group__price">2,00 €</span></legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="toast" value="с масло" checked><span>С масло</span></label>
+                <label class="chip"><input type="radio" name="toast" value="без масло"><span>Без масло</span></label>
+                <label class="chip"><input type="radio" name="toast" value="с лютеница"><span>С лютеница</span></label>
+                <label class="chip"><input type="checkbox" name="gf" value="безглутенов"><span>Безглутенов хляб <em>+1,65</em></span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="group">
+              <legend class="group__title">Яйца <span class="group__price">1,75 € бр.</span></legend>
+              <div class="stepper">
+                <button type="button" class="stepper__btn" data-step="-1" aria-label="Едно яйце по-малко">−</button>
+                <output class="stepper__val" name="eggs" aria-live="polite" data-eggs>2</output>
+                <button type="button" class="stepper__btn" data-step="1" aria-label="Едно яйце повече">+</button>
+                <div class="chips chips--inline" data-egg-style>
+                  <label class="chip"><input type="radio" name="eggstyle" value="poached" checked><span>Поширани</span></label>
+                  <label class="chip"><input type="radio" name="eggstyle" value="fried"><span>На очи</span></label>
+                  <label class="chip"><input type="radio" name="eggstyle" value="scrambled"><span>Бъркани</span></label>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="group">
+              <legend class="group__title">Добавки</legend>
+              <div class="chips chips--grid">
+                <label class="chip"><input type="checkbox" name="x" value="½ авокадо" data-price="3.95"><span>½ авокадо <em>3,95</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="бекон" data-price="2.50"><span>Бекон <em>2,50</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="пушена сьомга" data-price="4.40"><span>Пушена сьомга <em>4,40</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="шунка" data-price="2.40"><span>Шунка <em>2,40</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="еленски бут" data-price="2.40"><span>Еленски бут <em>2,40</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="луканка" data-price="2.40"><span>Луканка <em>2,40</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="сирене" data-price="1.65"><span>Сирене <em>1,65</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="сотиран спанак" data-price="2.20"><span>Сотиран спанак <em>2,20</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="сос холандез" data-price="3.30"><span>Сос холандез <em>3,30</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="салата" data-price="1.75" checked><span>Салата <em>1,75</em></span></label>
+                <label class="chip"><input type="checkbox" name="x" value="конфитюр" data-price="1.10"><span>Конфитюр <em>1,10</em></span></label>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+
+        <aside class="receipt" aria-labelledby="receipt-title">
+          <div class="receipt__in">
+            <h3 id="receipt-title" class="receipt__title">Вашата чиния</h3>
+            <p class="receipt__total"><span data-total>7,25</span><span class="receipt__cur">€</span></p>
+            <p class="receipt__line" data-summary aria-live="polite">Тост от квасен хляб с масло, 2 поширани яйца и салата.</p>
+            <button type="button" class="link receipt__reset" data-reset>Започни отначало</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="section reviews" aria-labelledby="reviews-title">
+      <div class="wrap reviews__grid">
+        <div class="reviews__score">
+          <h2 id="reviews-title" class="h2" data-split>Гостите за нас</h2>
+          <p class="score reveal"><span class="score__num" data-count="4.8">4,8</span><span class="score__of">от 5, по 1&nbsp;502 отзива в&nbsp;Google</span></p>
+        </div>
+        <div class="quotes">
+          <figure class="quote quote--big reveal">
+            <blockquote><p>Фантастично място, заобиколено от невероятен уличен арт и стенописи! Обслужването беше отлично, храната вкусна, а цените много разумни.</p></blockquote>
+            <figcaption>Joanna Drab, Google</figcaption>
+          </figure>
+          <figure class="quote reveal">
+            <blockquote><p>Чудесно място за закуска и брънч. Изборът е голям, храната е първокласна, а кафето отлично.</p></blockquote>
+            <figcaption>The Bekks, Google</figcaption>
+          </figure>
+          <figure class="quote reveal">
+            <blockquote><p>Прекарахме много приятен брънч днес. Яйцата Роял с пушена сьомга бяха вкусни.</p></blockquote>
+            <figcaption>Andrey Shumko, Google</figcaption>
+          </figure>
+          <p class="quotes__note reveal">Отзивите са преведени от английски.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visit -->
+    <section class="section visit" id="visit" aria-labelledby="visit-title">
+      <div class="wrap">
+        <div class="visit__intro">
+          <h2 id="visit-title" class="h2" data-split>Скрити от главната улица</h2>
+          <p class="visit__lead reveal">Малко уютно кафене в сърцето на София, на няколко крачки от Сердика, с врата от всяка страна.</p>
+        </div>
+        <div class="doors">
+          <div class="door reveal">
+            <h3 class="door__title">Предната врата</h3>
+            <p>Излиза на широк площад в графити зоната, ограден от 360° панорама със стенописи на местни артисти.</p>
+          </div>
+          <div class="door door--dark reveal">
+            <h3 class="door__title">Задната врата</h3>
+            <p>Води към тих вътрешен двор с малки местни магазинчета за модни аксесоари и дребни подаръци.</p>
+          </div>
+        </div>
+
+        <div class="visit__grid">
+          <div class="visit__info">
+            <div class="info reveal">
+              <h3 class="info__title">Адрес</h3>
+              <p>бул. „Княгиня Мария Луиза“ 17<br>София център, 1000 София</p>
+              <p><a class="btn" href="https://www.google.com/maps/dir/?api=1&amp;destination=Izzy%27s+Coffee+and+Brunch+Sofia&amp;destination_place_id=ChIJRcGJIHeFqkARfS3XE8Tz3s0" target="_blank" rel="noopener">Упътване <span class="btn__arrow" aria-hidden="true">→</span></a></p>
+            </div>
+            <div class="info reveal">
+              <h3 class="info__title">Работно време</h3>
+              <table class="hours" data-hours>
+                <caption class="sr">Работно време</caption>
+                <tbody>
+                  <tr data-day="1"><th scope="row">Понеделник</th><td>9:00 – 17:00</td></tr>
+                  <tr data-day="2"><th scope="row">Вторник</th><td>9:00 – 17:00</td></tr>
+                  <tr data-day="3"><th scope="row">Сряда</th><td>9:00 – 17:00</td></tr>
+                  <tr data-day="4"><th scope="row">Четвъртък</th><td>9:00 – 17:00</td></tr>
+                  <tr data-day="5"><th scope="row">Петък</th><td>9:00 – 17:00</td></tr>
+                  <tr data-day="6"><th scope="row">Събота</th><td>9:00 – 21:30</td></tr>
+                  <tr data-day="0"><th scope="row">Неделя</th><td>9:00 – 21:30</td></tr>
+                </tbody>
+              </table>
+              <p class="info__note">Щастлив час през уикенда, 16:00–19:00: два коктейла на цената на един.</p>
+            </div>
+            <div class="info reveal">
+              <h3 class="info__title">Контакти</h3>
+              <p><a class="link" href="tel:+359879399131">087 939 9131</a><br><a class="link" href="mailto:izzys.sofia@gmail.com">izzys.sofia@gmail.com</a></p>
+            </div>
+          </div>
+          <div class="map clip">
+            <iframe title="Карта: Izzy's Coffee and Brunch, бул. „Княгиня Мария Луиза“ 17, София" src="https://maps.google.com/maps?q=Izzy%27s%20Coffee%20and%20Brunch%2C%20Knyagina%20Maria%20Luisa%20Blvd%2017%2C%20Sofia&amp;z=17&amp;hl=bg&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot__top">
+        <p class="foot__mark" aria-hidden="true" data-letters>Izzy's</p>
+        <a class="totop" href="#top" data-totop aria-label="Към началото на страницата">
+          <span class="totop__label">Към началото</span>
+          <span class="totop__circle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+          </span>
+        </a>
+      </div>
+      <div class="foot__row">
+        <p>Izzy's Coffee and Brunch<br>бул. „Княгиня Мария Луиза“ 17, София</p>
+        <p>Пон–Пет 9:00 – 17:00<br>Съб–Нед 9:00 – 21:30</p>
+        <p><a class="link" href="tel:+359879399131">087 939 9131</a><br><a class="link" href="mailto:izzys.sofia@gmail.com">izzys.sofia@gmail.com</a></p>
+        <p>© 2026 Izzy's Coffee and Brunch</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>

@@ -23,6 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Add new folders from sites/ to projects.js
+        run: node .github/scripts/sync-projects.mjs
+
       - name: Check projects.js, folders and secrets
         run: node .github/scripts/check.mjs
 

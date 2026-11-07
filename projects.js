@@ -1,4 +1,4 @@
-/* Our project base. Every project we make gets an entry here.
+﻿/* Our project base. Every project we make gets an entry here.
 
    To add a site: copy its folder into sites/ and add an entry below (newest first).
    Text can be a plain string, or { bg: "...", en: "..." } for both languages.
@@ -19,6 +19,7 @@
    category  what kind of site it is
    description  one or two sentences
    tech      a few short labels
+   tags      kind of project, shown as #tags and clickable to filter (web, food, hotel, ai, game, shop, backend)
    pages     pages for the preview's page picker (path relative to `path`)
    notes     anything worth remembering: passwords live where, what's left, quirks (optional)
    run       how to run it locally (optional)
@@ -69,6 +70,7 @@ window.PROJECTS = [
       en: 'Pool and restaurant in Radomir: a menu with home delivery, table booking on the floor plan, an admin panel for bookings and a page for deliveries.'
     },
     tech: ['HTML', 'CSS', 'JavaScript', 'Python'],
+    tags: ['web', 'food', 'hotel', 'backend'],
     pages: [
       { path: '', label: { bg: 'Начало', en: 'Home' } },
       { path: 'menu/', label: { bg: 'Меню и доставка', en: 'Menu & delivery' } },

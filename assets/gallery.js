@@ -1,4 +1,4 @@
-/* The showcase grid: stats, filters, cards with live thumbnails. */
+﻿/* The showcase grid: stats, filters, cards with live thumbnails. */
 (() => {
   const { projects, t, pick, esc } = NM;
   const $ = id => document.getElementById(id);
@@ -8,6 +8,8 @@
   const fromUrl = new URLSearchParams(location.search).get('cat');
   let filter = TABS.includes(fromUrl) ? fromUrl : 'all';
   let query = '';
+  let tag = new URLSearchParams(location.search).get('tag') || '';
+  const tagName = x => { const k = 'tag.' + x; const v = t(k); return v === k ? x : v; };
 
   const status = p => NM.status(p);
   const lastChange = p => p.updated || p.started || '';
@@ -38,13 +40,15 @@
     const count = k => k === 'all' ? projects.length : projects.filter(p => status(p) === k).length;
     box.innerHTML = TABS.map(k =>
       `<button class="filter${k === 'all' ? '' : ' f-' + k}" type="button" role="tab" data-k="${k}" aria-selected="${k === filter}">` +
-      `${esc(t('tab.' + k))}<span class="n">${count(k)}</span></button>`).join('');
+      `${esc(t('tab.' + k))}<span class="n">${count(k)}</span></button>`).join('') +
+      (tag ? `<button class="tagclear" type="button">#${esc(tagName(tag))} ✕</button>` : '');
   }
 
   function matches(p) {
     if (filter !== 'all' && status(p) !== filter) return false;
+    if (tag && !(p.tags || []).includes(tag)) return false;
     if (!query) return true;
-    const hay = [p.name, p.client, pick(p.category), pick(p.description), pick(p.notes), ...(p.tech || []), ...(p.by || []), NM.shownDomain(p)]
+    const hay = [p.name, p.client, pick(p.category), pick(p.description), pick(p.notes), ...(p.tech || []), ...(p.tags || []).map(tagName), ...(p.by || []), NM.shownDomain(p)]
       .join(' ').toLowerCase();
     return hay.includes(query);
   }
@@ -60,7 +64,7 @@
     return `
       <article class="card reveal" style="--d:${(i % 2) * 90}ms" data-id="${esc(p.id)}">
         <div class="shot">
-          <div class="bar"><i></i><i></i><i></i><span class="url">${esc(NM.shownDomain(p))}</span></div>
+          <div class="bar"><i></i><i></i><i></i><span class="dot" data-state="check" role="img" aria-label=""></span><span class="url">${esc(NM.shownDomain(p))}</span></div>
           <div class="view${p.cover ? ' ready' : ''}">${thumb}</div>
         </div>
         <div class="card-body">
@@ -69,6 +73,7 @@
           <button class="card-money" type="button" data-id="${esc(p.id)}" hidden></button>
           ${p.description ? `<p>${esc(pick(p.description))}</p>` : ''}
           ${(p.tech || []).length ? `<div class="tech">${p.tech.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
+          ${(p.tags || []).length ? `<div class="tags">${p.tags.map(x => `<button type="button" class="tag${x === tag ? ' on' : ''}" data-tag="${esc(x)}">#${esc(tagName(x))}</button>`).join('')}</div>` : ''}
           <span class="visit" aria-hidden="true">${esc(t('work.open'))}<span class="badge">${arrow}</span></span>
         </div>
       </article>`;
@@ -163,7 +168,46 @@
     cardEl.addEventListener('mouseleave', () => scrollTo(0, 900));
   }
 
-  function render() { renderStats(); renderFilters(); renderCards(); }
+  /* Status dots: green if the site answers, red if it doesn't. Checked again every 5 minutes. */
+  const health = {};
+  async function ping(p) {
+    const url = NM.isExternal(p) || p.live ? (p.live || p.path) : NM.siteUrl(p);
+    const same = new URL(url, location.href).origin === location.origin;
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 8000);
+    try {
+      const r = await fetch(url, { mode: same ? 'same-origin' : 'no-cors', cache: 'no-store', signal: ctl.signal });
+      return same ? r.ok : true;      // cross-site answers are opaque: an answer at all means it's up
+    } catch { return false; }
+    finally { clearTimeout(timer); }
+  }
+  function paintDots() {
+    document.querySelectorAll('.card').forEach(c => {
+      const d = c.querySelector('.dot');
+      const s = health[c.dataset.id] || 'check';
+      if (!d) return;
+      d.dataset.state = s;
+      d.setAttribute('aria-label', t('health.' + s));
+      d.title = t('health.' + s);
+    });
+  }
+  let lastCheck = 0;
+  async function checkAll(force) {
+    if (!force && Date.now() - lastCheck < 60000) return;
+    lastCheck = Date.now();
+    await Promise.all(projects.map(async p => { health[p.id] = (await ping(p)) ? 'up' : 'down'; paintDots(); }));
+  }
+  function render() { renderStats(); renderFilters(); renderCards(); paintDots(); }
+
+  function setTag(x) {
+    tag = x;
+    const q = new URLSearchParams(location.search);
+    x ? q.set('tag', x) : q.delete('tag');
+    history.replaceState(null, '', (q.toString() ? `?${q}` : location.pathname) + location.hash);
+    renderFilters();
+    renderCards();
+    paintDots();
+  }
 
   function setFilter(k) {
     filter = k;
@@ -172,6 +216,7 @@
     history.replaceState(null, '', (q.toString() ? `?${q}` : location.pathname) + location.hash);
     $('filters').querySelectorAll('.filter').forEach(x => x.setAttribute('aria-selected', x.dataset.k === k));
     renderCards();
+    paintDots();
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -184,6 +229,8 @@
     });
     /* The status pill on a card moves the project to another category */
     $('cards').addEventListener('click', e => {
+      const tb = e.target.closest('.tag');
+      if (tb) { setTag(tag === tb.dataset.tag ? '' : tb.dataset.tag); return; }
       const mb = e.target.closest('.card-money');
       if (mb) { Money.open(mb.dataset.id); return; }
       const b = e.target.closest('.move');
@@ -195,6 +242,10 @@
     document.addEventListener('nm:money', fillMoney);
     /* Signed in: the newest categories come straight from the repo */
     Base.refreshStatus().then(changed => { if (changed) render(); });
+    $('filters').addEventListener('click', e => { if (e.target.closest('.tagclear')) setTag(''); });
+    checkAll(true);
+    setInterval(() => checkAll(true), 300000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) checkAll(); });
     $('search').addEventListener('input', e => { query = e.target.value.trim().toLowerCase(); renderCards(); });
   });
 })();

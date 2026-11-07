@@ -1,4 +1,4 @@
-/* Shared by the showcase and the preview: language, project helpers, header and reveal effects. */
+﻿/* Shared by the showcase and the preview: language, project helpers, header and reveal effects. */
 (() => {
   const html = document.documentElement;
   html.classList.add('js');
@@ -72,7 +72,17 @@
       'pv.repo': 'Код',
       'pv.close': 'Затвори',
       'pv.notfound': 'Няма такъв проект.',
-      'pv.fullscreen': 'Цял екран'
+      'pv.fullscreen': 'Цял екран',
+      'tag.web': 'уеб',
+      'tag.food': 'храна',
+      'tag.hotel': 'хотел и басейн',
+      'tag.ai': 'AI',
+      'tag.game': 'игра',
+      'tag.backend': 'сървър',
+      'tag.shop': 'магазин',
+      'health.up': 'Сайтът отговаря',
+      'health.down': 'Сайтът не отговаря',
+      'health.check': 'Проверява се…'
     },
     en: {
       'nav.work': 'Projects',
@@ -134,7 +144,17 @@
       'pv.repo': 'Code',
       'pv.close': 'Close',
       'pv.notfound': 'No such project.',
-      'pv.fullscreen': 'Full screen'
+      'pv.fullscreen': 'Full screen',
+      'tag.web': 'web',
+      'tag.food': 'food',
+      'tag.hotel': 'hotel & pool',
+      'tag.ai': 'AI',
+      'tag.game': 'game',
+      'tag.backend': 'backend',
+      'tag.shop': 'shop',
+      'health.up': 'Site is up',
+      'health.down': 'Site is not answering',
+      'health.check': 'Checking…'
     }
   };
 

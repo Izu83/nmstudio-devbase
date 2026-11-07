@@ -288,3 +288,15 @@ footer a:hover { color: var(--text); }
   *, ::before, ::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0ms !important; }
   .js .reveal { transform: none; opacity: 1; }
 }
+
+/* Tags on a card, the clear-tag pill and the site status dot */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; position: relative; z-index: 2; }
+.tag { font: inherit; font-size: 12px; font-weight: 600; color: var(--muted); background: none; border: 0; padding: 2px 4px; border-radius: 6px; cursor: pointer; }
+.tag:hover, .tag.on { color: var(--text); background: rgba(255,255,255,.08); }
+.tagclear { font: inherit; font-size: 13px; font-weight: 600; color: var(--bg); background: var(--brand); border: 1px solid var(--brand); border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+.bar .dot { width: 8px; height: 8px; border-radius: 50%; background: #666; margin-left: 4px; flex: none; box-shadow: 0 0 0 3px rgba(255,255,255,.04); }
+.bar .dot[data-state="up"] { background: #3ddc84; box-shadow: 0 0 8px rgba(61,220,132,.7); }
+.bar .dot[data-state="down"] { background: #ff5252; box-shadow: 0 0 8px rgba(255,82,82,.7); }
+.bar .dot[data-state="check"] { animation: dotpulse 1.2s ease-in-out infinite; }
+@keyframes dotpulse { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .bar .dot[data-state="check"] { animation: none; } }
